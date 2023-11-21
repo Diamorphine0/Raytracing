@@ -1,2 +1,2 @@
 # Raytracing
-Rat tracing project, course CSE201
+Ray tracing project, course CSE201
