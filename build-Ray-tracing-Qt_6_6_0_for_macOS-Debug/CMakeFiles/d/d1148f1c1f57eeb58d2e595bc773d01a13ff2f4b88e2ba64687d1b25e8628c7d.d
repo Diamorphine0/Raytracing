@@ -1001,23 +1001,76 @@ Ray-tracing_autogen/timestamp: \
   /Users/lukabarovic/Qt/6.6.0/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets-relwithdebinfo.cmake \
   /Users/lukabarovic/Qt/6.6.0/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsTargets.cmake \
   /Users/lukabarovic/Qt/6.6.0/macos/lib/cmake/Qt6WidgetsTools/Qt6WidgetsToolsVersionlessTargets.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompiler.cmake.in \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXCompilerABI.cpp \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCXXInformation.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCheckCompilerFlagCommonPatterns.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeCompilerIdDetection.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCXXCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompileFeatures.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerABI.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineCompilerId.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeDetermineSystem.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindBinUtils.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeFindDependencyMacro.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeGenericSystem.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeNinjaFindMake.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitIncludeInfo.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseImplicitLinkInfo.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeParseLibraryArchitecture.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystem.cmake.in \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCXXCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CMakeTestCompilerCommon.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXCompilerFlag.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckCXXSourceCompiles.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckIncludeFileCXX.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/CheckLibraryExists.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ADSP-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMCC-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/ARMClang-DetermineCompiler.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/AppleClang-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Borland-DetermineCompiler.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang-DetermineCompilerInternal.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Clang.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Comeau-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Compaq-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Cray-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Embarcadero-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Fujitsu-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/FujitsuClang-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GHS-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU-CXX-DetermineCompiler.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/GNU.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/HP-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IAR-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMCPP-CXX-DetermineVersionInternal.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IBMClang-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Intel-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/IntelLLVM-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/LCC-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/MSVC-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVHPC-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/NVIDIA-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/OpenWatcom-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PGI-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/PathScale-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SCO-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/SunPro-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/TI-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/VisualAge-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/Watcom-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XL-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/XLClang-CXX-DetermineCompiler.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Compiler/zOS-CXX-DetermineCompiler.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindOpenGL.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/FindPackageMessage.cmake \
@@ -1026,10 +1079,12 @@ Ray-tracing_autogen/timestamp: \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckCompilerFlag.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckFlagCommonConfig.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/CheckSourceCompiles.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Internal/FeatureTesting.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/MacroAddFileDependencies.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake \
+  /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Determine-CXX.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/Darwin.cmake \
   /Users/lukabarovic/Qt/Tools/CMake/CMake.app/Contents/share/cmake-3.24/Modules/Platform/UnixPaths.cmake \
