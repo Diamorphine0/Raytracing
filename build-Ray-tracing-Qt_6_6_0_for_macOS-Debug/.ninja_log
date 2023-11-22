@@ -1,9 +1,0 @@
-# ninja log v5
-1	3675	1700667588508164027	Ray-tracing_autogen/timestamp	ca698cfd7d0f9ff3
-1	3675	1700667588508164027	Ray-tracing_autogen/mocs_compilation.cpp	ca698cfd7d0f9ff3
-1	3675	1700667588508164027	/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/Ray-tracing_autogen/timestamp	ca698cfd7d0f9ff3
-1	3675	1700667588508164027	/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/Ray-tracing_autogen/mocs_compilation.cpp	ca698cfd7d0f9ff3
-3676	7980	1700667592839034559	CMakeFiles/Ray-tracing.dir/Ray-tracing_autogen/mocs_compilation.cpp.o	62af393afddf5ed4
-3680	8084	1700667592946663908	CMakeFiles/Ray-tracing.dir/mainwindow.cpp.o	1c7b96ca59e1465c
-3678	8125	1700667592991749076	CMakeFiles/Ray-tracing.dir/main.cpp.o	d50c9f8cae1c1dcf
-8125	8477	1700667593349556490	Ray-tracing.app/Contents/MacOS/Ray-tracing	29cda574d53cb18d
