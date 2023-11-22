@@ -1,0 +1,9 @@
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/Ray-tracing.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/edit_cache.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/rebuild_cache.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/list_install_components.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/install.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/install/local.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/install/strip.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/Ray-tracing_autogen_timestamp_deps.dir
+/Users/lukabarovic/Desktop/Raytracing/build-Ray-tracing-Qt_6_6_0_for_macOS-Debug/CMakeFiles/Ray-tracing_autogen.dir
