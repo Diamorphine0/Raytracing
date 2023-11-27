@@ -11,7 +11,7 @@ public:
 
     bool hit_by(Ray);      //WE DO NOT KNOW EXACTLY HOW TO TREAT THIS YET
 
-    void compute_set_nunit();    //Normal unit vector for facing ratio -> shading
+    void compute_set_nunit();    //Normal unit vector for facing ratio -> shading   THIS HAS TO COME DIRECTLY FROM ENGINE TO DETERMINE FACE NORMAL DIRECTION
 
     void set_nunit(Vec3 unit) {normal_unit = unit;}
 
