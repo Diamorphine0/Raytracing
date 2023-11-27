@@ -23,7 +23,7 @@ public:
 
 
 
-private:
+protected:
     Vec3 vertex_1, vertex_2, vertex_3;
     Vec3 normal_unit;
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "hittable.hpp"
-
+#include "ray.hpp"
 
 // Define constants for image size
 const int WIDTH = 800;

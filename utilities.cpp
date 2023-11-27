@@ -16,6 +16,10 @@ Vec3 Vec3::operator-(const Vec3& other) const {
     return Vec3(x - other.x, y - other.y, z - other.z);
 }
 
+Vec3 Vec3::operator -()const {
+    return Vec3(-x,-y,-z);
+}
+
 Vec3 Vec3::operator*(float scalar) const {
     return Vec3(x * scalar, y * scalar, z * scalar);
 }
@@ -38,3 +42,4 @@ void Vec3::normalize() {
 Vec3 Vec3::cross(const Vec3& other) const {
     return Vec3( y*other.z-other.y*z, -(x*other.z-other.x*z), x*other.y-other.x*y);
 }
+
