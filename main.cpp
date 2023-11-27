@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QImage>
 #include <QLabel>
-#include <cmath>
 #include <vector>
 #include <string>
 #include "hittable.hpp"

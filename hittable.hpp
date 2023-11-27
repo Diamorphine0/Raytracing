@@ -1,6 +1,7 @@
 #ifndef HITTABLE_HPP
 #define HITTABLE_HPP
 
+#include "ray.hpp"
 #include "utilities.hpp"
 
 class hittable      //We're exclusively considering triangles for now. In case we need to consider new polygons, we'll modify the class later.
@@ -8,7 +9,7 @@ class hittable      //We're exclusively considering triangles for now. In case w
 public:
     hittable(Vec3 a, Vec3 b, Vec3 c) : vertex_1{a}, vertex_2{b}, vertex_3{c} { }
 
-    //bool hit_by(Ray);       //Ray object doesn't exist yet    !!!!!  AND WE DO NOT KNOW EXACTLY HOW TO TREAT THIS YET
+    bool hit_by(Ray);      //WE DO NOT KNOW EXACTLY HOW TO TREAT THIS YET
 
     void compute_set_nunit();    //Normal unit vector for facing ratio -> shading
 

@@ -21,6 +21,8 @@ set(PROJECT_SOURCES
         hittable.cpp
         utilities.hpp
         utilities.cpp
+        ray.cpp
+        ray.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

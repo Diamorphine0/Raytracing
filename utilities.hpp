@@ -1,6 +1,6 @@
 #ifndef UTILITIES_HPP
 #define UTILITIES_HPP
-
+#include <cmath>
 
 class Vec3 {
 public:
@@ -18,6 +18,9 @@ public:
 
     // Utility Function
     float lengthSquared() const;
+    void normalize();
+    Vec3 cross(const Vec3&) const;
 };
+
 
 #endif // UTILITIES_HPP
