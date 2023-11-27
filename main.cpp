@@ -2,8 +2,10 @@
 #include <QImage>
 #include <QLabel>
 #include <cmath>
-#include "utilities.hpp"
+#include <vector>
+#include <string>
 #include "hittable.hpp"
+
 
 // Define constants for image size
 const int WIDTH = 800;
