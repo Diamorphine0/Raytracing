@@ -76,7 +76,7 @@ int main()
     glDepthFunc(GL_LESS);
 
     // Change the shader path names
-    GLuint programID = LoadShaders( "/Users/alexanderstorozhenko/EngineProject/vertexshader.shader", "/Users/alexanderstorozhenko/EngineProject/fragmentshader.shader" );
+    GLuint programID = LoadShaders( "vertexshader.shader", "fragmentshader.shader" );
 
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
