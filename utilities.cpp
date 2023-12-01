@@ -32,14 +32,24 @@ float Vec3::lengthSquared() const {
     return x * x + y * y + z * z;
 }
 
+float Vec3::length() const{
+    return std::sqrt(this->lengthSquared());
+}
+
 void Vec3::normalize() {
-    float norm = sqrtf(this->lengthSquared());
-    x = x/norm;
-    y = y/norm;
-    z = z/norm;
+    float norm = this->length();
+    if(norm > 0){
+        x = x/norm;
+        y = y/norm;
+        z = z/norm;
+    }
 }
 
 Vec3 Vec3::cross(const Vec3& other) const {
     return Vec3( y*other.z-other.y*z, -(x*other.z-other.x*z), x*other.y-other.x*y);
 }
 
+std::ostream &operator<<(std::ostream &out, const Vec3 &p) {
+    out<<p.x<<" "<<p.y<<" "<<p.z;
+    return out;
+}

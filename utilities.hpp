@@ -1,6 +1,7 @@
 #ifndef UTILITIES_HPP
 #define UTILITIES_HPP
 #include <cmath>
+#include <iostream>
 
 class Vec3 {
 public:
@@ -15,13 +16,23 @@ public:
     Vec3 operator-(const Vec3& other) const;
     Vec3 operator-() const;
     Vec3 operator*(float scalar) const;
-    float dot(const Vec3& other) const;
+
 
     // Utility Function
     float lengthSquared() const;
-    void normalize();
+    float length() const;
+
     Vec3 cross(const Vec3&) const;
+    float dot(const Vec3& other) const;
+
+
+    void normalize();
+
 };
 
+using Point3 = Vec3; // For clarity
+std::ostream& operator<< (std::ostream& stream, const Vec3& p);
 
+
+const float EPS = 1e-7;
 #endif // UTILITIES_HPP
