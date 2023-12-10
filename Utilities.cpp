@@ -49,6 +49,12 @@ Vec3 Vec3::cross(const Vec3& other) const {
     return Vec3( y*other.z-other.y*z, -(x*other.z-other.x*z), x*other.y-other.x*y);
 }
 
+Vec3::Vec3(glm::vec3 v) {
+    x = v.x;
+    y = v.y;
+    z = v.z;
+}
+
 std::ostream &operator<<(std::ostream &out, const Vec3 &p) {
     out<<p.x<<" "<<p.y<<" "<<p.z;
     return out;

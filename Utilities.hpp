@@ -2,6 +2,7 @@
 #define UTILITIES_HPP
 #include <cmath>
 #include <iostream>
+#include <glm/glm.hpp>
 
 class Vec3 {
 public:
@@ -9,6 +10,7 @@ public:
 
     // Constructors
     Vec3(float x, float y, float z);
+    Vec3(glm::vec3);
     Vec3();
 
     // Operator Overloading

@@ -4,24 +4,36 @@
 
 #include "engine.h"
 #include "ecs.h"
+#include "Camera.hpp"
+#include "Triangle.h"
 
 int main()
 {
-    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 5 ), 3.14f, 0.0f, 90.0f));
+    std::cerr<<"TEST1\n";
+
+
+    std::cerr<<"TEST\n";
+
+    auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
+    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 0 ), 3.14f, 0.0f, 90.0f));
 
     GLuint VertexArrayID;
     glGenVertexArrays(1, &VertexArrayID);
     glBindVertexArray(VertexArrayID);
 
+
     Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
-    Vertex v2(glm::vec3(-1.0f,-1.0f, 1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(-1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
+    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
 
     Mesh mesh(vertices);
+
+    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+    engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;

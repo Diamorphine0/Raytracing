@@ -3,6 +3,7 @@
 #define ENGINE_H
 
 #include "engineCamera.h"
+#include "Camera.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -10,7 +11,7 @@
 
 class Engine{
 public:
-    Engine(float width, float height, engineCamera camera): camera(camera){
+    Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
         glewExperimental = true;
 
@@ -54,7 +55,7 @@ public:
         ImGui_ImplOpenGL3_Init();
 
         // Change the shader path names
-        programID = LoadShaders( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
+        programID = LoadShaders( "../vertexshader.shader", "../fragmentshader.shader" );
 
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -100,8 +101,12 @@ public:
             static int counter = 0;
             ImGui::Text("Engine");
 
-            if(ImGui::Button("Raytrace"))
+            if(ImGui::Button("Raytrace")){
                 counter++;
+                rayTracingCamera = new Camera(height, width, camera.position);
+                rayTracingCamera->render(*world, "imageRender.ppm");
+
+            }
 
             ImGui::ColorEdit3("Set Object Color", (float*) &clear_color);
             // we should now be able to change the color of the vertex.
@@ -119,6 +124,9 @@ public:
     GLFWwindow* window;
     GLuint programID;
     engineCamera camera;
+    int width, height;
+    Camera *rayTracingCamera;
+    Hittable *world;
 };
 
 #endif // ENGINE_H
