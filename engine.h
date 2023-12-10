@@ -8,10 +8,9 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-
-class engine{
+class Engine{
 public:
-    engine(float width, float height, engineCamera camera): camera(camera){
+    Engine(float width, float height, engineCamera camera): camera(camera){
 
         glewExperimental = true;
 
@@ -55,7 +54,7 @@ public:
         ImGui_ImplOpenGL3_Init();
 
         // Change the shader path names
-        programID = LoadShaders( "../vertexshader.shader", "../fragmentshader.shader" );
+        programID = LoadShaders( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
 
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -108,7 +107,7 @@ public:
             // we should now be able to change the color of the vertex.
 
             ImGui::Text("Raytracings done = %d", counter);
-            //  ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+            //   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         };
 
         // Rendering
@@ -121,6 +120,5 @@ public:
     GLuint programID;
     engineCamera camera;
 };
-
 
 #endif // ENGINE_H
