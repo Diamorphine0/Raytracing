@@ -25,6 +25,12 @@ set(PROJECT_SOURCES
         Camera.cpp
         ImageRenderer.cpp
         ImageRenderer.h
+        ecs.h
+        engine.h
+        engineCamera.h
+        engine.cpp
+        shader.h
+        imconfig.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
