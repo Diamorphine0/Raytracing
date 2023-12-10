@@ -10,11 +10,11 @@ using namespace glm;
 #include <shader.h>
 #include <random>
 
-// Tasks:
-// Make the movement around the screen more dynamic. (Job for someone)
-// Model Loading (Load .obj files)
-// Rotation of Objects using Quaternions.
-// Take care of conan package maanger.
+#include <GLFW/glfw3native.h>
+
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
 
 glm::mat4 construct_mvp(glm::vec3 &position, glm::vec3 &direction, glm::vec3 &right, float initialFoV){
 
@@ -74,6 +74,17 @@ int main()
     glEnable(GL_DEPTH_TEST);
     // Accept fragment if it closer to the camera than the former one
     glDepthFunc(GL_LESS);
+
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+    ImGui_ImplOpenGL3_Init();
 
     // Change the shader path names
     GLuint programID = LoadShaders( "vertexshader.shader", "fragmentshader.shader" );
@@ -165,6 +176,8 @@ int main()
         0.982f,  0.099f,  0.879f
     };
 
+    // Implement an IBO which would simulatenously store both atributes.
+
     // This will identify our vertex buffer
     GLuint vertexbuffer;
     // Generate 1 buffer, put the resulting identifier in vertexbuffer
@@ -194,10 +207,11 @@ int main()
 
     double xpos_last, ypos_last, xpos, ypos;
 
-    float speed = 0.001f; // 0.01 units / second
+    float speed = 0.01f; // 0.01 units / second
     float mouseSpeed = 0.0005f;
 
     do{
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glUseProgram(programID);
@@ -213,8 +227,8 @@ int main()
         // Reset mouse position for next frame
 //        glfwSetCursorPos(window, (double) width/2, (double) height/2);
 
-        horizontalAngle += mouseSpeed * deltaTime * float(xpos_last - xpos );
-        verticalAngle   += mouseSpeed * deltaTime * float(ypos_last - ypos );
+//        horizontalAngle += mouseSpeed * deltaTime * float(xpos_last - xpos );
+//        verticalAngle   += mouseSpeed * deltaTime * float(ypos_last - ypos );
 
         glm::vec3 direction(
             cos(verticalAngle) * sin(horizontalAngle),
@@ -237,6 +251,7 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
             position -= direction * deltaTime * speed;
         }
+
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
             position += right * deltaTime * speed;
@@ -278,10 +293,43 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 12*3); // Starting from vertex 0; 3 vertices total -> 1 triangle
         glDisableVertexAttribArray(0);
 
-        glfwSwapBuffers(window);
         glfwPollEvents();
+
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        // set clear color
+        ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+        {
+            static float f = 0.0f;
+            static int counter = 0;
+            ImGui::Text("Engine for Linux Haters");
+
+            if(ImGui::Button("Raytrace!"))
+                counter++;
+
+            ImGui::ColorEdit3("Set Object Color", (float*) &clear_color);
+            // we should now be able to change the color of the vertex.
+
+            ImGui::Text("Raytracings done = %d", counter);
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+        };
+
+        // Rendering
+        // (Your code clears your framebuffer, renders your other stuff etc.)
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        // (Your code calls glfwSwapBuffers() etc.)
+        glfwSwapBuffers(window);
 
     }
     while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
            glfwWindowShouldClose(window) == 0 );
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }
