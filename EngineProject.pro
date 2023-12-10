@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    engine.cpp \
     main.cpp \
     imgui/imgui.cpp \
     imgui/imgui_demo.cpp \
@@ -19,6 +20,9 @@ SOURCES += \
     imgui/backends/imgui_impl_opengl3.cpp
 
 HEADERS += \
+    ecs.h \
+    engine.h \
+    engineCamera.h \
     shader.h \
     imgui/imgui.h \
     imgui/imconfig.h \
