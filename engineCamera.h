@@ -10,7 +10,7 @@
 #include <glm/gtx/transform.hpp>
 using namespace glm;
 
-#include <shader.h>
+#include "shader.h"
 #include <random>
 
 #include <GLFW/glfw3native.h>
