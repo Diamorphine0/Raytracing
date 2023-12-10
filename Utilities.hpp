@@ -17,7 +17,6 @@ public:
     Vec3 operator-() const;
     Vec3 operator*(float scalar) const;
 
-
     // Utility Function
     float lengthSquared() const;
     float length() const;
@@ -33,6 +32,7 @@ public:
 using Point3 = Vec3; // For clarity
 std::ostream& operator<< (std::ostream& stream, const Vec3& p);
 
+using Color = Vec3;
 
 const float EPS = 1e-7;
 #endif // UTILITIES_HPP

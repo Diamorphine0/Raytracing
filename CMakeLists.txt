@@ -14,20 +14,23 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
 set(PROJECT_SOURCES
         main.cpp
-        hittable.hpp
-        utilities.hpp
-        utilities.cpp
-        ray.cpp
-        ray.hpp
-        triangle.h
-        triangle.cpp
+        Hittable.hpp
+        Utilities.hpp
+        Utilities.cpp
+        Ray.cpp
+        Ray.hpp
+        Triangle.h
+        Triangle.cpp
+        Camera.hpp
+        Camera.cpp
+        ImageRenderer.cpp
+        ImageRenderer.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        camera.hpp camera.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

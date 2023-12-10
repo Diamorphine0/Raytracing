@@ -1,6 +1,6 @@
 #ifndef RAY_HPP
 #define RAY_HPP
-#include "utilities.hpp"
+#include "Utilities.hpp"
 
 class Ray
 {

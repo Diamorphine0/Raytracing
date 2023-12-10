@@ -1,11 +1,9 @@
-#include <QApplication>
-#include <QImage>
-#include <QLabel>
 #include <vector>
 #include <string>
-#include "hittable.hpp"
-#include "triangle.h"
-#include "ray.hpp"
+#include "Hittable.hpp"
+#include "Triangle.h"
+#include "Ray.hpp"
+#include "Camera.hpp"
 
 // Define constants for image size
 const int WIDTH = 800;
@@ -23,81 +21,17 @@ bool raySphereIntersection(const Vec3& rayOrigin, const Vec3& rayDirection,
     return (discriminant > 0);
 }
 
-
-
-
-
-// Function to render the image
-void renderImage(QImage& image) {
-    Vec3 cameraPosition(0.0f, 0.0f, 5.0f);
-    Vec3 sphereCenter(0.0f, 0.0f, 0.0f);
-    float sphereRadius = 100.0f;
-
-
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            //Generating a ray for each pixel
-            Vec3 rayOrigin(x - WIDTH / 2.0f, HEIGHT / 2.0f - y, 0.0f);
-            Vec3 rayDirection(0.0f, 0.0f, -1.0f); // Looking down the negative z-axis
-            if (raySphereIntersection(rayOrigin, rayDirection, sphereCenter, sphereRadius)) {
-                // Pixel is inside the sphere, color it red
-                image.setPixelColor(x, y, QColor(255, 0, 0));
-            } else {
-                // Pixel is outside the sphere
-                // Draw the sphere (visualize it in blue)
-                if (std::sqrt((x - WIDTH / 2) * (x - WIDTH / 2) + (y - HEIGHT / 2) * (y - HEIGHT / 2)) <= sphereRadius) {
-                    // Inside the circle centered at the center of the image, draw the sphere
-                    image.setPixelColor(x, y, QColor(0, 0, 255));
-                } else {
-                    // Other pixels outside the sphere, color it white
-                    image.setPixelColor(x, y, QColor(0, 0, 0));
-                }
-            }
-        }
-    }
-}
-
-// test function to render triangles
-void renderTriangle(QImage& image) {
-    Point3 p0(10.0, 200.0, -5.0);
-    Point3 p1(200.0, 300.0, -5.0);
-    Point3 p2(10.0, 30.0, -5.0);
-
-
-    Hittable *object = new Triangle(p0, p1, p2);
-
-    for (int y = 0; y < HEIGHT; y++) {
-        for (int x = 0; x < WIDTH; x++) {
-            //Generating a ray for each pixel
-            Vec3 rayOrigin(x - WIDTH / 2.0f, HEIGHT / 2.0f - y, 0.0f);
-            Vec3 rayDirection(0.0f, 0.0f, -1.0f); // Looking down the negative z-axis
-
-            Ray r(rayOrigin, rayDirection);
-            if (object->intersectWithRay(r)) {
-                //std::cerr<<"ok";
-                // Pixel is inside triangle, color it red
-                image.setPixelColor(x, y, QColor(255, 0, 0));
-            } else {
-                // pixel outside
-                image.setPixelColor(x, y, QColor(0, 0, 0));
-            }
-        }
-    }
-}
-
 int main(int argc, char *argv[]) {
-    QApplication a(argc, argv);
+    Point3 p0(0.0, 0.0, -5.0);
+    Point3 p1(200.0, 300.0, -5.0);
+    Point3 p2(100.0, 300.0, -5.0);
 
-    // Create an image with the specified width and height
-    QImage image(WIDTH, HEIGHT, QImage::Format_RGB32);
-    std::cout.precision(6);
-    // Call the render function to generate the image
-    renderTriangle(image);
+    Hittable *world = new Triangle(p0, p1, p2);
 
-    // Display the image in a QLabel
-    QLabel label;
-    label.setPixmap(QPixmap::fromImage(image));
-    label.show();
+    Point3 origin(0, 0, 0);
+    Camera c(HEIGHT, WIDTH, origin);
 
-    return a.exec();
+    c.render(*world, "../image.ppm");
+
+    return 0;
 }

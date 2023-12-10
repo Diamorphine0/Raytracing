@@ -1,4 +1,4 @@
-#include "utilities.hpp"
+#include "Utilities.hpp"
 
 //Defining operators of the class Vec3
 

@@ -1,9 +1,9 @@
 #ifndef RAY_TRACING_TRIANGLE_H
 #define RAY_TRACING_TRIANGLE_H
 
-#include "hittable.hpp"
-#include "ray.hpp"
-#include "utilities.hpp"
+#include "Hittable.hpp"
+#include "Ray.hpp"
+#include "Utilities.hpp"
 
 
 
@@ -17,16 +17,16 @@ public:
      */
     Triangle(const Point3 &a, const Point3 &b, const Point3 &c);
 
-    virtual bool intersectWithRay(const Ray &r);
+    virtual bool intersectWithRay(const Ray &r, float &t) const;
 
 private:
     Point3 p0, p1, p2;
     Point3 normal;
-    float planeEquationCoeff;
+    float planeEquationCoeff{};
 
-    bool checkOnPlane(const Point3 &p);
+    bool checkOnPlane(const Point3 &p) const;
     //assumes point is already on plane
-    bool checkInsideTriangle(const Point3 &p);
+    bool checkInsideTriangle(const Point3 &p) const;
 
     void computeNormal();
     void computePlaneEquation();
