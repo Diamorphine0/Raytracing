@@ -36,27 +36,28 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/release/ -lGLEW
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/debug/ -lGLEW
-else:unix: LIBS += -L$$PWD/../../../opt/local/lib/ -lGLEW
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../opt/local/lib/release/ -lGLEW.2.2.0
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../../../opt/local/lib/debug/ -lGLEW.2.2.0
+else:unix: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lGLEW
 
-INCLUDEPATH += $$PWD/../../../opt/local/include
-DEPENDPATH += $$PWD/../../../opt/local/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/release/ -lglm_shared
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/debug/ -lglm_shared
-else:unix: LIBS += -L$$PWD/../../../opt/local/lib/ -lglm_shared
+else:unix: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lglm_shared
 
-INCLUDEPATH += $$PWD/../../../opt/local/include
-DEPENDPATH += $$PWD/../../../opt/local/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/release/ -lglfw.3.3
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../opt/local/lib/debug/ -lglfw.3.3
-else:unix: LIBS += -L$$PWD/../../../opt/local/lib/ -lglfw.3.3
+else:unix: LIBS += -L$$PWD/../../../../../../opt/local/lib/ -lglfw.3.3
 
-INCLUDEPATH += $$PWD/../../../opt/local/include
-DEPENDPATH += $$PWD/../../../opt/local/include
+INCLUDEPATH += $$PWD/../../../../../../opt/local/include
+DEPENDPATH += $$PWD/../../../../../../opt/local/include
 
 DISTFILES += \
     fragmentshader.shader \
     vertexshader.shader
+
