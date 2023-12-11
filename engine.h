@@ -108,6 +108,10 @@ public:
 
             }
 
+            float obj_rot_angle = 0;
+            ImGui::SliderFloat("Rotation agnle along (0,0,1)", &obj_rot_angle, -3.14, 3.14);
+
+
             ImGui::ColorEdit3("Set Object Color", (float*) &clear_color);
             // we should now be able to change the color of the vertex.
 
