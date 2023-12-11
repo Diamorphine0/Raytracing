@@ -47,6 +47,9 @@ public:
         glm::mat4 Model = glm::mat4(1.0f);
 
         return Projection * View * Model;
+        // Will implement quaternion-based object rotations for more flexibility in camera orientation
+        // Use rotationQuat to represent the rotation in quaternion form
+        // Update the rotationQuat during rotation operations for smoother object manipulation
     }
 
     glm::vec3 position;
