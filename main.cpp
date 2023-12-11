@@ -22,9 +22,9 @@ int main()
     glBindVertexArray(VertexArrayID);
 
 
-    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
+    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
     Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
     Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
