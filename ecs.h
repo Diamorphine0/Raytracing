@@ -2,6 +2,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 #include <vector>
 
@@ -27,6 +28,25 @@ public:
     }
     void Draw(){
         glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // Starting from vertex 0; 3 vertices total -> 1 triangle
+    }
+    //rotates the vertices, stores in same object
+    void rotate_mesh(glm::vec3 rot_axis, float angle){
+        rot_axis = glm::normalize(rot_axis);
+        glm::quat rot_quat(cos(angle/2), rot_axis.x*sin(angle/2), rot_axis.y*sin(angle/2), rot_axis.z*sin(angle/2));
+
+        //store position of rotated vertex in place, and keeps same color
+        for (int i=0; i<vertices.size(); i++){
+            Vertex v = vertices[i];
+            glm::quat position_quat(0, v.Coordinates.x, v.Coordinates.y, v.Coordinates.z);
+            glm::quat rot_pos_quat = rot_quat*position_quat*glm::conjugate(rot_quat);
+
+
+            glm::vec3 rot_coord(rot_pos_quat.x, rot_pos_quat.y,rot_pos_quat.z);
+            Vertex rot_v(rot_coord, v.Color);
+
+            vertices[i] = rot_v;
+        }
+        setupMesh();        //Given list of rotated vertices, reset mesh to be rotated mesh
     }
 private:
     GLuint VAO, VBO;
@@ -63,6 +83,7 @@ private:
 
         //source: https://learnopengl.com/Model-Loading/Mesh
     }
+
 };
 
 /*
@@ -73,4 +94,4 @@ public:
 */
 
 #endif // ECS_H
-#endif // ECS_H
+

@@ -31,6 +31,7 @@ int main()
     std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
 
     Mesh mesh(vertices);
+    mesh.rotate_mesh(glm::vec3(0, 0, 1.0f), 3.14/2);
 
     auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
     engine.world = world;
