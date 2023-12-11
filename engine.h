@@ -55,7 +55,7 @@ public:
         ImGui_ImplOpenGL3_Init();
 
         // Change the shader path names
-        programID = LoadShaders( "../vertexshader.shader", "../fragmentshader.shader" );
+        programID = LoadShaders( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
 
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -112,7 +112,8 @@ public:
             // we should now be able to change the color of the vertex.
 
             ImGui::Text("Raytracings done = %d", counter);
-            //   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+            ImGuiIO& io = ImGui::GetIO();
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
         };
 
         // Rendering

@@ -20,7 +20,6 @@ void Camera::render(const Hittable& world, const std::string &imagePath) {
 
 void Camera::initialize() {
 
-
     // Determine viewport dimensions.
     auto focal_length = 0.1;
     auto viewport_height = 2.0;
@@ -43,6 +42,7 @@ Color Camera::ray_color(const Ray& r, const Hittable& world) const {
     float t = 0;
     if (world.intersectWithRay(r, t)) {
         std::cerr<<"Hit at "<<r.get_direction()<<"\n";
+        // we should instead be getting the color from the engine.
         return  Color (255,255,255);
     }
     else{
