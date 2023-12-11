@@ -73,4 +73,3 @@ public:
 */
 
 #endif // ECS_H
-#endif // ECS_H
