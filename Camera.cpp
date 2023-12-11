@@ -21,7 +21,7 @@ void Camera::render(const Hittable& world, const std::string &imagePath) {
 void Camera::initialize() {
 
     // Determine viewport dimensions.
-    auto focal_length = 0.1;
+    auto focal_length = 1;
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * (static_cast<double>(imageRenderer.get_width())/imageRenderer.get_height());
 
