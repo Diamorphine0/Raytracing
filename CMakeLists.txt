@@ -11,19 +11,51 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(GLEW 2.0 REQUIRED)
+find_package(glfw3 REQUIRED)
+
 
 set(PROJECT_SOURCES
         main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        Hittable.hpp
+        Utilities.hpp
+        Utilities.cpp
+        Ray.cpp
+        Ray.hpp
+        Triangle.h
+        Triangle.cpp
+        Camera.hpp
+        Camera.cpp
+        ImageRenderer.cpp
+        ImageRenderer.h
+        ecs.h
+        engine.h
+        engineCamera.h
+        engine.cpp
+        shader.h
+        imconfig.h
+
+        imgui/imgui.cpp
+        imgui/imgui_demo.cpp
+        imgui/imgui_draw.cpp
+        imgui/imgui_tables.cpp
+        imgui/imgui_widgets.cpp
+        imgui/backends/imgui_impl_glfw.cpp
+        imgui/backends/imgui_impl_opengl3.cpp
+        imgui/imgui.h
+        imgui/imconfig.h
+        imgui/imgui_internal.h
+        imgui/imstb_rectpack.h
+        imgui/imstb_textedit.h
+        imgui/imstb_truetype.h
+        imgui/backends/imgui_impl_glfw.h
+        imgui/backends/imgui_impl_opengl3.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        main.hpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -43,7 +75,8 @@ else()
     endif()
 endif()
 
-target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw)
+
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
