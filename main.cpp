@@ -41,7 +41,7 @@ int main()
     tr1->color = Color (255, 0, 0);
 
     auto tr2 = new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates);
-    tr2->color = Color (0, 255, 0);
+    tr2->color = Color (255, 0, 0);
     world->add_object(tr1);
     world->add_object(tr2);
 
