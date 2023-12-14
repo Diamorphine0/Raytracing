@@ -49,6 +49,8 @@ set(PROJECT_SOURCES
         imgui/imstb_truetype.h
         imgui/backends/imgui_impl_glfw.h
         imgui/backends/imgui_impl_opengl3.h
+        Hittable_List.cpp
+        Hittable_List.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
