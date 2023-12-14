@@ -1,5 +1,0 @@
-/build
-CMakeLists.txt.user*
-/cmake-build-debug-coverage/
-/cmake-build-debug/
-/imgui/
