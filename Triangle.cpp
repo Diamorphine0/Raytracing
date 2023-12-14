@@ -65,8 +65,17 @@ bool Triangle::intersectWithRay(const Ray &r, float &t) const{
     return false;
 }
 
+float Triangle::getFacingRatio(const Ray &r) const {
+    Vec3 incident = r.get_direction();
+    incident.normalize();
 
+    Vec3 unitNormal = normal;
+    unitNormal.normalize();
 
+    float facingRatio = incident.dot(unitNormal);
+
+    return facingRatio;
+}
 
 
 

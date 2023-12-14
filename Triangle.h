@@ -18,6 +18,7 @@ public:
     Triangle(const Point3 &a, const Point3 &b, const Point3 &c);
 
     virtual bool intersectWithRay(const Ray &r, float &t) const;
+    virtual float getFacingRatio(const Ray &r) const;
 
 private:
     Point3 p0, p1, p2;
