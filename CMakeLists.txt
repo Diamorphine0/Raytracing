@@ -10,6 +10,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 link_directories("C:/Qt/6.6.0/mingw_64/lib")
+link_directories("C:/Qt/6.2.4/mingw_64/lib")
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 
