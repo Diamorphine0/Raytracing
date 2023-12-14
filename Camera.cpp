@@ -21,7 +21,7 @@ void Camera::render(Hittable *world, const std::string &imagePath) {
 void Camera::initialize() {
 
     // Determine viewport dimensions.
-    auto focal_length = 0.1;
+    auto focal_length = 1;
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * (static_cast<double>(imageRenderer.get_width())/imageRenderer.get_height());
 
@@ -50,9 +50,6 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
         float colorArg1 = world_ans.second->color.x *facingRatio;
         float colorArg2 = world_ans.second->color.y *facingRatio;
         float colorArg3 = world_ans.second->color.z *facingRatio;
-
-        std::cerr << " Facing Ratio: " << facingRatio << "\n";
-        std::cerr << "Color Args: " << colorArg1 << ", " << colorArg2 << ", " << colorArg3 << "\n";
 
         Color pixelColor(static_cast<int> (colorArg1), static_cast<int> (colorArg2), static_cast<int> (colorArg3));
         // we should instead be getting the color from the engine.
