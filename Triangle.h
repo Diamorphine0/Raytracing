@@ -18,6 +18,8 @@ public:
     Triangle(const Point3 &a, const Point3 &b, const Point3 &c);
 
     virtual bool intersectWithRay(const Ray &r, float &t) const;
+    //This function is the declaration of the Möller–Trumbore algorithm
+    virtual bool intersectWithRayMT(const Ray &r, Vec3& intersectionPoint, Vec3& barycentricCoords) const;
 
 private:
     Point3 p0, p1, p2;

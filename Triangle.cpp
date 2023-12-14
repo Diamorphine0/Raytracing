@@ -65,6 +65,46 @@ bool Triangle::intersectWithRay(const Ray &r, float &t) const{
     return false;
 }
 
+bool Triangle::intersectWithRayMT(const Ray &r, Vec3& intersectionPoint, Vec3& barycentricCoords) const{
+    //Epislon here has the same definition as in math in general, it goes to 0
+    const float EPSILON = 0.000001f;
+
+    //Defining the two vectors 'e1' and 'e2' representing the edges of the triangle
+    Vec3 e1 = p1 - p0;
+    Vec3 e2 = p2 - p0;
+    Vec3 h = e2.cross(r.get_direction());
+
+    //Calculating the determinant 'det'
+    float a = e1.dot(h);
+    if (a > -EPSILON && a < EPSILON)
+        // In this case there is no intersection, ray is parallel to the triangle
+        return false;
+    //Inverse determinante
+    float f = 1.0f / a;
+
+    Vec3 s = r.get_origin() - p0;
+    float u = f * s.dot(h);
+    if (u < 0.0f || u > 1.0f)
+        return false;  // No intersection
+
+    Vec3 q = e1.cross(s);
+    float v = f * q.dot(r.get_direction());
+    if (v < 0.0f || u + v > 1.0f)
+        return false;  // No intersection
+
+    float t = f * e2.dot(e2);
+
+    if (t > EPSILON) {
+        //Intersection is found, compute intersection point and barycentricCoords
+        //Additionaly if you are reading this part and dont know what barycentricCoords are read online
+        intersectionPoint = r.get_origin() + r.get_direction() * t;
+        barycentricCoords = {1.0f - u - v, u, v};
+        return true;
+    }
+    //Again there are no intersections here
+    return false;
+}
+
 
 
 
