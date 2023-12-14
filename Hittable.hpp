@@ -18,6 +18,8 @@ public:
      */
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
 
+    //JUST TO DEBUG. TO REMOVE.!
+    Color color;
 protected:
     Hittable() {};
 };

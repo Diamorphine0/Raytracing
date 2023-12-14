@@ -36,8 +36,14 @@ int main()
 
 
     auto world = new Hittable_List();
-    world->add_object(new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates));
-    world->add_object(new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates));
+
+    auto tr1 = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+    tr1->color = Color (255, 0, 0);
+
+    auto tr2 = new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates);
+    tr2->color = Color (0, 255, 0);
+    world->add_object(tr1);
+    world->add_object(tr2);
 
     engine.world = world;
 

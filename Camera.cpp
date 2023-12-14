@@ -43,10 +43,10 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
     auto world_ans = world->intersectWithRay(r, t);
     if (world_ans.first) {
         // we should instead be getting the color from the engine.
-        return  Color (255,255,255);
+        return  world_ans.second->color;
     }
     else{
-        return Color(0, 255, 0);
+        return Color(0, 0, 0);
     }
 
 }
