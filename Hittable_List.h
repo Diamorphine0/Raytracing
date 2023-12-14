@@ -20,6 +20,7 @@ public:
     ~Hittable_List();
 
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const;
+    virtual float getFacingRatio(const Ray &r) const {return (float) 0;}
 
     void add_object(Hittable* obj);
     void remove_object(Hittable* obj);
