@@ -43,7 +43,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
 
     auto world_ans = world->intersectWithRay(r, t);
     if (world_ans.first) {
-        std::cerr<<"Hit at "<<r.get_direction();
+//        std::cerr<<"Hit at "<<r.get_direction();
         // we should instead be getting the color from the engine.
         //For now, just going to compute simple facing ratio and use to shade (Lambertian Reflectance)
         float facingRatio = std::abs(world_ans.second->getFacingRatio(r));
