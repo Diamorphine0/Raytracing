@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::render(const Hittable& world, const std::string &imagePath) {
+void Camera::render(Hittable *world, const std::string &imagePath) {
     initialize();
     imageRenderer.reset_pixels();
 
@@ -38,30 +38,29 @@ void Camera::initialize() {
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5;
 }
 
-Color Camera::ray_color(const Ray& r, const Hittable& world) const {
+Color Camera::ray_color(const Ray& r, Hittable *world) const {
     float t = 0;
-    if (world.intersectWithRay(r, t)) {
+
+    auto world_ans = world->intersectWithRay(r, t);
+    if (world_ans.first) {
         std::cerr<<"Hit at "<<r.get_direction();
         // we should instead be getting the color from the engine.
         //For now, just going to compute simple facing ratio and use to shade (Lambertian Reflectance)
-        //Also adapt for list of hittables (POINTER NOT OBJECT)
-        float facingRatio = std::abs(world.getFacingRatio(r));
-        float colorArg1 = 255*facingRatio;
-        float colorArg2 = 255*facingRatio;
-        float colorArg3 = 255*facingRatio;
+        float facingRatio = std::abs(world_ans.second->getFacingRatio(r));
+        float colorArg1 = world_ans.second->color.x *facingRatio;
+        float colorArg2 = world_ans.second->color.y *facingRatio;
+        float colorArg3 = world_ans.second->color.z *facingRatio;
 
         std::cerr << " Facing Ratio: " << facingRatio << "\n";
         std::cerr << "Color Args: " << colorArg1 << ", " << colorArg2 << ", " << colorArg3 << "\n";
 
         Color pixelColor(static_cast<int> (colorArg1), static_cast<int> (colorArg2), static_cast<int> (colorArg3));
+        // we should instead be getting the color from the engine.
+        return  pixelColor;
 
-        return pixelColor;
-        //return  Color (255,0,0);
     }
     else{
-
-        return Color(0, 255, 0);
-
+        return Color(0, 0, 0);
     }
 
 }

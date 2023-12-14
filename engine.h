@@ -104,12 +104,12 @@ public:
             if(ImGui::Button("Raytrace")){
                 counter++;
                 rayTracingCamera = new Camera(height, width, camera.position);
-                rayTracingCamera->render(*world, "imageRender.ppm");
+                rayTracingCamera->render(world, "imageRender.ppm");
 
             }
 
             float obj_rot_angle = 0;
-            ImGui::SliderFloat("Rotation agnle along (0,0,1)", &obj_rot_angle, -3.14, 3.14);
+            ImGui::SliderFloat("Rotation angle along (0,0,1)", &obj_rot_angle, -3.14, 3.14);
 
 
             ImGui::ColorEdit3("Set Object Color", (float*) &clear_color);
@@ -131,7 +131,7 @@ public:
     engineCamera camera;
     int width, height;
     Camera *rayTracingCamera;
-    Hittable *world;
+    Hittable* world;
 };
 
 #endif // ENGINE_H

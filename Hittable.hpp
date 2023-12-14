@@ -13,10 +13,16 @@ public:
      *
      * @param r The ray with which to intersect.
      * @param t Will be set to distance if function returns true.
+     *
+     * @returns pair of true/false and the pointer to the object which it hit (if it did, otherwise null)
      */
-    virtual bool intersectWithRay(const Ray &r, float &t) const = 0;
+
     virtual float getFacingRatio(const Ray &r) const {return (float) 0;}
 
+    virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
+
+    //JUST TO DEBUG. TO REMOVE.!
+    Color color;
 protected:
     Hittable() {};
 };

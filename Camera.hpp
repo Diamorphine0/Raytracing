@@ -10,7 +10,7 @@ class Camera {
 public:
     Camera(int height, int width, const Point3 &position) : imageRenderer(height, width), center(position) {  }
 
-    void render(const Hittable& world, const std::string &imagePath);
+    void render(Hittable* world, const std::string &imagePath);
 private:
     ImageRenderer imageRenderer;
 
@@ -22,7 +22,7 @@ private:
 
     void initialize();
 
-    Color ray_color(const Ray& r, const Hittable& world) const;
+    Color ray_color(const Ray& r, Hittable* world) const;
 };
 
 #endif // CAMERA_HPP

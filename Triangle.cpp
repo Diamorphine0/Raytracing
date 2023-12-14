@@ -43,26 +43,26 @@ bool Triangle::checkOnPlane(const Point3 &p) const{
     return false;
 }
 
-bool Triangle::intersectWithRay(const Ray &r, float &t) const{
+std::pair<bool, Hittable*> Triangle::intersectWithRay(const Ray &r, float &t) const{
     //Check if ray is parallel to plane of triangle
     Point3 r_origin = r.get_origin(), r_direction = r.get_direction();
 
     float dir_dot_normal = r_direction.dot(normal);
     if (std::abs(dir_dot_normal) <= EPS)
-        return false;
+        return {false, NULL};
 
     //Compute intersection point with triangle
     // Phit * normal + coef = 0; Phit = origin + t * direction => t = -( coef + origin * normal) / (direction * normal)
 
     t = - (planeEquationCoeff + r_origin.dot(normal)) / dir_dot_normal;
     if(t < 0)
-        return false;
+        return {false, NULL};
     //std::cerr<<t<<"\n";
     Point3 pHit = r_origin + r_direction * t;
     //std::cerr<<pHit<<std::endl;
     if(checkInsideTriangle(pHit))
-        return true;
-    return false;
+        return {true, (Hittable*) this};
+    return {false, NULL};
 }
 
 float Triangle::getFacingRatio(const Ray &r) const {
