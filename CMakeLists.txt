@@ -14,7 +14,6 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
 
-
 set(PROJECT_SOURCES
         main.cpp
         Hittable.hpp
