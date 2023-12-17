@@ -105,7 +105,7 @@ public:
                 // sets some bool to true, which affects the execution of our raytracing loop
             };
 
-            // raytrace_parameter also affects the execution of our raytracing loop
+            // allows user to set raytrace_parameter, which affects the execution of the raytracing loop
             float raytrace_parameter = 0;
             ImGui::SliderFloat("Raytrace Slider", &raytrace_parameter, -10, 10);
 
