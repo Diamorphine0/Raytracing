@@ -6,6 +6,7 @@
 #include "ecs.h"
 #include "Camera.hpp"
 #include "Triangle.h"
+#include "objloader.hpp"
 
 int main()
 {
