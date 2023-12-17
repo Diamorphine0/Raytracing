@@ -112,7 +112,7 @@ public:
             if(ImGui::Button("Raytrace")){
                 counter++;
                 rayTracingCamera = new Camera(height, width, camera.position);
-                rayTracingCamera->render(*world, "imageRender.ppm");
+                rayTracingCamera->render(*world);
 
             }
 
