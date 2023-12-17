@@ -56,7 +56,7 @@ void ImageRenderer::render_image() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // Create a windowed mode window and its OpenGL context
+    // Create a window
     GLFWwindow* window = glfwCreateWindow(image_width, image_height, "Rendered Image", NULL, NULL);
     if (!window) {
         fprintf(stderr, "Failed to open GLFW window\n");
@@ -67,7 +67,7 @@ void ImageRenderer::render_image() {
     // Make the window's context current
     glfwMakeContextCurrent(window);
 
-    // Ensure we can capture the escape key being pressed below
+    // Ensure we can capture the escape key being pressed
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 
     // Set the viewport size
