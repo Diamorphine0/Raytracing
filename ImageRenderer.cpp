@@ -73,40 +73,13 @@ void ImageRenderer::render_image() {
     // Set the viewport size
     glViewport(0, 0, image_width, image_height);
 
-    while (!glfwWindowShouldClose(window)) {
+    // Create texture object from our 2D pixel_colors array
+    // to be added
 
-        // Loop through each pixel and set its color
-        // This is not the way to go, we should instead create a texture object first from our pixel_colors vector, and then display this texture object on the window
+    // Display the texture object on the window
+    // to be added
 
-        //replace from...
-
-        // Clear the framebuffer
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        for (int i = 0; i < image_height; ++i) {
-            for (int j = 0; j < image_width; ++j) {
-                glBegin(GL_POINTS);
-
-                // Set the color of the pixel
-                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-                // Draw the pixel at normalized coordinates
-                glVertex2f(-1.0f + 2.0f * j / image_width, -1.0f + 2.0f * i / image_height);
-
-                glEnd();
-            }
-        }
-
-        // Swap buffers and poll events
-        glfwSwapBuffers(window);
-        glfwPollEvents();
-
-        //replace until...
-
-        // Check for window close events
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(window))
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-}
-
-
+    // Check for window close events
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(window))
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    };
