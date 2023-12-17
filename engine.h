@@ -55,7 +55,7 @@ public:
         ImGui_ImplOpenGL3_Init();
 
         // Change the shader path names
-        programID = LoadShaders( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
+        programID = LoadShaders( "/Users/david/Desktop/polytechnique/01. semester 3/CSE201/project/Raytracing/vertexshader.shader", "/Users/david/Desktop/polytechnique/01. semester 3/CSE201/project/Raytracing/fragmentshader.shader" );
 
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
@@ -100,6 +100,14 @@ public:
         {
             static int counter = 0;
             ImGui::Text("Engine");
+
+            if(ImGui::Button("Raytrace Option")){
+                // sets some bool to true, which affects the execution of our raytracing loop
+            };
+
+            // raytrace_parameter also affects the execution of our raytracing loop
+            float raytrace_parameter = 0;
+            ImGui::SliderFloat("Raytrace Slider", &raytrace_parameter, -10, 10);
 
             if(ImGui::Button("Raytrace")){
                 counter++;
