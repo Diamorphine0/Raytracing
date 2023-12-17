@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::render(const Hittable& world, const std::string &imagePath) {
+void Camera::render(const Hittable& world) {
     initialize();
     imageRenderer.reset_pixels();
 
@@ -15,7 +15,7 @@ void Camera::render(const Hittable& world, const std::string &imagePath) {
             imageRenderer.set_pixel(j, i, pixel_color);
         }
     }
-    imageRenderer.render_image(imagePath);
+    imageRenderer.render_image();
 }
 
 void Camera::initialize() {
