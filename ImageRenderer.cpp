@@ -42,22 +42,13 @@ bool ImageRenderer::set_all_pixels(const std::vector<std::vector<Color>> &colors
     return true;
 }
 
-void ImageRenderer::render_image(const std::string &file_image) {
-    std::ofstream  outFile(file_image);
+void ImageRenderer::render_image() {
 
-    if(outFile.is_open()){
-        std::cerr<<"Ok?\n";
-    }
-    outFile<<"P3\n";
-    outFile<<image_width<<" "<<image_height<<" "<<255<<"\n";
     for(int i = 0; i < image_height; i++){
         for(int j = 0; j < image_width; j++){
-            outFile<<pixel_colors[i][j]<<"\n";
-
         }
     }
-    std::cerr<<"Done printing!\n"<<image_height<<" "<<image_width<<"\n"<<pixel_colors[0][0]<<"\n";
-    outFile.flush();
+
 }
 
 
