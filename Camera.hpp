@@ -10,7 +10,7 @@ class Camera {
 public:
     Camera(int height, int width, const Point3 &position) : imageRenderer(height, width), center(position) {  }
 
-    void render(const Hittable& world, const std::string &imagePath);
+    void render(const Hittable& world);
 private:
     ImageRenderer imageRenderer;
 
