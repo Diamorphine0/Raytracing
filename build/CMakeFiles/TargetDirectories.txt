@@ -1,0 +1,8 @@
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/Ray-tracing.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/edit_cache.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/rebuild_cache.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/list_install_components.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/install.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/install/local.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/install/strip.dir
+/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/Ray-tracing_autogen.dir

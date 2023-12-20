@@ -1,0 +1,324 @@
+{
+	"BUILD_DIR" : "/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen",
+	"CMAKE_BINARY_DIR" : "/Users/jowe/Documents/GitHub/Raytracing/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/Users/jowe/Documents/GitHub/Raytracing/build",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/Users/jowe/Documents/GitHub/Raytracing",
+	"CMAKE_EXECUTABLE" : "/opt/local/bin/cmake",
+	"CMAKE_LIST_FILES" : 
+	[
+		"/Users/jowe/Documents/GitHub/Raytracing/CMakeLists.txt",
+		"/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/3.24.4/CMakeSystem.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/Darwin-Initialize.cmake",
+		"/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/3.24.4/CMakeCXXCompiler.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeGenericSystem.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeInitializeConfigs.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/Darwin.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/UnixPaths.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeCXXInformation.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Compiler/Clang.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Compiler/GNU.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/Apple-Clang-CXX.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Platform/Apple-Clang.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeCommonLanguageInclude.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5/Qt5ConfigVersion.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5/Qt5Config.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5/Qt5ConfigVersion.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5/Qt5Config.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5/Qt5ModuleLocation.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Widgets/Qt5WidgetsConfigVersion.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Widgets/Qt5WidgetsConfig.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5GuiConfigVersion.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5GuiConfig.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Core/Qt5CoreConfigVersion.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Core/Qt5CoreConfig.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Core/Qt5CoreConfigExtrasMkspecDir.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Core/Qt5CoreMacros.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeParseArguments.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QCocoaIntegrationPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QGifPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QICNSPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QICOPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QJpegPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QMacHeifPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QMacJp2Plugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QMinimalIntegrationPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QOffscreenIntegrationPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QPdfPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QSvgIconPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QSvgPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QTgaPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QTiffPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QTuioTouchPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QVirtualKeyboardPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QWbmpPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QWebGLIntegrationPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QWebpPlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5Gui_QXdgDesktopPortalThemePlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Gui/Qt5GuiConfigExtras.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Widgets/Qt5Widgets_QMacStylePlugin.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Widgets/Qt5WidgetsConfigExtras.cmake",
+		"/Users/jowe/anaconda3/lib/cmake/Qt5Widgets/Qt5WidgetsMacros.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeParseArguments.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindGLEW.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageMessage.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindOpenGL.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageMessage.cmake",
+		"/opt/local/share/cmake-3.24/Modules/SelectLibraryConfigurations.cmake",
+		"/opt/local/share/cmake/glfw3/glfw3ConfigVersion.cmake",
+		"/opt/local/share/cmake/glfw3/glfw3Config.cmake",
+		"/opt/local/share/cmake/glfw3/glfw3Targets.cmake",
+		"/opt/local/share/cmake/glfw3/glfw3Targets-macports.cmake",
+		"/opt/homebrew/lib/cmake/spdlog/spdlogConfigVersion.cmake",
+		"/opt/homebrew/lib/cmake/spdlog/spdlogConfig.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindThreads.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CheckLibraryExists.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CheckIncludeFileCXX.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CheckCXXSourceCompiles.cmake",
+		"/opt/local/share/cmake-3.24/Modules/Internal/CheckSourceCompiles.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageHandleStandardArgs.cmake",
+		"/opt/local/share/cmake-3.24/Modules/FindPackageMessage.cmake",
+		"/opt/local/share/cmake-3.24/Modules/CMakeFindDependencyMacro.cmake",
+		"/opt/homebrew/lib/cmake/fmt/fmt-config-version.cmake",
+		"/opt/homebrew/lib/cmake/fmt/fmt-config.cmake",
+		"/opt/homebrew/lib/cmake/fmt/fmt-targets.cmake",
+		"/opt/homebrew/lib/cmake/fmt/fmt-targets-release.cmake",
+		"/opt/homebrew/lib/cmake/spdlog/spdlogConfigTargets.cmake",
+		"/opt/homebrew/lib/cmake/spdlog/spdlogConfigTargets-release.cmake",
+		"/opt/local/share/cmake-3.24/Modules/GNUInstallDirs.cmake"
+	],
+	"CMAKE_SOURCE_DIR" : "/Users/jowe/Documents/GitHub/Raytracing",
+	"DEP_FILE" : "",
+	"DEP_FILE_RULE_NAME" : "",
+	"HEADERS" : 
+	[
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Camera.hpp",
+			"MU",
+			"EWIEGA46WW/moc_Camera.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Hittable.hpp",
+			"MU",
+			"EWIEGA46WW/moc_Hittable.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/ImageRenderer.h",
+			"MU",
+			"EWIEGA46WW/moc_ImageRenderer.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Log.h",
+			"MU",
+			"EWIEGA46WW/moc_Log.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Ray.hpp",
+			"MU",
+			"EWIEGA46WW/moc_Ray.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Triangle.h",
+			"MU",
+			"EWIEGA46WW/moc_Triangle.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/Utilities.hpp",
+			"MU",
+			"EWIEGA46WW/moc_Utilities.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/ecs.h",
+			"MU",
+			"EWIEGA46WW/moc_ecs.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/engine.h",
+			"MU",
+			"EWIEGA46WW/moc_engine.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/engineCamera.h",
+			"MU",
+			"EWIEGA46WW/moc_engineCamera.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imconfig.h",
+			"MU",
+			"EWIEGA46WW/moc_imconfig.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/backends/imgui_impl_glfw.h",
+			"MU",
+			"LVWZOPJ5AV/moc_imgui_impl_glfw.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/backends/imgui_impl_opengl3.h",
+			"MU",
+			"LVWZOPJ5AV/moc_imgui_impl_opengl3.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imconfig.h",
+			"MU",
+			"4DOPLU3LR5/moc_imconfig.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui.h",
+			"MU",
+			"4DOPLU3LR5/moc_imgui.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui_internal.h",
+			"MU",
+			"4DOPLU3LR5/moc_imgui_internal.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imstb_rectpack.h",
+			"MU",
+			"4DOPLU3LR5/moc_imstb_rectpack.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imstb_textedit.h",
+			"MU",
+			"4DOPLU3LR5/moc_imstb_textedit.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imstb_truetype.h",
+			"MU",
+			"4DOPLU3LR5/moc_imstb_truetype.cpp",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/shader.h",
+			"MU",
+			"EWIEGA46WW/moc_shader.cpp",
+			null
+		]
+	],
+	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
+	"INCLUDE_DIR" : "/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen/include",
+	"MOC_COMPILATION_FILE" : "/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen/mocs_compilation.cpp",
+	"MOC_DEFINITIONS" : [ "QT_CORE_LIB", "QT_GUI_LIB", "QT_NO_DEBUG", "QT_WIDGETS_LIB" ],
+	"MOC_DEPEND_FILTERS" : 
+	[
+		[
+			"Q_PLUGIN_METADATA",
+			"[\n][ \t]*Q_PLUGIN_METADATA[ \t]*\\([^\\)]*FILE[ \t]*\"([^\"]+)\""
+		]
+	],
+	"MOC_INCLUDES" : 
+	[
+		"/Users/jowe/anaconda3/include/qt",
+		"/Users/jowe/anaconda3/include/qt/QtWidgets",
+		"/Users/jowe/anaconda3/include/qt/QtGui",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/Headers",
+		"/Users/jowe/anaconda3/include/qt/QtCore",
+		"/Users/jowe/anaconda3/mkspecs/macx-clang",
+		"/opt/local/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/usr/include/c++/v1",
+		"/Library/Developer/CommandLineTools/usr/lib/clang/15.0.0/include",
+		"/Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/usr/include",
+		"/Library/Developer/CommandLineTools/usr/include"
+	],
+	"MOC_MACRO_NAMES" : [ "Q_OBJECT", "Q_GADGET", "Q_NAMESPACE", "Q_NAMESPACE_EXPORT" ],
+	"MOC_OPTIONS" : [],
+	"MOC_PATH_PREFIX" : false,
+	"MOC_PREDEFS_CMD" : 
+	[
+		"/Library/Developer/CommandLineTools/usr/bin/c++",
+		"-dM",
+		"-E",
+		"-c",
+		"/opt/local/share/cmake-3.24/Modules/CMakeCXXCompilerABI.cpp"
+	],
+	"MOC_PREDEFS_FILE" : "/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen/moc_predefs.h",
+	"MOC_RELAXED_MODE" : false,
+	"MOC_SKIP" : [],
+	"MULTI_CONFIG" : false,
+	"PARALLEL" : 8,
+	"PARSE_CACHE_FILE" : "/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/Ray-tracing_autogen.dir/ParseCache.txt",
+	"QT_MOC_EXECUTABLE" : "/Users/jowe/anaconda3/bin/moc",
+	"QT_UIC_EXECUTABLE" : "/Users/jowe/anaconda3/bin/uic",
+	"QT_VERSION_MAJOR" : 5,
+	"QT_VERSION_MINOR" : 15,
+	"SETTINGS_FILE" : "/Users/jowe/Documents/GitHub/Raytracing/build/CMakeFiles/Ray-tracing_autogen.dir/AutogenUsed.txt",
+	"SOURCES" : 
+	[
+		[ "/Users/jowe/Documents/GitHub/Raytracing/Camera.cpp", "MU", null ],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/ImageRenderer.cpp",
+			"MU",
+			null
+		],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/Log.cpp", "MU", null ],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/Ray.cpp", "MU", null ],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/Triangle.cpp", "MU", null ],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/Utilities.cpp", "MU", null ],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/engine.cpp", "MU", null ],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/backends/imgui_impl_glfw.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/backends/imgui_impl_opengl3.cpp",
+			"MU",
+			null
+		],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui.cpp", "MU", null ],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui_demo.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui_draw.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui_tables.cpp",
+			"MU",
+			null
+		],
+		[
+			"/Users/jowe/Documents/GitHub/Raytracing/imgui/imgui_widgets.cpp",
+			"MU",
+			null
+		],
+		[ "/Users/jowe/Documents/GitHub/Raytracing/main.cpp", "MU", null ]
+	],
+	"UIC_OPTIONS" : [],
+	"UIC_SEARCH_PATHS" : [],
+	"UIC_SKIP" : [],
+	"UIC_UI_FILES" : [],
+	"VERBOSITY" : 0
+}

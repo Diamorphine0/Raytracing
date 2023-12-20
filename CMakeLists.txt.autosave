@@ -15,6 +15,8 @@ find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(spdlog REQUIRED)
 
+target_include_directories(spdlog PRIVATE  )
+
 set(PROJECT_SOURCES
         main.cpp
         Hittable.hpp
@@ -71,8 +73,6 @@ else()
     else()
         add_executable(Ray-tracing
             ${PROJECT_SOURCES}
-            Log.cpp
-            Log.h
         )
     endif()
 endif()
