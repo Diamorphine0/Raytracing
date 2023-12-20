@@ -18,6 +18,7 @@ public:
     Vec3 operator-(const Vec3& other) const;
     Vec3 operator-() const;
     Vec3 operator*(float scalar) const;
+    Vec3 operator/(float scalar) const;
 
     // Utility Function
     float lengthSquared() const;
@@ -25,7 +26,6 @@ public:
 
     Vec3 cross(const Vec3&) const;
     float dot(const Vec3& other) const;
-
 
     void normalize();
 
