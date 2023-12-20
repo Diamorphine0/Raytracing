@@ -7,6 +7,6 @@ namespace engine  {
     void Log::Init()
     {
         spdlog::set_pattern("%^[%T] %n: %v%$");
-        s_EngineLogger = spdlog::stdout_color_mt("Engine")
+        s_EngineLogger = spdlog::stdout_color_mt("Engine");
         s_EngineLogger->set_level(spdlog::level::trace);
     }
