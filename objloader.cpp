@@ -9,9 +9,9 @@
 
 bool ObjectLoader::load_object( //signature
     const char* path,
-    std::vector<glm::vec3>& out_vertices,
-    std::vector<glm::vec2>& out_uvs,
-    std::vector<glm::vec3>& out_normals
+    std::vector<glm::vec3>& out_vertices
+    //std::vector<glm::vec2>& out_uvs,
+    //std::vector<glm::vec3>& out_normals
     )
     //Impementation
 {
@@ -80,8 +80,8 @@ bool ObjectLoader::load_object( //signature
         glm::vec3 normal = temp_normals[normalIndex-1];
 
         out_vertices.push_back(vertex);
-        out_uvs.push_back(uv);
-        out_normals.push_back(normal);
+        //out_uvs.push_back(uv);
+        //out_normals.push_back(normal);
     }
 
     fclose(file);

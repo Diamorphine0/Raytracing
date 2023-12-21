@@ -8,6 +8,8 @@
 #include "Triangle.h"
 #include "objloader.hpp"
 
+#include <filesystem>
+
 int main()
 {
     std::cerr<<"TEST1\n";
@@ -23,24 +25,29 @@ int main()
     glBindVertexArray(VertexArrayID);
 
 
-    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
-    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
+    //Loading the vertices from the .obj file (For now there is a lot of information lost)
+    //!Vertex class (in esc.h) was modified as there seems to be no color information in .obj
+    ObjectLoader objectLoader;
+    std::vector<glm::vec3> vertices_raw;
+    objectLoader.load_object("../Raytracing/demo/demo2.obj", vertices_raw);
 
+    std::vector<Vertex> vertices;
+    for (std::vector<glm::vec3>::iterator it = vertices_raw.begin(); it != vertices_raw.end(); it++) {
+        vertices.push_back(Vertex(*it));
+    }
+
+    //Making mesh from the uploaded vertices
     Mesh mesh(vertices);
     mesh.rotate_mesh(glm::vec3(0, 0, 1.0f), 3.14/2);
 
-    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+    auto world = new Triangle(vertices[0].Coordinates, vertices[1].Coordinates, vertices[-1].Coordinates); //!For now it's 3 random points, don't know what is the logic behind
     engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;
 
-    float speed = 0.005f; // 0.0 units / second
+    //CHANGING THE SPEED (Around 0.0001f works well to enjoy the perspective)
+    float speed = 0.0001f; // 0.0 units / second
 
     do{
 

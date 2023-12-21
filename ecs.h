@@ -13,9 +13,10 @@ struct Vertex{
     glm::vec3 Coordinates;
     glm::vec3 Color;
 
-    Vertex(glm::vec3 Coordinates, glm::vec3 Color){
+    Vertex(glm::vec3 Coordinates) { //, glm::vec3 Color){
         this->Coordinates = Coordinates;
-        this->Color = Color;
+        //this->Color = Color;
+        this->Color = glm::vec3(0.583f,  0.771f,  0.014f);
     }
 };
 
@@ -42,7 +43,7 @@ public:
 
 
             glm::vec3 rot_coord(rot_pos_quat.x, rot_pos_quat.y,rot_pos_quat.z);
-            Vertex rot_v(rot_coord, v.Color);
+            Vertex rot_v(rot_coord);
 
             vertices[i] = rot_v;
         }
