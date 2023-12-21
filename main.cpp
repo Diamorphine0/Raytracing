@@ -3,7 +3,7 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 
 #include "engine.h"
-#include "ecs.h"
+#include "Entity.h"
 #include "Camera.hpp"
 #include "Triangle.h"
 
@@ -43,7 +43,7 @@ int main()
         glUseProgram(engine.programID);
 
         // take care of camera movement
-        engine.movement(currentTime, lastTime, speed);
+        engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         // updat the projection
         glm::mat4 mvp = engine.camera.construct_mvp();

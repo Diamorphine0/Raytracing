@@ -30,6 +30,7 @@ public:
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         window = glfwCreateWindow( width, height, "Engine Project", NULL, NULL);
+
         if( window == NULL ){
             fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
             glfwTerminate();
@@ -66,30 +67,6 @@ public:
         glEnable(GL_CULL_FACE);
     }
 
-    void movement(float& currentTime, float& lastTime, float& speed){
-
-        lastTime = glfwGetTime();
-        float deltaTime = float(currentTime - lastTime);
-
-        // Move forward
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-            camera.position += camera.direction * deltaTime * speed;
-        }
-        // Move backward
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-            camera.position -= camera.direction * deltaTime * speed;
-        }
-
-        // Strafe right
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-            camera.position += camera.right * deltaTime * speed;
-        }
-        // Strafe left
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
-            camera.position -= camera.right * deltaTime * speed;
-        }
-    }
-
     void update(){
 
         glfwPollEvents();
@@ -104,7 +81,9 @@ public:
             static int counter = 0;
             ImGui::Text("Engine");
 
-            // All event handling goes on here
+            // General Event Handling Functionality
+
+            // Object picking will happen here as well
 
             if(ImGui::Button("Raytrace")){
                 counter++;
@@ -130,7 +109,7 @@ public:
         glfwSwapBuffers(window);
     }
 
-    // scene graph
+    // scene graph -> which will store the relationship between the objects
 
     GLFWwindow* window;
     GLuint programID;

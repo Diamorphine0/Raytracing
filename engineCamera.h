@@ -16,6 +16,7 @@ using namespace glm;
 #include <GLFW/glfw3native.h>
 
 class engineCamera{
+
 public:
     engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV): position(position), horizontalAngle(horizontalAngle), verticalAngle(verticalAngle), initialFoV(initialFoV){
 
@@ -47,6 +48,31 @@ public:
         glm::mat4 Model = glm::mat4(1.0f);
 
         return Projection * View * Model;
+    }
+
+    // This is the movement of the camera, this should not be in the
+    void movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
+
+        lastTime = glfwGetTime();
+        float deltaTime = float(currentTime - lastTime);
+
+        // Move forward
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
+            position += direction * deltaTime * speed;
+        }
+        // Move backward
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
+            position -= direction * deltaTime * speed;
+        }
+
+        // Strafe right
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+            position += right * deltaTime * speed;
+        }
+        // Strafe left
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+            position -= right * deltaTime * speed;
+        }
     }
 
     glm::vec3 position;

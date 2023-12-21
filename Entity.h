@@ -35,16 +35,26 @@ public:
 
     void Draw(){
 
-        // glBindVertexArray -> bind it to a VAO;
+//        // ... at initinialization
+//        for each object:
+//            create and upload VBO(s) and index buffers
+//            create and upload textures
+//            create and initialize VAO
 
-        // glDrawElements -> draw the object;
-
-        // we need to set a uniform everytime
+//        // at draw time
+//        for each object:
+//            bind VAO
+//            bind texture(s)
+//            set all other object-related OpenGL state
+//            (like switching programs, setting unforms for
+//             the model matrix, base colors, ...)
+//            glDraw*(...)
 
         glDrawArrays(GL_TRIANGLES, 0, vertices.size());
     }
 
     //rotates the vertices, stores in same object
+
     void rotate_mesh(glm::vec3 rot_axis, float angle){
         rot_axis = glm::normalize(rot_axis);
         glm::quat rot_quat(cos(angle/2), rot_axis.x*sin(angle/2), rot_axis.y*sin(angle/2), rot_axis.z*sin(angle/2));
@@ -61,6 +71,9 @@ public:
 
             vertices[i] = rot_v;
         }
+
+        // We should not be resetting the mesh like this
+
         setupMesh();        //Given list of rotated vertices, reset mesh to be rotated mesh
     }
 
@@ -108,13 +121,6 @@ private:
 
 // The object should have a rotation
 
-class pointLightSource{
-
-private:
-    // do we need anything else for a light source;
-    // we need to store a position;
-};
-
 class Object{
 
 public:
@@ -144,9 +150,8 @@ public:
 
 private:
 
+    float rotDeg;
     Mesh* mesh;
-
 };
 
 #endif // ECS_H
-

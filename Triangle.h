@@ -5,9 +5,6 @@
 #include "Ray.hpp"
 #include "Utilities.hpp"
 
-
-
-
 class Triangle: public Hittable {
 public:
     /**
