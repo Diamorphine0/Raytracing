@@ -33,6 +33,14 @@ set(PROJECT_SOURCES
         engine.cpp
         shader.h
         imconfig.h
+        Material.h
+        Material.cpp
+        Lambertian.h
+        Lambertian.cpp
+        Metal.h
+        Metal.cpp
+        Dielectric.h
+        Dielectric.cpp
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp

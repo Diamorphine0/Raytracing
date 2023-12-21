@@ -7,6 +7,10 @@
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "Hittable_List.h"
+#include "Material.h"
+#include "Lambertian.h"
+#include "Metal.h"
+#include "Dielectric.h"
 
 int main()
 {
