@@ -28,9 +28,9 @@ set(PROJECT_SOURCES
         ImageRenderer.cpp
         ImageRenderer.h
         ecs.h
-        engine.h
+        Engine.h
         engineCamera.h
-        engine.cpp
+        Engine.cpp
         shader.h
         imconfig.h
 

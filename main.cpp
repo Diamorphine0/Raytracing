@@ -2,7 +2,7 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-#include "engine.h"
+#include "Engine.h"
 #include "ecs.h"
 #include "Camera.hpp"
 #include "Triangle.h"
