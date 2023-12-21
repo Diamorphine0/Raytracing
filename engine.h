@@ -9,8 +9,11 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
+
+// We need to figure out what goes into the engine class and what goes into the ECS class as well as how they relate to one another.
 class Engine{
 public:
+
     Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
         glewExperimental = true;
@@ -101,11 +104,12 @@ public:
             static int counter = 0;
             ImGui::Text("Engine");
 
+            // All event handling goes on here
+
             if(ImGui::Button("Raytrace")){
                 counter++;
                 rayTracingCamera = new Camera(height, width, camera.position);
                 rayTracingCamera->render(*world, "imageRender.ppm");
-
             }
 
             float obj_rot_angle = 0;
@@ -125,6 +129,8 @@ public:
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         glfwSwapBuffers(window);
     }
+
+    // scene graph
 
     GLFWwindow* window;
     GLuint programID;

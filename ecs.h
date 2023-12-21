@@ -19,16 +19,31 @@ struct Vertex{
     }
 };
 
+// the mesh should likewise contain the color and texture and normals
 class Mesh{
+
 public:
     std::vector<Vertex> vertices;
+
+    // We should likewise include the textures.
+    // We should likewise include the indicies.
+
     Mesh(std::vector<Vertex> vertices){
         this->vertices = vertices;
         setupMesh();
     }
+
     void Draw(){
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size()); // Starting from vertex 0; 3 vertices total -> 1 triangle
+
+        // glBindVertexArray -> bind it to a VAO;
+
+        // glDrawElements -> draw the object;
+
+        // we need to set a uniform everytime
+
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
     }
+
     //rotates the vertices, stores in same object
     void rotate_mesh(glm::vec3 rot_axis, float angle){
         rot_axis = glm::normalize(rot_axis);
@@ -48,11 +63,18 @@ public:
         }
         setupMesh();        //Given list of rotated vertices, reset mesh to be rotated mesh
     }
+
 private:
+
+    // should contain a bounding box
+
     GLuint VAO, VBO;
+
+    // we should be setting up a mesh for a single object
+
     void setupMesh(){
         glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO); // vertex buffer
+        glGenBuffers(1, &VBO);
 
         //handles the VBO
         glBindVertexArray(VAO);
@@ -69,7 +91,6 @@ private:
             sizeof(Vertex),     // stride - THAT MAY BE WRONG!
             (void*)0            // array buffer offset
             );
-        // colors?
 
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(
@@ -81,17 +102,51 @@ private:
             (void*)offsetof(Vertex, Color)                          // array buffer offset
             );
 
-        //source: https://learnopengl.com/Model-Loading/Mesh
     }
 
 };
 
-/*
-class Entity{
-public:
-    std::string Tag;
+// The object should have a rotation
+
+class pointLightSource{
+
+private:
+    // do we need anything else for a light source;
+    // we need to store a position;
 };
-*/
+
+class Object{
+
+public:
+
+    Object(Mesh* mesh){
+        return ;
+    }
+
+    // how does object picking work ? - we want to be able to pick an object
+
+    void render(){
+        // Do we need to do anything past
+        return ;
+    }
+
+    void rotate(){
+        return ;
+    }
+
+    void move(){
+        return ;
+    }
+
+    void setColor(){
+        return ;
+    }
+
+private:
+
+    Mesh* mesh;
+
+};
 
 #endif // ECS_H
 
