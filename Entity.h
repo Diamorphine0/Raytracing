@@ -78,12 +78,13 @@ public:
     }
 
 private:
-
     // should contain a bounding box
 
     GLuint VAO, VBO;
 
     // we should be setting up a mesh for a single object
+
+    // how are we setting up the mesh ?
 
     void setupMesh(){
         glGenVertexArrays(1, &VAO);
@@ -114,23 +115,22 @@ private:
             sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
             (void*)offsetof(Vertex, Color)                          // array buffer offset
             );
-
     }
-
 };
 
 // The object should have a rotation
 
-class Object{
+class Entity{
 
 public:
 
-    Object(Mesh* mesh){
+    Entity(Mesh* mesh){
         return ;
     }
 
     // how does object picking work ? - we want to be able to pick an object
 
+    // The render method should contain option parameters relative to the scene graph hierarchy
     void render(){
         // Do we need to do anything past
         return ;
@@ -149,7 +149,10 @@ public:
     }
 
 private:
+    // trajectory of the object -> at every step this should be getting updated
+    // how to implement an animation
 
+    // we can store it in a more generic drawInfo - which contains
     float rotDeg;
     Mesh* mesh;
 };

@@ -109,7 +109,12 @@ public:
         glfwSwapBuffers(window);
     }
 
-    // scene graph -> which will store the relationship between the objects
+    // We should add functionality to animate
+    void animateScene(){
+
+    }
+
+    // scene graph -> which will store the relationship between the objects ->
 
     GLFWwindow* window;
     GLuint programID;
