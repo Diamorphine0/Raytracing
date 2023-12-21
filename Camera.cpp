@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::render(const Hittable& world, const std::string &imagePath) {
+void Camera::render(Hittable *world, const std::string &imagePath) {
     initialize();
     imageRenderer.reset_pixels();
 
@@ -21,7 +21,7 @@ void Camera::render(const Hittable& world, const std::string &imagePath) {
 void Camera::initialize() {
 
     // Determine viewport dimensions.
-    auto focal_length = 0.1;
+    auto focal_length = 1;
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * (static_cast<double>(imageRenderer.get_width())/imageRenderer.get_height());
 
@@ -38,15 +38,15 @@ void Camera::initialize() {
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5;
 }
 
-Color Camera::ray_color(const Ray& r, const Hittable& world) const {
+Color Camera::ray_color(const Ray& r, Hittable *world) const {
     float t = 0;
-    if (world.intersectWithRay(r, t)) {
-        std::cerr<<"Hit at "<<r.get_direction()<<"\n";
+    auto world_ans = world->intersectWithRay(r, t);
+    if (world_ans.first) {
         // we should instead be getting the color from the engine.
-        return  Color (255,255,255);
+        return  world_ans.second->color;
     }
     else{
-        return Color(0, 255, 0);
+        return Color(0, 0, 0);
     }
 
 }

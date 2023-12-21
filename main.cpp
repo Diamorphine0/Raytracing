@@ -6,6 +6,7 @@
 #include "ecs.h"
 #include "Camera.hpp"
 #include "Triangle.h"
+#include "Hittable_List.h"
 
 int main()
 {
@@ -25,15 +26,25 @@ int main()
     Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
     Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
     Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v4(glm::vec3(-2.0f, -2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v5(glm::vec3(2.0f, -2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v6(glm::vec3(2.0f, 2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
 
     Mesh mesh(vertices);
-    mesh.rotate_mesh(glm::vec3(0, 0, 1.0f), 3.14/2);
+    //mesh.rotate_mesh(glm::vec3(0, 0, 1.0f), 3.14/2);
 
-    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+
+    auto world = new Hittable_List();
+
+    auto tr1 = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+    tr1->color = Color (255, 0, 0);
+
+    auto tr2 = new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates);
+    tr2->color = Color (0, 255, 0);
+    world->add_object(tr1);
+    world->add_object(tr2);
+
     engine.world = world;
 
     float currentTime = glfwGetTime();
