@@ -2,8 +2,8 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "engineCamera.h"
 #include "Camera.hpp"
+#include "engineCamera.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -58,13 +58,13 @@ public:
         ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
         ImGui_ImplOpenGL3_Init();
 
-        // Change the shader path names
-        programID = LoadShaders( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
-
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
         // Cull triangles which normal is not towards the camera
         glEnable(GL_CULL_FACE);
+
+        // If everything worked, we initialize a scene graph
+        SG = new SceneGraph();
     }
 
     void update(){
@@ -87,8 +87,8 @@ public:
 
             if(ImGui::Button("Raytrace")){
                 counter++;
-                rayTracingCamera = new Camera(height, width, camera.position);
-                rayTracingCamera->render(*world, "imageRender.ppm");
+                rayTracingCamera = new Camera(height, width, camera.getPosition());
+                rayTracingCamera->render(world, "imageRender.ppm");
             }
 
             float obj_rot_angle = 0;
@@ -109,11 +109,6 @@ public:
         glfwSwapBuffers(window);
     }
 
-    // We should add functionality to animate
-    void animateScene(){
-
-    }
-
     // scene graph -> which will store the relationship between the objects ->
 
     GLFWwindow* window;
@@ -121,6 +116,7 @@ public:
     engineCamera camera;
     int width, height;
     Camera *rayTracingCamera;
+    SceneGraph* SG;
     Hittable *world;
 };
 

@@ -9,9 +9,11 @@
 #ifndef ECS_H
 #define ECS_H
 
+// more difficult to deal with a struct
 struct Vertex{
     glm::vec3 Coordinates;
     glm::vec3 Color;
+    glm::vec3 Normal;
 
     Vertex(glm::vec3 Coordinates, glm::vec3 Color){
         this->Coordinates = Coordinates;
@@ -19,142 +21,115 @@ struct Vertex{
     }
 };
 
-// the mesh should likewise contain the color and texture and normals
-class Mesh{
+// Stores information about a single instance of the vertex struct
+struct VertexBufferElement{
 
-public:
-    std::vector<Vertex> vertices;
+    unsigned int type;
+    unsigned int count;
+    bool normalized;
 
-    // We should likewise include the textures.
-    // We should likewise include the indicies.
-
-    Mesh(std::vector<Vertex> vertices){
-        this->vertices = vertices;
-        setupMesh();
-    }
-
-    void Draw(){
-
-//        // ... at initinialization
-//        for each object:
-//            create and upload VBO(s) and index buffers
-//            create and upload textures
-//            create and initialize VAO
-
-//        // at draw time
-//        for each object:
-//            bind VAO
-//            bind texture(s)
-//            set all other object-related OpenGL state
-//            (like switching programs, setting unforms for
-//             the model matrix, base colors, ...)
-//            glDraw*(...)
-
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-    }
-
-    //rotates the vertices, stores in same object
-
-    void rotate_mesh(glm::vec3 rot_axis, float angle){
-        rot_axis = glm::normalize(rot_axis);
-        glm::quat rot_quat(cos(angle/2), rot_axis.x*sin(angle/2), rot_axis.y*sin(angle/2), rot_axis.z*sin(angle/2));
-
-        //store position of rotated vertex in place, and keeps same color
-        for (int i=0; i<vertices.size(); i++){
-            Vertex v = vertices[i];
-            glm::quat position_quat(0, v.Coordinates.x, v.Coordinates.y, v.Coordinates.z);
-            glm::quat rot_pos_quat = rot_quat*position_quat*glm::conjugate(rot_quat);
-
-
-            glm::vec3 rot_coord(rot_pos_quat.x, rot_pos_quat.y,rot_pos_quat.z);
-            Vertex rot_v(rot_coord, v.Color);
-
-            vertices[i] = rot_v;
+    static unsigned int GetSizeOfType(unsigned int type){
+        switch(type){
+            case GL_FLOAT: return 4;
+            case GL_UNSIGNED_INT: return 4;
+            case GL_UNSIGNED_BYTE: return 1;
         }
+        return 0;
+    };
 
-        // We should not be resetting the mesh like this
-
-        setupMesh();        //Given list of rotated vertices, reset mesh to be rotated mesh
-    }
-
-private:
-    // should contain a bounding box
-
-    GLuint VAO, VBO;
-
-    // we should be setting up a mesh for a single object
-
-    // how are we setting up the mesh ?
-
-    void setupMesh(){
-        glGenVertexArrays(1, &VAO);
-        glGenBuffers(1, &VBO);
-
-        //handles the VBO
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-
-        // vertex positions
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(
-            0,                  // attribute 0. No particular reason for 0, but must match the layout in the shader.
-            3,                  // size
-            GL_FLOAT,           // type
-            GL_FALSE,           // normalized?
-            sizeof(Vertex),     // stride - THAT MAY BE WRONG!
-            (void*)0            // array buffer offset
-            );
-
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(
-            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            3,                                // size
-            GL_FLOAT,                         // type
-            GL_FALSE,                         // normalized?
-            sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
-            (void*)offsetof(Vertex, Color)                          // array buffer offset
-            );
-    }
 };
 
-// The object should have a rotation
+// This is equivalent to storing a vertex mesh
+class VertexBuffer{
 
+private:
+    // This is the VBO
+    GLuint m_RendererID;
+public:
+    VertexBuffer(const void* data, unsigned int size);
+    ~VertexBuffer();
+
+    void Bind() const;
+    void Unbind() const;
+};
+
+class VertexBufferLayout{
+
+private:
+    std::vector<VertexBufferElement> m_Elements;
+    unsigned int m_Stride;
+
+public:
+    VertexBufferLayout()
+        :m_Stride(0){}
+
+    template<typename T>
+    void Push(unsigned int count){
+    }
+
+    template<> void Push<float>(unsigned int count){
+        m_Elements.push_back({ GL_FLOAT, count, false });
+        m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
+    }
+
+    template<> void Push<unsigned int>(unsigned int count){
+        m_Elements.push_back({ GL_UNSIGNED_INT, count, false });
+        m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
+    }
+
+    template<> void Push<Vertex>(unsigned int count){
+        m_Elements.push_back({ GL_FLOAT, count, false });
+        m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
+    }
+
+    // we want to create a template for a more complex vertex containing both position and color
+
+    inline const std::vector<VertexBufferElement> GetElements() const {return m_Elements;};
+    inline unsigned int getStride() const {return m_Stride;};
+};
+
+class VertexArray{
+private:
+    unsigned int m_RendererID;
+public:
+    VertexArray();
+    ~VertexArray();
+
+    void Bind() const;
+    void Unbind() const;
+    void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
+};
+
+// The entity gives the interface for dealing with the mesh
 class Entity{
 
 public:
 
-    Entity(Mesh* mesh){
-        return ;
-    }
-
-    // how does object picking work ? - we want to be able to pick an object
-
-    // The render method should contain option parameters relative to the scene graph hierarchy
-    void render(){
-        // Do we need to do anything past
-        return ;
-    }
+    // what is the difference from a vertex buffer element
+    // to every entity we provide a list of verticies that will form it
+    Entity(std::vector<Vertex>& vertices);
 
     void rotate(){
         return ;
     }
 
-    void move(){
+    void translate(){
         return ;
+    }
+
+    void scale(){
+        return;
     }
 
     void setColor(){
         return ;
     }
 
-private:
-    // trajectory of the object -> at every step this should be getting updated
-    // how to implement an animation
+    inline auto getVA(){ return va;};
 
-    // we can store it in a more generic drawInfo - which contains
-    float rotDeg;
-    Mesh* mesh;
+private:
+    // there should be a shader associated to every entity
+    VertexArray* va;
 };
 
-#endif // ECS_H
+#endif

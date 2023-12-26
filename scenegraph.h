@@ -14,10 +14,14 @@
 #include "Entity.h"
 using namespace glm;
 
-class SceneGraph
-{
+class SceneGraph{
 public:
     SceneGraph();
+    ~SceneGraph();
+    inline void addEntity(Entity* entity){Entities.push_back(entity);};
+    inline std::vector<Entity*> getEntities(){return Entities;};
+private:
+    std::vector<Entity*> Entities;
 };
 
 class Node{
