@@ -112,27 +112,18 @@ public:
     // to every entity we provide a list of verticies that will form it
     Entity(std::vector<Vertex>& vertices);
 
-    void rotate(float x, float y, float z){
-        localMatrix = glm::rotate(localMatrix, 0.05f, glm::vec3(x, y, z));
-    }
+    inline void rotate(float x, float y, float z){ localMatrix = glm::rotate(localMatrix, 0.05f, glm::vec3(x, y, z));};
 
-    void translate(float dx, float dy, float dz){
-        localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));
-    }
+    inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));};
 
-    void scale(float dx, float dy, float dz){
-        localMatrix = glm::scale(localMatrix, glm::vec3(0.999, 0.999, 0.0));
-    }
+    inline void scale(float dx, float dy, float dz){localMatrix = glm::scale(localMatrix, glm::vec3(0.999, 0.999, 0.0));};
 
-    void setColor(glm::vec3 Color){
-        return ;
-    }
+    inline void setColor(glm::vec3 Color){ return ;};
 
     inline auto getVA(){ return va;};
 
 private:
     VertexArray* va;
-    // should contain a world matrix - what is the difference between
 };
 
 #endif

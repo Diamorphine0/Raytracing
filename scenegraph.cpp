@@ -37,6 +37,10 @@ void Node::Draw(const Shader& shader){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
+        entity -> scale(0.5, 0.5, 1);
+
+        entity -> rotate(0, 0, 0.01);
+
         std::cout << "Draw Function" << std::endl;
         shader.Bind();
         std::cout << "Shader Binded" << std::endl;
@@ -48,6 +52,9 @@ void Node::Draw(const Shader& shader){
                     (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
                 else
                     (entity -> worldMatrix) = (entity -> localMatrix);
+            }
+            else{
+                (entity -> worldMatrix) = (entity -> localMatrix);
             }
         }
 
