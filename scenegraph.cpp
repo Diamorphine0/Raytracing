@@ -37,9 +37,7 @@ void Node::Draw(const Shader& shader){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        entity -> scale(0.5, 0.5, 1);
-
-        entity -> rotate(0, 0, 0.01);
+        entity -> rotate(0.001f, 0, 0, 1);
 
         std::cout << "Draw Function" << std::endl;
         shader.Bind();

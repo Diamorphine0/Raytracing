@@ -14,28 +14,36 @@ int main()
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 0 ), 3.14f, 0.0f, 90.0f));
 
     // for now we just store the position and color of each vertex
-    Vertex v1(glm::vec3(-0.5f,-0.1f,-0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v2(glm::vec3(0.1f,-0.1f, -0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v3(glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
+    // y coord
+    Vertex v1(glm::vec3(-0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v2(glm::vec3(-0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v3(glm::vec3( 0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    std::vector<Vertex> vertices1{v1, v2, v3};
+    Vertex v4(glm::vec3( 0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v5(glm::vec3(0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v6(glm::vec3(-0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    Vertex v4(glm::vec3(-0.2f,-0.2f,-0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v5(glm::vec3(0.2f,-0.2f, -0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v6(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
-
-    std::vector<Vertex> vertices2{v4, v5, v6};
+    std::vector<Vertex> vertices1{v1,v2,v3,v4,v5,v6};
 
     // Entity instantiation
 
     Entity* entity1 = new Entity(vertices1);
-    Entity* entity2 = new Entity(vertices2);
+    Entity* entity2 = new Entity(vertices1);
+    Entity* entity3 = new Entity(vertices1);
+
+    entity2 -> scale(0.5, 0.5, 1);
+    entity2 -> translate(-0.7, -0.7, 0);
+
+    entity3 -> scale(0.5, 0.5, 1);
+    entity3->translate(-0.5, -0.5, 0);
 
     Node* node1 = new Node(entity1);
     Node* node2 = new Node(entity2);
+    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
     node2 -> setParent(node1);
+    node3 -> setParent(node2);
 
     auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
     engine.world = world;

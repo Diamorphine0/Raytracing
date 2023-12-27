@@ -66,9 +66,9 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(
             1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            element.count,                                // size
-            element.type,                         // type
-            element.normalized ? GL_TRUE : GL_FALSE,                         // normalized?
+            element.count,                    // size
+            element.type,                     // type
+            element.normalized ? GL_TRUE : GL_FALSE, // normalized?
             sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
             (void*) offsetof(Vertex, Color)   // array buffer offset
             );

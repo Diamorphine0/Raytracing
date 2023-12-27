@@ -112,11 +112,11 @@ public:
     // to every entity we provide a list of verticies that will form it
     Entity(std::vector<Vertex>& vertices);
 
-    inline void rotate(float x, float y, float z){ localMatrix = glm::rotate(localMatrix, 0.05f, glm::vec3(x, y, z));};
+    inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z));};
 
     inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));};
 
-    inline void scale(float dx, float dy, float dz){localMatrix = glm::scale(localMatrix, glm::vec3(0.999, 0.999, 0.0));};
+    inline void scale(float dx, float dy, float dz){localMatrix = glm::scale(localMatrix, glm::vec3(dx, dy, dz));};
 
     inline void setColor(glm::vec3 Color){ return ;};
 
