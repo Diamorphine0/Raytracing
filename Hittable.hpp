@@ -2,6 +2,7 @@
 #define HITTABLE_HPP
 
 #include "Ray.hpp"
+#include "Material.h"
 
 
 /// This is the  abstract class for "hittable" objects and it's interface
@@ -21,10 +22,14 @@ public:
 
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
 
+    void setMaterial(Material mat) {this->mat=mat;}
+
     //JUST TO DEBUG. TO REMOVE.!
     Color color;
+    Material mat;
 protected:
     Hittable() {};
+
 };
 
 #endif // HITTABLE_HPP

@@ -7,7 +7,13 @@
 class Metal : public Material
 {
 public:
-    Metal();
+    Metal(Color att) {attenuation = att};
+
+    virtual Ray scatter(Ray);
+
+protected:
+
+
 };
 
 #endif // METAL_H

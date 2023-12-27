@@ -7,7 +7,11 @@
 class Lambertian : public Material {
 
 public:
-    Lambertian();
+    Lambertian(Color att) {attenuation = att};
+
+    virtual Ray scatter(Ray);
+
+protected:
 
 };
 
