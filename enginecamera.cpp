@@ -1,34 +1,25 @@
 #include "engineCamera.h"
 
-// the draw should happen on the nodes
-// we want to take
-void engineCamera::Draw(Entity* entity, const Shader& shader) const{
+engineCamera::engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV): position(position), horizontalAngle(horizontalAngle), verticalAngle(verticalAngle), initialFoV(initialFoV){
 
-    const VertexArray& va = *(entity -> getVA());
+    direction = glm::vec3(
+        cos(verticalAngle) * sin(horizontalAngle),
+        sin(verticalAngle),
+        cos(verticalAngle) * cos(horizontalAngle)
+        );
 
-    std::cout << "Draw Function" << std::endl;
-    shader.Bind();
+    right = glm::vec3(
+        sin(horizontalAngle - 3.14f/2.0f),
+        0,
+        cos(horizontalAngle - 3.14f/2.0f)
+        );
 
-    GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
-    glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
+    up = glm::cross(right, direction);
+}
 
-    std::cout << "Shader Binded" << std::endl;
-    va.Bind();
-    std::cout << "VA Binded " << va.getID() << std::endl;
-    // the size should be stored in the va ...
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    std::cout << "Displayed to Screen" << std::endl;
-    glClear(GL_DEPTH_BUFFER_BIT);
-};
-
-void engineCamera::renderScene(SceneGraph* SG, const Shader& shader) const{
+void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     Clear();
-    std::cout << "Render Function" << std::endl;
-    std::cout << (SG -> getEntities()).size() << std::endl;
-    for(auto entity: SG -> getEntities()){
-        std::cout << "Draw Call to " <<  entity -> getVA() << std::endl;
-        Draw(entity, shader);
-    }
+    engineWorld -> Draw(shader);
 };
 
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){

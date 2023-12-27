@@ -12,33 +12,26 @@
 #include <glm/gtx/transform.hpp>
 #include <vector>
 #include "Entity.h"
+#include "shader.h"
 using namespace glm;
-
-class SceneGraph{
-public:
-    SceneGraph();
-    ~SceneGraph();
-    inline void addEntity(Entity* entity){Entities.push_back(entity);};
-    inline std::vector<Entity*> getEntities(){return Entities;};
-private:
-    std::vector<Entity*> Entities;
-};
 
 class Node{
 public:
 
     Node();
+    Node(Entity* entity);
+    Node(Entity* entity, Node* parent);
+    Node(Entity* entity, Node* parent, std::vector<Node*> children);
+    ~Node();
 
     void setParent(Node* parent);
-
-    void updateWorldMatrix(glm::vec4& parentWorldMatrix);
+    void updateWorldMatrix();
+    void Draw(const Shader& shader);
 
 private:
-    glm::vec4 localMatrix;
-    glm::vec4 worldMatrix;
     Node* parent;
     std::vector<Node*> children;
-    Entity* thingToDraw;
+    Entity* entity;
 };
 
 #endif // SCENEGRAPH_H

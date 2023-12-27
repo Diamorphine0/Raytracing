@@ -105,6 +105,7 @@ class Entity{
 
 public:
     glm::mat4 worldMatrix = glm::mat4(1.0f);
+    glm::mat4 localMatrix = glm::mat4(1.0f);
 public:
 
     // what is the difference from a vertex buffer element
@@ -112,15 +113,15 @@ public:
     Entity(std::vector<Vertex>& vertices);
 
     void rotate(float x, float y, float z){
-        worldMatrix = glm::rotate(worldMatrix, 0.05f, glm::vec3(x, y, z));
+        localMatrix = glm::rotate(localMatrix, 0.05f, glm::vec3(x, y, z));
     }
 
     void translate(float dx, float dy, float dz){
-        worldMatrix = glm::translate(worldMatrix, glm::vec3(dx, dy, dz));
+        localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));
     }
 
     void scale(float dx, float dy, float dz){
-        worldMatrix = glm::scale(worldMatrix, glm::vec3(0.999, 0.999, 0.0));
+        localMatrix = glm::scale(localMatrix, glm::vec3(0.999, 0.999, 0.0));
     }
 
     void setColor(glm::vec3 Color){

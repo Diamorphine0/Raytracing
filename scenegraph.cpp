@@ -1,54 +1,68 @@
 #include "scenegraph.h"
 
-SceneGraph::SceneGraph()
-{
-    // Should contain a top node
-}
+Node::Node(): entity(nullptr), parent(nullptr), children({}){}
+Node::Node(Entity* entity): entity(entity), parent(nullptr), children({}){}
+Node::Node(Entity* entity, Node* parent): entity(entity), parent(parent), children({}){}
+Node::Node(Entity* entity, Node* parent, std::vector<Node*> children): entity(entity), parent(parent), children(children){}
 
-void Node::setParent(Node* parent){
+void Node::setParent(Node* newParent){
 
-    // remove from parent
-    if (this->parent){
-        // remove the element from the vertex
-        ((this->parent) -> children).erase(
-            std::remove(((this->parent) -> children).begin(), ((this->parent) -> children).end(), (this -> parent)),
-            ((this->parent) -> children).end());
+    if(parent != nullptr)
+        (parent -> children).erase(std::remove((parent -> children).begin(), (parent -> children).end(), parent), (parent -> children).end());
+
+    if (newParent != nullptr) {
+        (newParent -> children).push_back(this);
     }
 
-    if (parent) {
-        (parent -> children).push_back(this);
-    }
-
-    this -> parent = parent;
+    this -> parent = newParent;
 }
 
+void Node::updateWorldMatrix(){
 
-void updateWorldMatrix(glm::vec4& parentWorldMatrix){
+    if((parent -> entity -> worldMatrix) != glm::mat4())
+        (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
+    else
+        (entity -> worldMatrix) = (entity -> localMatrix);
 
-    auto isNotEqualToZero = [](glm::mat4& matrix) {
-        for (int i = 0; i < 4; ++i) {
-            for (int j = 0; j < 4; ++j) {
-                if (matrix[i][j] != 0.0f) {
-                    return true;
-                }
+    // we can then draw everything relative to the main matrix
+
+    for(auto child: children){
+        child -> updateWorldMatrix();
+    }
+
+}
+
+void Node::Draw(const Shader& shader){
+
+    if(entity != nullptr){
+        const VertexArray& va = *(entity -> getVA());
+
+        std::cout << "Draw Function" << std::endl;
+        shader.Bind();
+        std::cout << "Shader Binded" << std::endl;
+
+        // take care of when the parent is null
+        if(parent != nullptr){
+            if(parent -> entity != nullptr){
+                if((parent -> entity -> worldMatrix) != glm::mat4())
+                    (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
+                else
+                    (entity -> worldMatrix) = (entity -> localMatrix);
             }
         }
-        return false;
-    };
 
-// C
+        GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
-// Check that the parent matrix is not equal to the identity matrix
+        std::cout << "VA Binded " << va.getID() << std::endl;
+        va.Bind();
+        // the size should be stored in the va ...
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        std::cout << "Displayed to Screen" << std::endl;
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
 
-//    if (isNotEqualToZero(parentWorldMatrix)) {
-//        worldMatrix = parentWorldMatrix * localMatrix;
-//    } else {
-//        worldMatrix = localMatrix;
-//    }
-
-//    // For each of the children, update their world matrix respectively
-//    for (auto child : children) {
-//        child->updateWorldMatrix(worldMatrix);
-//    }
-
+    for(auto child: children){
+        child -> Draw(shader);
+    }
 }

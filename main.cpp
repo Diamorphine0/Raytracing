@@ -13,9 +13,6 @@ int main()
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 0 ), 3.14f, 0.0f, 90.0f));
 
-    // initialize a scene graph ?
-    SceneGraph* SG = new SceneGraph();
-
     // for now we just store the position and color of each vertex
     Vertex v1(glm::vec3(-0.5f,-0.1f,-0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
     Vertex v2(glm::vec3(0.1f,-0.1f, -0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
@@ -34,13 +31,11 @@ int main()
     Entity* entity1 = new Entity(vertices1);
     Entity* entity2 = new Entity(vertices2);
 
-    // this should be a template
-    SG -> addEntity(entity1);
-    SG -> addEntity(entity2);
+    Node* node1 = new Node(entity1);
+    Node* node2 = new Node(entity2);
 
-    std::cout << (entity1 -> getVA()) << std::endl;
-
-    std::cout << "Size" << (SG -> getEntities()).size() << std::endl;
+    node1 -> setParent(engine.engineWorld);
+    node2 -> setParent(node1);
 
     auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
     engine.world = world;
@@ -55,7 +50,7 @@ int main()
     do{
         shader.Bind();
 
-        engine.camera.renderScene(SG, shader);
+        engine.camera.renderScene(engine.engineWorld, shader);
 
         // adding anything to the scene graph should happen here ...
         engine.update();
