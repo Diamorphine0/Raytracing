@@ -29,19 +29,16 @@ public:
 
     Node();
 
-    void setParent(){
+    void setParent(Node* parent);
 
-    }
-
-    void updateWorldMatrix(){
-
-    }
+    void updateWorldMatrix(glm::vec4& parentWorldMatrix);
 
 private:
     glm::vec4 localMatrix;
     glm::vec4 worldMatrix;
-    std::vector<Node> children;
-    Entity thingToDraw;
+    Node* parent;
+    std::vector<Node*> children;
+    Entity* thingToDraw;
 };
 
 #endif // SCENEGRAPH_H

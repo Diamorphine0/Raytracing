@@ -49,12 +49,16 @@ int main()
 
     Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
+    std::cout << GL_FLOAT << " "<< sizeof(Vertex) << std::endl;
+
     do{
         engine.camera.Clear();
 
         shader.Bind();
 
         engine.camera.renderScene(SG, shader);
+
+        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
         engine.update();
     }

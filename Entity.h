@@ -13,7 +13,6 @@
 struct Vertex{
     glm::vec3 Coordinates;
     glm::vec3 Color;
-    glm::vec3 Normal;
 
     Vertex(glm::vec3 Coordinates, glm::vec3 Color){
         this->Coordinates = Coordinates;
@@ -42,11 +41,11 @@ struct VertexBufferElement{
 // This is equivalent to storing a vertex mesh
 class VertexBuffer{
 
-private:
+public:
     // This is the VBO
     GLuint m_RendererID;
-public:
-    VertexBuffer(const void* data, unsigned int size);
+
+    VertexBuffer(const void* data, unsigned long size);
     ~VertexBuffer();
 
     void Bind() const;
@@ -97,7 +96,8 @@ public:
 
     void Bind() const;
     void Unbind() const;
-    void AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout);
+    void AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& layout);
+    inline unsigned int getID() const{return m_RendererID;};
 };
 
 // The entity gives the interface for dealing with the mesh
@@ -125,10 +125,11 @@ public:
         return ;
     }
 
+    void create(const void* data, unsigned long size);
+
     inline auto getVA(){ return va;};
 
 private:
-    // there should be a shader associated to every entity
     VertexArray* va;
 };
 

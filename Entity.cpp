@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include <iostream>
 
-VertexBuffer::VertexBuffer(const void* data, unsigned int size){
+VertexBuffer::VertexBuffer(const void* data, unsigned long size){
     glGenBuffers(1, &m_RendererID);
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
     glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
@@ -22,6 +22,7 @@ void VertexBuffer::Unbind() const {
 }
 
 VertexArray::VertexArray(){
+    std::cout << "Entity created" << std::endl;
     glGenVertexArrays(1, &m_RendererID);
 }
 
@@ -37,11 +38,11 @@ void VertexArray::Unbind() const{
     glBindVertexArray(0);
 }
 
-void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& layout){
+void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& layout){
 
     Bind();
 
-    vb.Bind();
+    vb -> Bind();
 
     // we get vertex buffer elements
     const auto& elements = layout.GetElements();
@@ -60,7 +61,7 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
             element.normalized ? GL_TRUE : GL_FALSE, // normalized?
             sizeof(Vertex),     // stride - THAT MAY BE WRONG!
             (const void*) 0     // array buffer offset
-        );
+            );
 
         glEnableVertexAttribArray(1);
         glVertexAttribPointer(
@@ -70,18 +71,29 @@ void VertexArray::AddBuffer(const VertexBuffer& vb, const VertexBufferLayout& la
             element.normalized ? GL_TRUE : GL_FALSE,                         // normalized?
             sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
             (void*) offsetof(Vertex, Color)   // array buffer offset
-        );
+            );
 
         // offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
     }
+
+}
+
+void Entity::create(const void* data, unsigned long size){
+
+    GLuint m_RendererID;
+    glGenBuffers(1, &m_RendererID);
+    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+    std::cout << "Initialized" << std::endl;
 }
 
 // This should be a template
 Entity::Entity(std::vector<Vertex>& vertices){
 
     va = new VertexArray();
+    va -> Bind();
 
-    VertexBuffer vb(&vertices[0], vertices.size() * sizeof(Vertex));
+    VertexBuffer* vb = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
 
     VertexBufferLayout layout;
 
