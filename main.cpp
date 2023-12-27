@@ -17,23 +17,26 @@ int main()
     SceneGraph* SG = new SceneGraph();
 
     // for now we just store the position and color of each vertex
-    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
+    Vertex v1(glm::vec3(-0.5f,-0.1f,-0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v2(glm::vec3(0.1f,-0.1f, -0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
+    Vertex v3(glm::vec3(0.1f, 0.1f, 0.1f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    std::cout << "Size" << vertices.size() << std::endl;
-    std::cout << "We get here!!!" << std::endl;
+    std::vector<Vertex> vertices1{v1, v2, v3};
+
+    Vertex v4(glm::vec3(-0.2f,-0.2f,-0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
+    Vertex v5(glm::vec3(0.2f,-0.2f, -0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
+    Vertex v6(glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.609f,  0.115f,  0.436f));
+
+    std::vector<Vertex> vertices2{v4, v5, v6};
 
     // Entity instantiation
 
-    Entity* entity1 = new Entity(vertices);
+    Entity* entity1 = new Entity(vertices1);
+    Entity* entity2 = new Entity(vertices2);
 
     // this should be a template
     SG -> addEntity(entity1);
+    SG -> addEntity(entity2);
 
     std::cout << (entity1 -> getVA()) << std::endl;
 
@@ -49,17 +52,12 @@ int main()
 
     Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
-    std::cout << GL_FLOAT << " "<< sizeof(Vertex) << std::endl;
-
     do{
-        engine.camera.Clear();
-
         shader.Bind();
 
         engine.camera.renderScene(SG, shader);
 
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
-
+        // adding anything to the scene graph should happen here ...
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

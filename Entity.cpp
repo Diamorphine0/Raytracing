@@ -78,15 +78,6 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 
 }
 
-void Entity::create(const void* data, unsigned long size){
-
-    GLuint m_RendererID;
-    glGenBuffers(1, &m_RendererID);
-    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-    std::cout << "Initialized" << std::endl;
-}
-
 // This should be a template
 Entity::Entity(std::vector<Vertex>& vertices){
 

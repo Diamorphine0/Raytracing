@@ -27,6 +27,10 @@ void Shader::setUnifrom4f(const std::string& name, float v0, float v1, float v2,
     glUniform4f(getUniformStringLocation(name), v0, v1, v2, v3);
 }
 
+void Shader::setUniformMatrix4fv(const std::string& name, const GLfloat* data){
+    glUniformMatrix4fv(getUniformStringLocation(name), 1, GL_FALSE, data);
+}
+
 GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment_file_path){
     // Create the shaders
     GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);

@@ -77,31 +77,7 @@ public:
 
         ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-        {
-            static int counter = 0;
-            ImGui::Text("Engine");
-
-            // General Event Handling Functionality
-
-            // Object picking will happen here as well
-
-            if(ImGui::Button("Raytrace")){
-                counter++;
-                rayTracingCamera = new Camera(height, width, camera.getPosition());
-                rayTracingCamera->render(world, "imageRender.ppm");
-            }
-
-            float obj_rot_angle = 0;
-            ImGui::SliderFloat("Rotation agnle along (0,0,1)", &obj_rot_angle, -3.14, 3.14);
-
-
-            ImGui::ColorEdit3("Set Object Color", (float*) &clear_color);
-            // we should now be able to change the color of the vertex.
-
-            ImGui::Text("Raytracings done = %d", counter);
-            ImGuiIO& io = ImGui::GetIO();
-            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-        };
+        RenderUI();
 
         // Rendering
         ImGui::Render();
@@ -109,8 +85,41 @@ public:
         glfwSwapBuffers(window);
     }
 
+    void RenderUI(){
+
+        static int counter = 0;
+        ImGui::Text("Engine");
+
+        if(ImGui::Button("Raytrace")){
+            counter++;
+            rayTracingCamera = new Camera(height, width, camera.getPosition());
+            rayTracingCamera->render(world, "imageRender.ppm");
+        }
+
+        ImGui::Text("Transform Controls");
+
+        // Translation sliders for X, Y, Z direction
+        // we want to store the previous values
+        static float translationX = 0.0f, translationY = 0.0f, translationZ = 0.0f;
+        ImGui::SliderFloat("Translation X", &translationX, -10.0f, 10.0f);
+        ImGui::SliderFloat("Translation Y", &translationY, -10.0f, 10.0f);
+        ImGui::SliderFloat("Translation Z", &translationZ, -10.0f, 10.0f);
+
+        // Scaling slider
+        static float scale = 1.0f;
+        ImGui::SliderFloat("Scale", &scale, 0.1f, 3.0f);
+
+        // Rotation slider
+        static float rotation = 0.0f;
+        ImGui::SliderFloat("Rotation", &rotation, 0.0f, 360.0f);
+        ImGui::Text("Raytracings done = %d", counter);
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    };
+
     // scene graph -> which will store the relationship between the objects ->
 
+    // do we want to select the currently selected object.
     GLFWwindow* window;
     GLuint programID;
     engineCamera camera;

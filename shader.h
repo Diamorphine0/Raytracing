@@ -30,6 +30,9 @@ public:
 
     void setUnifrom4f(const std::string& name, float v0, float v1, float v2, float v3);
 
+    void setUniformMatrix4fv(const std::string& name, const GLfloat* data);
+
+    inline unsigned int getID() const{return m_RendererID;};
 };
 
 #endif // SHADER_H

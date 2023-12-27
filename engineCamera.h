@@ -16,7 +16,7 @@ public:
 
     // instead of rendering the entire scene we will now just need to draw call on the highest instance object in the tree
     // (We can equally just have an "empty" world object that acts as the parent for all).
-    void Draw(const VertexArray& va, const Shader& shader) const;
+    void Draw(Entity* entity, const Shader& shader) const;
 
     void Clear() const{
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
