@@ -7,7 +7,7 @@
 class Dielectric : public Material
 {
 public:
-    Dielectric(Color att) {attenuation = att};
+    Dielectric(Color att) {attenuation = att;}
 
     virtual Ray scatter(Ray);
 
