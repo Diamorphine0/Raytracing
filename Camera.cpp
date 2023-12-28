@@ -11,6 +11,7 @@ void Camera::render(Hittable *world, const std::string &imagePath) {
             Ray r(center, ray_direction);
 
             Color pixel_color = ray_color(r, world);
+            pixel_color = Color(static_cast<int>(pixel_color.x),static_cast<int>(pixel_color.y),static_cast<int>(pixel_color.z));
 
             imageRenderer.set_pixel(j, i, pixel_color);
         }
@@ -40,24 +41,50 @@ void Camera::initialize() {
 
 Color Camera::ray_color(const Ray& r, Hittable *world) const {
     float t = 0;
+    //Stop collecting info after 3 reflections and assume ray is too weak
+    if (r.get_reflectionDepth()>3) {return Color(0,0,0);}
 
     auto world_ans = world->intersectWithRay(r, t);
     if (world_ans.first) {
-//        std::cerr<<"Hit at "<<r.get_direction();
-        // we should instead be getting the color from the engine.
-        //For now, just going to compute simple facing ratio and use to shade (Lambertian Reflectance)
-        float facingRatio = std::abs(world_ans.second->getFacingRatio(r));
-        float colorArg1 = world_ans.second->color.x *facingRatio;
-        float colorArg2 = world_ans.second->color.y *facingRatio;
-        float colorArg3 = world_ans.second->color.z *facingRatio;
 
-        Color pixelColor(static_cast<int> (colorArg1), static_cast<int> (colorArg2), static_cast<int> (colorArg3));
-        // we should instead be getting the color from the engine.
-        return  pixelColor;
+
+
+
+        //Object  hit and its information for scattering and coloring by material
+        Hittable& objectHit = (*world_ans.second);
+        //The object unit normal for scattering
+        Vec3 objectNormal = objectHit.normal;
+        objectNormal.normalize();
+        //Material which performs attenuation of color as well as scattering
+        Material& objectMaterial = objectHit.mat;
+
+
+        //I need the intersection to scatter
+
+
+
+        Point3 r_origin = r.get_origin(), r_direction = r.get_direction();
+
+        float dir_dot_normal = r_direction.dot(objectNormal);
+
+        //Compute intersection point with triangle
+        // Phit * normal + coef = 0; Phit = origin + t * direction => t = -( coef + origin * normal) / (direction * normal)
+
+        t = - (objectHit.planeEquationCoeff + r_origin.dot(objectNormal)) / dir_dot_normal;
+
+        Vec3 intersection = r_origin + r_direction * t;
+
+        //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
+        Ray scatteredRay = objectMaterial.scatter(r, intersection, objectNormal);
+        // We now backtrack ray color as it came from source and hit it with attenuation recursively for each object in its path
+        Color resultant = ray_color(scatteredRay,world);
+        objectMaterial.attenuate(resultant);
+        return resultant;
 
     }
     else{
-        return Color(0, 0, 0);
+        //For now we have intense light sources surrounding the scene
+        return Color(255, 255, 255);
     }
 
 }

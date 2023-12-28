@@ -24,8 +24,8 @@ public:
 
 private:
     Point3 p0, p1, p2;
-    Point3 normal;
-    float planeEquationCoeff{};
+
+
 
     bool checkOnPlane(const Point3 &p) const;
     //assumes point is already on plane

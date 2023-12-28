@@ -9,18 +9,20 @@ public:
         direction(c_direction),
         reflectionDepth(c_reflectionDepth) {};
 
+
    ///Getters
     Point3 get_origin() const { return origin; }
     Vec3 get_direction() const { return direction; }
     int get_reflectionDepth() const { return reflectionDepth; }
-   ///Utility functions
+    // Ray bears an incident color!
 
+    int reflectionDepth;
 
 protected:
     Point3 origin;
     Vec3 direction;
 
-    int reflectionDepth;
+
 };
 
 #endif // RAY_HPP

@@ -25,10 +25,13 @@ public:
     void setMaterial(Material mat) {this->mat=mat;}
 
     //JUST TO DEBUG. TO REMOVE.!
-    Color color;
+    Vec3 normal;
     Material mat;
+    float planeEquationCoeff;
 protected:
     Hittable() {};
+
+
 
 };
 

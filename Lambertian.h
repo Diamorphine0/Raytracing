@@ -9,7 +9,7 @@ class Lambertian : public Material {
 public:
     Lambertian(Color att) {attenuation = att;}
 
-    virtual Ray scatter(Ray);
+    virtual Ray scatter(const Ray&, Vec3, Vec3);
 
 protected:
 
