@@ -27,13 +27,13 @@ int main()
     glBindVertexArray(VertexArrayID);
 
 
-    Vertex v1(glm::vec3(-1.0f,-1.0f,-3.0f), glm::vec3(0.583f,  0.771f,  0.014f));
-    Vertex v2(glm::vec3(-1.5f,-2.0f, -1.5f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(-1.5f, 3.0f, -1.5f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
+    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
+    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
 
-    Vertex v4(glm::vec3(1.0f, -1.0f, -3.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v5(glm::vec3(1.5f, -2.0f, -1.5f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v6(glm::vec3(1.5f, 3.0f, -1.5), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v4(glm::vec3(-2.0f, -2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v5(glm::vec3(2.0f, -2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    Vertex v6(glm::vec3(2.0f, 2.0f, -2.0f), glm::vec3(0.327f,  0.483f,  0.844f));
     std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
 
     Mesh mesh(vertices);
@@ -46,7 +46,7 @@ int main()
     tr1->setMaterial(Lambertian(Color(0.9,0.3,0.1)));
 
     auto tr2 = new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates);
-    tr2->setMaterial(Lambertian(Color(0.3,0.9,0.1)));
+    tr2->setMaterial(Metal(Color(1,1,1)));
 
     world->add_object(tr1);
     world->add_object(tr2);
