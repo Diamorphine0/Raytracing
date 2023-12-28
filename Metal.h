@@ -7,11 +7,11 @@
 class Metal : public Material
 {
 public:
-    Metal(Color att, double smooth) {attenuation = att;smoothness = smooth;}
+    Metal(Color att) {attenuation = att;}
 
     virtual Ray scatter(const Ray&, Vec3, Vec3);
 
-    double smoothness;
+    double smoothness = 0;
 
 protected:
 
