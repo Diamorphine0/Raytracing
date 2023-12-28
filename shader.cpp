@@ -3,7 +3,7 @@
 Shader::Shader(const char * vertex_file_path,const char * fragment_file_path)
     :m_RendererID(0)
 {
-    m_RendererID = compileShader( "../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader" );
+    m_RendererID = compileShader( vertex_file_path, fragment_file_path );
 }
 
 Shader::~Shader(){

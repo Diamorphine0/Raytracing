@@ -28,11 +28,23 @@ set(PROJECT_SOURCES
         ImageRenderer.cpp
         ImageRenderer.h
         Entity.h
-        engine.h
+        Engine.h
         engineCamera.h
-        engine.cpp
+        Engine.cpp
         shader.h
         imconfig.h
+        pointlightsource.h
+        pointlightsource.cpp
+        Entity.cpp
+        scenegraph.h
+        scenegraph.cpp
+        shader.h
+        shader.h shader.cpp
+        enginecamera.cpp
+        primitives.h
+        primitives.cpp
+
+
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
@@ -55,13 +67,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        pointlightsource.h pointlightsource.cpp
-        Entity.cpp
-        scenegraph.h scenegraph.cpp
-        shader.h
-        shader.h shader.cpp
-        enginecamera.h enginecamera.cpp
-        primitives.h primitives.cpp
+
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

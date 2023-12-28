@@ -6,9 +6,9 @@ Node::Node(Entity* entity, Node* parent): entity(entity), parent(parent), childr
 Node::Node(Entity* entity, Node* parent, std::vector<Node*> children): entity(entity), parent(parent), children(children){}
 
 void Node::setParent(Node* newParent){
-
-    if(parent != nullptr)
-        (parent -> children).erase(std::remove((parent -> children).begin(), (parent -> children).end(), parent), (parent -> children).end());
+    //Reassigning parents doesnt work
+    //    if(parent != nullptr)
+//        //(parent -> children).erase(std::remove((parent -> children).begin(), (parent -> children).end(), parent), (parent -> children).end());
 
     if (newParent != nullptr) {
         (newParent -> children).push_back(this);

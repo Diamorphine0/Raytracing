@@ -33,9 +33,9 @@ int main()
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity1 = new Entity("../objects/sphere.obj");
+    Entity* entity2 = new Entity("../objects/sphere.obj");
+    Entity* entity3 = new Entity("../objects/sphere.obj");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);

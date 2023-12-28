@@ -1,5 +1,5 @@
 #include "Entity.h"
-
+#include <cstring>
 VertexBuffer::VertexBuffer(const void* data, unsigned long size){
     glGenBuffers(1, &m_RendererID);
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -93,7 +93,7 @@ Entity::Entity(std::vector<Vertex>& vertices){
 
     VertexBufferLayout layout;
 
-    layout.Push<Vertex>(3);
+    layout.Push_Vertex(3);
 
     va -> AddBuffer(vb, layout);
 }
@@ -118,7 +118,7 @@ Entity::Entity(const char* path){
 
     VertexBufferLayout layout;
 
-    layout.Push<Vertex>(3);
+    layout.Push_Vertex(3);
 
     va -> AddBuffer(vb, layout);
 };
@@ -202,6 +202,7 @@ bool Entity::loadOBJ(const char * path,
     }
 
     std::cout << "Size: " << out_vertices.size() << std::endl;
+    return true;
 }
 
 // We want to extend the entity functionality to load objects.

@@ -71,21 +71,17 @@ public:
     VertexBufferLayout()
         :m_Stride(0){}
 
-    template<typename T>
-    void Push(unsigned int count){
-    }
-
-    template<> void Push<float>(unsigned int count){
+   void Push_float(unsigned int count){
         m_Elements.push_back({ GL_FLOAT, count, false });
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
     }
 
-    template<> void Push<unsigned int>(unsigned int count){
+    void Push_int(unsigned int count){
         m_Elements.push_back({ GL_UNSIGNED_INT, count, false });
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_UNSIGNED_INT);
     }
 
-    template<> void Push<Vertex>(unsigned int count){
+    void Push_Vertex(unsigned int count){
         m_Elements.push_back({ GL_FLOAT, count, false });
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
     }
