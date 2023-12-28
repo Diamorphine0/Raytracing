@@ -1,5 +1,4 @@
 #include "Entity.h"
-#include <iostream>
 
 VertexBuffer::VertexBuffer(const void* data, unsigned long size){
     glGenBuffers(1, &m_RendererID);
@@ -79,9 +78,15 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 }
 
 // This should be a template
+
+Entity::Entity(){
+    va = new VertexArray();
+}
+
 Entity::Entity(std::vector<Vertex>& vertices){
 
     va = new VertexArray();
+
     va -> Bind();
 
     VertexBuffer* vb = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
@@ -92,3 +97,113 @@ Entity::Entity(std::vector<Vertex>& vertices){
 
     va -> AddBuffer(vb, layout);
 }
+
+Entity::Entity(const char* path){
+
+    std::vector<Vertex> vertices = {};
+    std::vector< glm::vec2 > uvs;
+    std::vector< glm::vec3 > normals;
+
+    std::cout << "Before loading" << std::endl;
+    loadOBJ(path, vertices, uvs, normals);
+    std::cout << "After loading" << std::endl;
+
+    va = new VertexArray();
+
+    va -> Bind();
+
+    std::cout << "Size" << vertices.size() << std::endl;
+
+    VertexBuffer* vb = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
+
+    VertexBufferLayout layout;
+
+    layout.Push<Vertex>(3);
+
+    va -> AddBuffer(vb, layout);
+};
+
+bool Entity::loadOBJ(const char * path,
+                     std::vector < Vertex > & out_vertices,
+                     std::vector < glm::vec2 > & out_uvs,
+                     std::vector < glm::vec3 > & out_normals){
+
+    std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
+
+    std::vector< Vertex > temp_vertices;
+    std::vector< glm::vec2 > temp_uvs;
+    std::vector< glm::vec3 > temp_normals;
+
+    FILE* file = fopen(path, "r");
+    std::cout << file << std::endl;
+    if( file == NULL ){
+        printf("Impossible to open the file !\n");
+        return false;
+    }
+
+    float color = 0.1f;
+    while( 1 ){
+
+        color += 0.01;
+        if (color >= 1.0f) color = 0;
+        char lineHeader[256];
+        // read the first word of the line
+        int res = fscanf(file, "%s", lineHeader);
+
+        if (res == EOF)
+            break;
+
+        if ( strcmp( lineHeader, "v" ) == 0 ){
+            glm::vec3 vertex;
+            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
+
+            std::cout << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
+
+            //should use something like emplace back
+            temp_vertices.push_back(Vertex(vertex, glm::vec3(color,  color,  color)));
+
+        }
+        else if ( strcmp( lineHeader, "vt" ) == 0 ){
+            glm::vec2 uv;
+            fscanf(file, "%f %f\n", &uv.x, &uv.y );
+            temp_uvs.push_back(uv);}
+        else if ( strcmp( lineHeader, "vn" ) == 0 ){
+            glm::vec3 normal;
+            fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
+            temp_normals.push_back(normal);
+        }
+        else if ( strcmp( lineHeader, "f" ) == 0 ){
+            std::string vertex1, vertex2, vertex3;
+            unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
+            int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
+            if (matches != 9){
+                printf("File can't be read by our simple parser : ( Try exporting with other options\n");
+                return false;
+            }
+            vertexIndices.push_back(vertexIndex[0]);
+            vertexIndices.push_back(vertexIndex[1]);
+            vertexIndices.push_back(vertexIndex[2]);
+            uvIndices    .push_back(uvIndex[0]);
+            uvIndices    .push_back(uvIndex[1]);
+            uvIndices    .push_back(uvIndex[2]);
+            normalIndices.push_back(normalIndex[0]);
+            normalIndices.push_back(normalIndex[1]);
+            normalIndices.push_back(normalIndex[2]);
+        }
+
+    }
+
+    // For each vertex of each triangle
+    for( unsigned int i=0; i<vertexIndices.size(); i++ ){
+        unsigned int vertexIndex = vertexIndices[i];
+        Vertex vertex = temp_vertices[ vertexIndex - 1];
+        out_vertices.push_back(vertex);
+        std::cout << vertex.Coordinates.x << " " << vertex.Coordinates.y << " " << vertex.Coordinates.z << std::endl;
+    }
+
+    std::cout << "Size: " << out_vertices.size() << std::endl;
+}
+
+// We want to extend the entity functionality to load objects.
+// To store the animations -> Basically every element should know it's movement in each frame
+// it suffices to store triangles (in 3s and the normals -)

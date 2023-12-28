@@ -6,19 +6,28 @@
 #include <glm/gtx/transform.hpp>
 #include <vector>
 
+//for debugging
+#include <iostream>
+// for .obj model reading
+#include <fstream>
+
 #ifndef ECS_H
 #define ECS_H
 
 // more difficult to deal with a struct
 struct Vertex{
+
     glm::vec3 Coordinates;
     glm::vec3 Color;
+    // a single vertex cannot have a normal associated to it ...
 
     Vertex(glm::vec3 Coordinates, glm::vec3 Color){
         this->Coordinates = Coordinates;
         this->Color = Color;
     }
 };
+
+// we should have a mesh object - what the verticies is doing right now ...
 
 // Stores information about a single instance of the vertex struct
 struct VertexBufferElement{
@@ -108,8 +117,10 @@ public:
     glm::mat4 localMatrix = glm::mat4(1.0f);
 public:
 
-    // what is the difference from a vertex buffer element
-    // to every entity we provide a list of verticies that will form it
+    Entity();
+
+    Entity(const char* path);
+
     Entity(std::vector<Vertex>& vertices);
 
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z));};
@@ -122,7 +133,15 @@ public:
 
     inline auto getVA(){ return va;};
 
+    bool loadOBJ(
+        const char* path,
+        std::vector < Vertex >& out_vertices,
+        std::vector < glm::vec2 >& out_uvs,
+        std::vector < glm::vec3 >& out_normals
+    );
+
 private:
+    // the va should likewise include the normals & we should create an index buffer
     VertexArray* va;
 };
 

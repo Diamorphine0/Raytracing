@@ -11,31 +11,37 @@ int main()
 {
 
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
-    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 0 ), 3.14f, 0.0f, 90.0f));
+    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // for now we just store the position and color of each vertex
     // y coord
-    Vertex v1(glm::vec3(-0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v2(glm::vec3(-0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v3(glm::vec3( 0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    Vertex v4(glm::vec3( 0.1f, -0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v5(glm::vec3(0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
-    Vertex v6(glm::vec3(-0.1f, 0.1f,0.00f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v1(glm::vec3(-0.995921f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v2(glm::vec3(-2.99592f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v3(glm::vec3( -2.99592f, 0.158561f, -1), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    std::vector<Vertex> vertices1{v1,v2,v3,v4,v5,v6};
+//    Vertex v4(glm::vec3(-2.99592f, 2.15856f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v5(glm::vec3(-2.99592f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v6(glm::vec3(-0.995922f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+
+//    Vertex v7(glm::vec3(0.995921f, 2.15856f, -0.999999f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v8(glm::vec3(-0.995921f, 0.158561f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v9(glm::vec3(-0.995921f, 0.158561f, 1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+
+//    std::vector<Vertex> vertices1{v7, v8, v9};
 
     // Entity instantiation
 
-    Entity* entity1 = new Entity(vertices1);
-    Entity* entity2 = new Entity(vertices1);
-    Entity* entity3 = new Entity(vertices1);
+    // only a single face of the object loaded..,
+    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
 
-    entity2 -> scale(0.5, 0.5, 1);
-    entity2 -> translate(-0.7, -0.7, 0);
+    entity2 -> scale(0.5, 0.5, 0.5);
+    entity2 -> translate(-10, -10, 0);
 
-    entity3 -> scale(0.5, 0.5, 1);
-    entity3->translate(-0.5, -0.5, 0);
+    entity3 -> scale(0.4, 0.4, 0.4);
+    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
     Node* node2 = new Node(entity2);
@@ -45,21 +51,26 @@ int main()
     node2 -> setParent(node1);
     node3 -> setParent(node2);
 
-    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-    engine.world = world;
+//    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+//    engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;
 
-    float speed = 0.005f;
+    float speed = 0.001f;
 
     Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
     do{
         shader.Bind();
 
-        engine.camera.renderScene(engine.engineWorld, shader);
+        std::cout << "Adjust camera" << std::endl;
+        // we now also want to rotate
+        engine.camera.movement(currentTime, lastTime, speed, engine.window);
+        std::cout << "Camera adjusted" << std::endl;
 
+        engine.camera.renderScene(engine.engineWorld, shader);
+        std::cout << "Scene rendered" << std::endl;
         // adding anything to the scene graph should happen here ...
         engine.update();
     }

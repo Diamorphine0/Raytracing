@@ -17,6 +17,8 @@ using namespace glm;
 
 class Node{
 public:
+    Entity* entity;
+public:
 
     Node();
     Node(Entity* entity);
@@ -31,7 +33,6 @@ public:
 private:
     Node* parent;
     std::vector<Node*> children;
-    Entity* entity;
 };
 
 #endif // SCENEGRAPH_H

@@ -5,6 +5,7 @@
 #include "Camera.hpp"
 #include "engineCamera.h"
 #include "scenegraph.h"
+#include "Entity.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -21,7 +22,7 @@ public:
 
     void RenderUI();
 
-    // Scene Graph
+    // Scene Graph - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld;
 
     GLFWwindow* window;

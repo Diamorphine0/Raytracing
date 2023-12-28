@@ -23,6 +23,9 @@ public:
     inline glm::vec3 getPosition(){return position;};
 
 private:
+    GLFWwindow* window;
+    double xpos, ypos;
+    float mousespeed = 0.001f;
     glm::vec3 position;
     float horizontalAngle;
     float verticalAngle;
