@@ -40,6 +40,7 @@ void Camera::initialize() {
 }
 
 Color Camera::ray_color(const Ray& r, Hittable *world) const {
+    //std::cout<<world<<"\n";
     float t = 0;
     //Stop collecting info after max_Depth reflections and assume ray is too weak
     if (r.get_reflectionDepth()>max_depth) {
@@ -63,7 +64,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
         Color resultant = ray_color(scatteredRay,world);
 
         objectMaterial->attenuate(resultant);
-        std::cerr<<resultant<<"\n";
+        //std::cerr<<resultant<<"\n";
         return resultant;
 
     }

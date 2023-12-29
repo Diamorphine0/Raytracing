@@ -40,13 +40,13 @@ void Node::Draw(const Shader& shader){
         // this would happen every time
         entity -> rotate(0.01f, 0.001f, 0.001f, 1);
 
-        std::cout << "Draw Function" << std::endl;
+        //std::cout << "Draw Function" << std::endl;
         shader.Bind();
-        std::cout << "Shader Binded" << std::endl;
+        //std::cout << "Shader Binded" << std::endl;
 
         // take care of when the parent is null
         if(parent != nullptr){
-            std::cout << "Are we here ?" << std::endl;
+            //std::cout << "Are we here ?" << std::endl;
             if(parent -> entity != nullptr){
                 if((parent -> entity -> worldMatrix) != glm::mat4())
                     (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
@@ -58,34 +58,35 @@ void Node::Draw(const Shader& shader){
             }
         }
 
-        std::cout << "here" << std::endl;
+        //std::cout << "here" << std::endl;
 
-        std::cout << shader.getID() << std::endl;
+        //std::cout << shader.getID() << std::endl;
 
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
 
-        std::cout << MatrixID << std::endl;
+        //std::cout << MatrixID << std::endl;
 
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
-        std::cout << "VA Binded " << va.getID() << std::endl;
+        //std::cout << "VA Binded " << va.getID() << std::endl;
         va.Bind();
         // This is really bad !!!
         glDrawArrays(GL_TRIANGLES, 0, 10000);
-        std::cout << "Displayed to Screen" << std::endl;
+        //std::cout << "Displayed to Screen" << std::endl;
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
     for(auto child: children){
-        std::cout << "Child drawn" << std::endl;
+        //std::cout << "Child drawn" << std::endl;
         child -> Draw(shader);
     }
 }
 
 std::pair<bool, Hittable*> Node::intersectWithRay(const Ray &r, float &t) const {
     t = FLT_MAX;
-    std::pair<bool, Hittable *> ans;
+    std::pair<bool, Hittable *> ans = {false, NULL};
     if(entity != nullptr){
+        //std::cerr<<"Not null entity\n";
         ans = entity->hl->intersectWithRay(r, t);
     }
     if(!ans.first)

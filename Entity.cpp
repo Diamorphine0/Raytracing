@@ -91,20 +91,21 @@ Entity::Entity(std::vector<Vertex>& vertices){
 
     glm::vec3 v1, v2, v3;
     glm::vec3 v1_Color, v2_Color, v3_Color;
-
-    for(auto vertex(vertices.begin()); vertex != vertices.end(); ++vertex){
-        if(std::distance(vertex, vertices.begin()) % 3 == 0 ){
-            v1 = vertex->Coordinates;
-            v1_Color = vertex->Color;
-        }else if(std::distance(vertex, vertices.begin()) % 3 == 1 ){
-            v2 = vertex->Coordinates;
-            v2_Color = vertex->Color;
+    for(int i = 0; i < vertices.size(); i++){
+        auto &vertex = vertices[i];
+        if(i % 3 == 0 ){
+            v1 = vertex.Coordinates;
+            v1_Color = vertex.Color;
+        }else if(i % 3 == 1 ){
+            v2 = vertex.Coordinates;
+            v2_Color = vertex.Color;
         }else{
-            v3 = vertex->Coordinates;
-            v3_Color = vertex->Color;
+            v3 = vertex.Coordinates;
+            v3_Color = vertex.Color;
 
             // define a triangle
-
+            std::cerr<<"Created a new triangle\n";
+            std::cerr<<v1<<", "<<v2<<", "<<v3<<"\n";
             Triangle* t = new Triangle(Vec3(v1), Vec3(v2), Vec3(v3));
             t->setMaterial(new Lambertian(Color(0.9, 0.4, 0.1)));
             //todo: modify color
@@ -138,19 +139,24 @@ Entity::Entity(const char* path){
     glm::vec3 v1, v2, v3;
     glm::vec3 v1_Color, v2_Color, v3_Color;
 
-    for(auto vertex(vertices.begin()); vertex != vertices.end(); ++vertex){
-        if(std::distance(vertex, vertices.begin()) % 3 == 0 ){
-            v1 = vertex->Coordinates;
-            v1_Color = vertex->Color;
-        }else if(std::distance(vertex, vertices.begin()) % 3 == 1 ){
-            v2 = vertex->Coordinates;
-            v2_Color = vertex->Color;
+    for(int i = 0; i < vertices.size(); i++){
+        auto &vertex = vertices[i];
+        if(i % 3 == 0 ){
+            v1 = vertex.Coordinates;
+            v1_Color = vertex.Color;
+        }else if(i % 3 == 1 ){
+            v2 = vertex.Coordinates;
+            v2_Color = vertex.Color;
         }else{
-            v3 = vertex->Coordinates;
-            v3_Color = vertex->Color;
+            v3 = vertex.Coordinates;
+            v3_Color = vertex.Color;
 
             // define a triangle
+            std::cerr<<"Created a new triangle\n";
+            std::cerr<<v1<<", "<<v2<<", "<<v3<<"\n";
             Triangle* t = new Triangle(Vec3(v1), Vec3(v2), Vec3(v3));
+            t->setMaterial(new Lambertian(Color(0.9, 0.4, 0.1)));
+            //todo: modify color
             hl -> add_object(t);
         }
     }

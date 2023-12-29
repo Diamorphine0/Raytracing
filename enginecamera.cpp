@@ -22,7 +22,7 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
 
     auto mvp = construct_mvp();
 
-    std::cout << engineWorld -> entity << std::endl;
+    //std::cout << engineWorld -> entity << std::endl;
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     engineWorld -> Draw(shader);
