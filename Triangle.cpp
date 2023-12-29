@@ -20,7 +20,7 @@ Triangle::Triangle(const Point3 &a, const Point3 &b, const Point3 &c) {
     computeNormal();
     computePlaneEquation();
 
-    std::cerr<<"Normal is "<<normal<<"\n";
+    std::cerr<<"Normal is "<<normal<<" and size "<<normal.length()<<"\n";
     std::cerr<<"THe coefficient is "<<planeEquationCoeff<<std::endl;
 
 

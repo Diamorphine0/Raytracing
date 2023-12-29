@@ -1,5 +1,5 @@
 #include "Utilities.hpp"
-
+#include <random>
 //Defining operators of the class Vec3
 
 // Constructors
@@ -58,4 +58,20 @@ Vec3::Vec3(glm::vec3 v) {
 std::ostream &operator<<(std::ostream &out, const Vec3 &p) {
     out<<p.x<<" "<<p.y<<" "<<p.z;
     return out;
+}
+
+Vec3 random_unit_vector() {
+// Create a random number generator and distribution
+    std::random_device rd;
+    std::mt19937 generator(rd());
+    std::uniform_real_distribution<float> distribution(0.0, 1.0);
+
+    float x = distribution(generator);
+    float y = distribution(generator);
+    float z = distribution(generator);
+
+    Vec3 randomVector(x, y, z);
+    randomVector.normalize();
+
+    return randomVector;
 }

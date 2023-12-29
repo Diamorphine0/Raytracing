@@ -21,7 +21,9 @@ std::pair<bool, Hittable *> Hittable_List::intersectWithRay(const Ray &r, float 
     for(auto object: objects_list){
         float new_t;
         auto new_ans = object->intersectWithRay(r, new_t);
-        if(new_ans.first && new_t < t){
+        if(new_ans.first == false || new_t < EPS)
+            continue;
+        if(new_t < t){
             ans = new_ans;
             t = new_t;
         }

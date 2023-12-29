@@ -18,7 +18,7 @@ Ray Dielectric::refract(const Ray & ray, Vec3 intersection, Vec3 normal){
     auto cosIncidence = (incidentDirection*(-1)).dot(normal);
 
     Vec3 transmittedPerp = (incidentDirection + (normal * (cosIncidence))) * indicesRatio_IT;
-    Vec3 transmittedPara = normal * (-sqrt(fabs(1 - transmittedPerp.lengthSquared())));
+    //Vec3 transmittedPara = normal * (-sqrt(fabs(1 - transmittedPerp.lengthSquared())));
 
 
     return Ray(intersection, incidentDirection, ray.get_reflectionDepth()+1);
