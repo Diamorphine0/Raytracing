@@ -9,13 +9,20 @@
 
 int main()
 {
-    auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
+    //auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
+    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
+    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
+    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
+    std::vector<Vertex> vertices{v1, v2, v3};
+
+    // only a single face of the object loaded..,
+    Entity* entity1 = new Entity(vertices);
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../objects/sphere.obj");
+    //Entity* entity1 = new Entity("../objects/sphere.obj");
     Entity* entity2 = new Entity("../objects/sphere.obj");
     Entity* entity3 = new Entity("../objects/sphere.obj");
 
@@ -26,25 +33,16 @@ int main()
     entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
-    Node* node3 = new Node(entity3);
+//    Node* node2 = new Node(entity2);
+//    Node* node3 = new Node(entity3);
 
-    std::cout << "Size" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
+    //std::cout << "Size" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
 
     node1 -> setParent(engine.engineWorld);
-    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
-    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
 
-    node2 -> setParent(node1);
-    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
-    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
-
-    node3 -> setParent(node2);
-    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
-    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
-
-    auto world = node1 -> entity -> hl;
-    engine.world = world;
+//    node2 -> setParent(node1);
+//
+//    node3 -> setParent(node2);
 
     float currentTime = glfwGetTime();
     float lastTime;
@@ -53,21 +51,21 @@ int main()
 
     Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
-//    do{
-//        shader.Bind();
+    do{
+        shader.Bind();
 
-//        std::cout << "Adjust camera" << std::endl;
-//        // we now also want to rotate
-//        engine.camera.movement(currentTime, lastTime, speed, engine.window);
-//        std::cout << "Camera adjusted" << std::endl;
+        //std::cout << "Adjust camera" << std::endl;
+        // we now also want to rotate
+        //engine.camera.movement(currentTime, lastTime, speed, engine.window);
+        //std::cout << "Camera adjusted" << std::endl;
 
-//        engine.camera.renderScene(engine.engineWorld, shader);
-//        std::cout << "Scene rendered" << std::endl;
-//        // adding anything to the scene graph should happen here ...
-//        engine.update();
-//    }
-//    while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
-//           glfwWindowShouldClose(engine.window) == 0 );
+        engine.camera.renderScene(engine.engineWorld, shader);
+        //std::cout << "Scene rendered" << std::endl;
+        // adding anything to the scene graph should happen here ...
+        engine.update();
+    }
+    while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+           glfwWindowShouldClose(engine.window) == 0 );
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

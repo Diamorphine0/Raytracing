@@ -82,14 +82,35 @@ void Node::Draw(const Shader& shader){
     }
 }
 
-void Node::Concatenate(Hittable_List* cumul_hl){
-
+std::pair<bool, Hittable*> Node::intersectWithRay(const Ray &r, float &t) const {
+    t = FLT_MAX;
+    std::pair<bool, Hittable *> ans;
     if(entity != nullptr){
-        (cumul_hl -> objects_list).insert(entity -> hl -> objects_list.begin(), entity -> hl -> objects_list.end());
+        ans = entity->hl->intersectWithRay(r, t);
     }
-
+    if(!ans.first)
+        t = FLT_MAX;
     for(auto child: children){
-        child -> Concatenate(cumul_hl);
+        float new_t;
+        auto new_ans = child->intersectWithRay(r, new_t);
+        if(!new_ans.first || new_t < EPS)
+            continue;
+        if(new_t < t){
+            ans = new_ans;
+            t = new_t;
+        }
     }
-
+    return ans;
 }
+//
+//void Node::Concatenate(Hittable_List* cumul_hl){
+//
+//    if(entity != nullptr){
+//        (cumul_hl -> objects_list).insert(entity -> hl -> objects_list.begin(), entity -> hl -> objects_list.end());
+//    }
+//
+//    for(auto child: children){
+//        child -> Concatenate(cumul_hl);
+//    }
+//
+//}

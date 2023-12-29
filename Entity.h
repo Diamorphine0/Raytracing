@@ -116,7 +116,7 @@ class Entity{
 public:
     glm::mat4 worldMatrix = glm::mat4(1.0f);
     glm::mat4 localMatrix = glm::mat4(1.0f);
-    Hittable_List* hl = new Hittable_List();
+    Hittable_List *hl = new Hittable_List();
 public:
 
     Entity();

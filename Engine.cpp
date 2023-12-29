@@ -81,7 +81,7 @@ void Engine::RenderUI(){
     if(ImGui::Button("Raytrace")){
         counter++;
         rayTracingCamera = new Camera(height, width, camera.getPosition());
-        rayTracingCamera->render(world, "imageRender.ppm");
+        rayTracingCamera->render(engineWorld, "imageRender.ppm");
     }
 
     ImGui::Text("Transform Controls");

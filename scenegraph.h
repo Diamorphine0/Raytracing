@@ -13,9 +13,10 @@
 #include <vector>
 #include "Entity.h"
 #include "shader.h"
+#include "Hittable.hpp"
 using namespace glm;
 
-class Node{
+class Node: public Hittable{
 public:
     Entity* entity;
 public:
@@ -29,11 +30,15 @@ public:
     void setParent(Node* parent);
     void updateWorldMatrix();
     void Draw(const Shader& shader);
-    void Concatenate(Hittable_List* cumul_hl);
+    //void Concatenate(Hittable_List* cumul_hl);
+
+
+    virtual std::pair<bool, Hittable *> intersectWithRay(const Ray &r, float &t) const;
 
 private:
     Node* parent;
     std::vector<Node*> children;
+
 };
 
 #endif // SCENEGRAPH_H

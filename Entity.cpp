@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Lambertian.h"
 #include <cstring>
 
 VertexBuffer::VertexBuffer(const void* data, unsigned long size){
@@ -105,6 +106,8 @@ Entity::Entity(std::vector<Vertex>& vertices){
             // define a triangle
 
             Triangle* t = new Triangle(Vec3(v1), Vec3(v2), Vec3(v3));
+            t->setMaterial(new Lambertian(Color(0.9, 0.4, 0.1)));
+            //todo: modify color
             hl -> add_object(t);
         }
     }

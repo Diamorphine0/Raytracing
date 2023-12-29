@@ -63,6 +63,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
         Color resultant = ray_color(scatteredRay,world);
 
         objectMaterial->attenuate(resultant);
+        std::cerr<<resultant<<"\n";
         return resultant;
 
     }

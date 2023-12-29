@@ -62,14 +62,15 @@ set(PROJECT_SOURCES
         imgui/backends/imgui_impl_glfw.h
         imgui/backends/imgui_impl_opengl3.h
         Dielectric.cpp
-        Hittable_List.h
+        Dielectric.h
         Hittable_List.cpp
-        Lambertian.h
+        Hittable_List.h
         Lambertian.cpp
-        Material.h
+        Lambertian.h
         Material.cpp
-        Metal.h
+        Material.h
         Metal.cpp
+        Metal.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

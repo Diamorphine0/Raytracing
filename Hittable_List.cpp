@@ -17,7 +17,7 @@ void Hittable_List::remove_object(Hittable *obj) {
 std::pair<bool, Hittable *> Hittable_List::intersectWithRay(const Ray &r, float &t) const {
     //std::cerr<<"curent list: "<<objects_list.size()<<"\n";
     t = FLT_MAX;
-    std::pair<bool, Hittable *> ans;
+    std::pair<bool, Hittable *> ans = {false, NULL};
     for(auto object: objects_list){
         float new_t;
         auto new_ans = object->intersectWithRay(r, new_t);
