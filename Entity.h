@@ -6,6 +6,11 @@
 #include <glm/gtx/transform.hpp>
 #include <vector>
 
+
+#include "Hittable_List.h"
+#include "Triangle.h"
+#include "Material.h"
+
 //for debugging
 #include <iostream>
 // for .obj model reading
@@ -111,7 +116,7 @@ class Entity{
 public:
     glm::mat4 worldMatrix = glm::mat4(1.0f);
     glm::mat4 localMatrix = glm::mat4(1.0f);
-    std::vector<Vertex> vertices;
+    Hittable_List* hl = new Hittable_List();
 public:
 
     Entity();

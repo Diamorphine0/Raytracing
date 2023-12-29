@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include <cstring>
+
 VertexBuffer::VertexBuffer(const void* data, unsigned long size){
     glGenBuffers(1, &m_RendererID);
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -85,7 +86,28 @@ Entity::Entity(){
 
 Entity::Entity(std::vector<Vertex>& vertices){
 
-    this -> vertices = vertices;
+    // go through the verticies and make triangles to add
+
+    glm::vec3 v1, v2, v3;
+    glm::vec3 v1_Color, v2_Color, v3_Color;
+
+    for(auto vertex(vertices.begin()); vertex != vertices.end(); ++vertex){
+        if(std::distance(vertex, vertices.begin()) % 3 == 0 ){
+            v1 = vertex->Coordinates;
+            v1_Color = vertex->Color;
+        }else if(std::distance(vertex, vertices.begin()) % 3 == 1 ){
+            v2 = vertex->Coordinates;
+            v2_Color = vertex->Color;
+        }else{
+            v3 = vertex->Coordinates;
+            v3_Color = vertex->Color;
+
+            // define a triangle
+
+            Triangle* t = new Triangle(Vec3(v1), Vec3(v2), Vec3(v3));
+            hl -> add_object(t);
+        }
+    }
 
     va = new VertexArray();
 
@@ -110,7 +132,25 @@ Entity::Entity(const char* path){
     loadOBJ(path, vertices, uvs, normals);
     std::cout << "After loading" << std::endl;
 
-    this -> vertices = vertices;
+    glm::vec3 v1, v2, v3;
+    glm::vec3 v1_Color, v2_Color, v3_Color;
+
+    for(auto vertex(vertices.begin()); vertex != vertices.end(); ++vertex){
+        if(std::distance(vertex, vertices.begin()) % 3 == 0 ){
+            v1 = vertex->Coordinates;
+            v1_Color = vertex->Color;
+        }else if(std::distance(vertex, vertices.begin()) % 3 == 1 ){
+            v2 = vertex->Coordinates;
+            v2_Color = vertex->Color;
+        }else{
+            v3 = vertex->Coordinates;
+            v3_Color = vertex->Color;
+
+            // define a triangle
+            Triangle* t = new Triangle(Vec3(v1), Vec3(v2), Vec3(v3));
+            hl -> add_object(t);
+        }
+    }
 
     va = new VertexArray();
 

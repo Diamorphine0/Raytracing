@@ -22,8 +22,6 @@ public:
 private:
     Point3 p0, p1, p2;
 
-
-
     bool checkOnPlane(const Point3 &p) const;
     //assumes point is already on plane
     bool checkInsideTriangle(const Point3 &p) const;

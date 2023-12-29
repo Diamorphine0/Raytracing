@@ -31,8 +31,6 @@ public:
 protected:
     Hittable() {};
 
-
-
 };
 
 #endif // HITTABLE_HPP

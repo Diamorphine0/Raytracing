@@ -62,9 +62,13 @@ set(PROJECT_SOURCES
         imgui/backends/imgui_impl_glfw.h
         imgui/backends/imgui_impl_opengl3.h
         Dielectric.cpp
+        Hittable_List.h
         Hittable_List.cpp
+        Lambertian.h
         Lambertian.cpp
+        Material.h
         Material.cpp
+        Metal.h
         Metal.cpp
 )
 

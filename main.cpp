@@ -9,15 +9,15 @@
 
 int main()
 {
-
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
+
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../objects/sphere.obj");
-    Entity* entity2 = new Entity("../objects/sphere.obj");
-    Entity* entity3 = new Entity("../objects/sphere.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -33,15 +33,15 @@ int main()
     node2 -> setParent(node1);
     node3 -> setParent(node2);
 
-//    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-//    engine.world = world;
+    auto world = node1 -> entity -> hl;
+    engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;
 
     float speed = 0.001f;
 
-    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
+    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     do{
         shader.Bind();
