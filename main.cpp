@@ -43,10 +43,10 @@ int main()
     auto world = new Hittable_List();
 
     auto tr1 = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-    tr1->setMaterial(Lambertian(Color(0.9,0.3,0.1)));
+    tr1->setMaterial(Dielectric(Color(0.9,0.9,0.9), 1));
 
     auto tr2 = new Triangle(v4.Coordinates, v5.Coordinates, v6.Coordinates);
-    tr2->setMaterial(Metal(Color(1,1,1)));
+    tr2->setMaterial(Lambertian(Color(0.9,0.4,0.1)));
 
     world->add_object(tr1);
     world->add_object(tr2);

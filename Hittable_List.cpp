@@ -33,4 +33,3 @@ Hittable_List::~Hittable_List() {
     for(auto obj:objects_list)
         delete obj;
 }
-

@@ -77,14 +77,14 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
         //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
         Ray scatteredRay = objectMaterial.scatter(r, intersection, objectNormal);
         // We now backtrack ray color as it came from source and hit it with attenuation recursively for each object in its path
-        Color resultant = ray_color(scatteredRay,world);
+        Color resultant = ray_color(scatteredRay,world); //std::cout << r.get_reflectionDepth() << "\n" ;
         objectMaterial.attenuate(resultant);
         return resultant;
 
     }
     else{
         //For now we have intense light sources surrounding the scene
-        return Color(140, 140, 255);
+        return Color(215, 215, 255);
     }
 
 }
