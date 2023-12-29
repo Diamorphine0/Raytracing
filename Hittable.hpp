@@ -2,6 +2,7 @@
 #define HITTABLE_HPP
 
 #include "Ray.hpp"
+#include "Material.h"
 
 
 /// This is the  abstract class for "hittable" objects and it's interface
@@ -16,12 +17,22 @@ public:
      *
      * @returns pair of true/false and the pointer to the object which it hit (if it did, otherwise null)
      */
+
+    virtual float getFacingRatio(const Ray &r) const {return (float) 0;}
+
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
 
+    void setMaterial(Material *mat) {this->mat=mat;}
+
     //JUST TO DEBUG. TO REMOVE.!
-    Color color;
+    Vec3 normal;
+    Material *mat;
+    float planeEquationCoeff;
 protected:
     Hittable() {};
+
+
+
 };
 
 #endif // HITTABLE_HPP

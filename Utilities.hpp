@@ -34,7 +34,9 @@ public:
 using Point3 = Vec3; // For clarity
 std::ostream& operator<< (std::ostream& stream, const Vec3& p);
 
+Vec3 random_unit_vector();
+
 using Color = Vec3;
 
-const float EPS = 1e-7;
+const float EPS = 1e-4;
 #endif // UTILITIES_HPP

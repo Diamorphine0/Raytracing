@@ -2,7 +2,8 @@
 
 void Triangle::computeNormal() {
     normal = (p1 - p0).cross(p2 - p0);
-    //normal is not normalized for now as we don't need it to
+    //normal is normalized :)
+    normal.normalize();
 }
 
 void Triangle::computePlaneEquation() {
@@ -19,8 +20,10 @@ Triangle::Triangle(const Point3 &a, const Point3 &b, const Point3 &c) {
     computeNormal();
     computePlaneEquation();
 
-    std::cerr<<"Normal is "<<normal<<"\n";
+    std::cerr<<"Normal is "<<normal<<" and size "<<normal.length()<<"\n";
     std::cerr<<"THe coefficient is "<<planeEquationCoeff<<std::endl;
+
+
 }
 
 bool Triangle::checkInsideTriangle(const Point3 &p) const{
@@ -65,8 +68,17 @@ std::pair<bool, Hittable*> Triangle::intersectWithRay(const Ray &r, float &t) co
     return {false, NULL};
 }
 
+float Triangle::getFacingRatio(const Ray &r) const {
+    Vec3 incident = r.get_direction();
+    incident.normalize();
 
+    Vec3 unitNormal = normal;
+    unitNormal.normalize();
 
+    float facingRatio = incident.dot(unitNormal);
+
+    return facingRatio;
+}
 
 
 

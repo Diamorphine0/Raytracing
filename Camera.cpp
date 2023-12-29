@@ -11,6 +11,7 @@ void Camera::render(Hittable *world, const std::string &imagePath) {
             Ray r(center, ray_direction);
 
             Color pixel_color = ray_color(r, world);
+            pixel_color = Color(static_cast<int>(pixel_color.x),static_cast<int>(pixel_color.y),static_cast<int>(pixel_color.z));
 
             imageRenderer.set_pixel(j, i, pixel_color);
         }
@@ -40,13 +41,34 @@ void Camera::initialize() {
 
 Color Camera::ray_color(const Ray& r, Hittable *world) const {
     float t = 0;
+    //Stop collecting info after max_Depth reflections and assume ray is too weak
+    if (r.get_reflectionDepth()>max_depth) {
+        return Color(0,0,0);
+    }
+
     auto world_ans = world->intersectWithRay(r, t);
     if (world_ans.first) {
-        // we should instead be getting the color from the engine.
-        return  world_ans.second->color;
+        //Object  hit and its information for scattering and coloring by material
+        Hittable& objectHit = (*world_ans.second);
+        //The object unit normal for scattering
+
+        Material* objectMaterial = objectHit.mat;
+
+        Vec3 intersection = r.get_origin() + r.get_direction() * t;
+        //std::cerr<<"intersection point is: "<<intersection<<"\n";
+        //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
+        Ray scatteredRay = objectMaterial->scatter(r, intersection, objectHit.normal);
+        //std::cerr<<"SCattered ray: "<<scatteredRay.reflectionDepth<<", "<<scatteredRay.get_direction()<<", "<<scatteredRay.get_origin()<<"\n";
+        // We now backtrack ray color as it came from source and hit it with attenuation recursively for each object in its path
+        Color resultant = ray_color(scatteredRay,world);
+
+        objectMaterial->attenuate(resultant);
+        return resultant;
+
     }
     else{
-        return Color(0, 0, 0);
+        //For now we have intense light sources surrounding the scene
+        return Color(215, 215, 255);
     }
 
 }
