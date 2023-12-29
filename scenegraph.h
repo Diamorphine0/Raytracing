@@ -29,6 +29,7 @@ public:
     void setParent(Node* parent);
     void updateWorldMatrix();
     void Draw(const Shader& shader);
+    void Concatenate(Hittable_List* cumul_hl);
 
 private:
     Node* parent;

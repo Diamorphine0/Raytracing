@@ -81,3 +81,15 @@ void Node::Draw(const Shader& shader){
         child -> Draw(shader);
     }
 }
+
+void Node::Concatenate(Hittable_List* cumul_hl){
+
+    if(entity != nullptr){
+        (cumul_hl -> objects_list).insert(entity -> hl -> objects_list.begin(), entity -> hl -> objects_list.end());
+    }
+
+    for(auto child: children){
+        child -> Concatenate(cumul_hl);
+    }
+
+}

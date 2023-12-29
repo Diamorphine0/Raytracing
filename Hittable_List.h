@@ -25,7 +25,7 @@ public:
     void add_object(Hittable* obj);
     void remove_object(Hittable* obj);
 
-private:
+//private:
     std::unordered_set<Hittable*> objects_list;
 };
 

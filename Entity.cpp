@@ -242,7 +242,6 @@ bool Entity::loadOBJ(const char * path,
         unsigned int vertexIndex = vertexIndices[i];
         Vertex vertex = temp_vertices[ vertexIndex - 1];
         out_vertices.push_back(vertex);
-        std::cout << vertex.Coordinates.x << " " << vertex.Coordinates.y << " " << vertex.Coordinates.z << std::endl;
     }
 
     std::cout << "Size: " << out_vertices.size() << std::endl;

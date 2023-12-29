@@ -15,9 +15,9 @@ int main()
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity1 = new Entity("../objects/sphere.obj");
+    Entity* entity2 = new Entity("../objects/sphere.obj");
+    Entity* entity3 = new Entity("../objects/sphere.obj");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -29,9 +29,19 @@ int main()
     Node* node2 = new Node(entity2);
     Node* node3 = new Node(entity3);
 
+    std::cout << "Size" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
+
     node1 -> setParent(engine.engineWorld);
+    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
+    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
+
     node2 -> setParent(node1);
+    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
+    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
+
     node3 -> setParent(node2);
+    engine.engineWorld->Concatenate(engine.engineWorld -> entity -> hl);
+    std::cout << "Size Concat" << engine.engineWorld -> entity -> hl -> objects_list.size() << std::endl;
 
     auto world = node1 -> entity -> hl;
     engine.world = world;
@@ -41,23 +51,23 @@ int main()
 
     float speed = 0.001f;
 
-    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
+    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
-    do{
-        shader.Bind();
+//    do{
+//        shader.Bind();
 
-        std::cout << "Adjust camera" << std::endl;
-        // we now also want to rotate
-        engine.camera.movement(currentTime, lastTime, speed, engine.window);
-        std::cout << "Camera adjusted" << std::endl;
+//        std::cout << "Adjust camera" << std::endl;
+//        // we now also want to rotate
+//        engine.camera.movement(currentTime, lastTime, speed, engine.window);
+//        std::cout << "Camera adjusted" << std::endl;
 
-        engine.camera.renderScene(engine.engineWorld, shader);
-        std::cout << "Scene rendered" << std::endl;
-        // adding anything to the scene graph should happen here ...
-        engine.update();
-    }
-    while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
-           glfwWindowShouldClose(engine.window) == 0 );
+//        engine.camera.renderScene(engine.engineWorld, shader);
+//        std::cout << "Scene rendered" << std::endl;
+//        // adding anything to the scene graph should happen here ...
+//        engine.update();
+//    }
+//    while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+//           glfwWindowShouldClose(engine.window) == 0 );
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
