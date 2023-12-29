@@ -85,6 +85,8 @@ Entity::Entity(){
 
 Entity::Entity(std::vector<Vertex>& vertices){
 
+    this -> vertices = vertices;
+
     va = new VertexArray();
 
     va -> Bind();
@@ -107,6 +109,8 @@ Entity::Entity(const char* path){
     std::cout << "Before loading" << std::endl;
     loadOBJ(path, vertices, uvs, normals);
     std::cout << "After loading" << std::endl;
+
+    this -> vertices = vertices;
 
     va = new VertexArray();
 
@@ -161,8 +165,8 @@ bool Entity::loadOBJ(const char * path,
 
             //should use something like emplace back
             temp_vertices.push_back(Vertex(vertex, glm::vec3(color,  color,  color)));
-
         }
+
         else if ( strcmp( lineHeader, "vt" ) == 0 ){
             glm::vec2 uv;
             fscanf(file, "%f %f\n", &uv.x, &uv.y );
