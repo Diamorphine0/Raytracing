@@ -42,43 +42,30 @@ void Camera::initialize() {
 Color Camera::ray_color(const Ray& r, Hittable *world) const {
     float t = 0;
     //Stop collecting info after 3 reflections and assume ray is too weak
-    if (r.get_reflectionDepth()>3) {return Color(0,0,0);}
-
+    if (r.get_reflectionDepth()>3) {
+        return Color(0,0,0);
+    }
+    if(r.reflectionDepth > 0)
+        std::cerr<<"reflection depth: "<<r.reflectionDepth<<"\n";
     auto world_ans = world->intersectWithRay(r, t);
     if (world_ans.first) {
-
-
-
-
         //Object  hit and its information for scattering and coloring by material
         Hittable& objectHit = (*world_ans.second);
         //The object unit normal for scattering
-        Vec3 objectNormal = objectHit.normal;
-        objectNormal.normalize();
-        //Material which performs attenuation of color as well as scattering
-        Material& objectMaterial = objectHit.mat;
 
+        Material* objectMaterial = objectHit.mat;
 
-        //I need the intersection to scatter
-
-
-
-        Point3 r_origin = r.get_origin(), r_direction = r.get_direction();
-
-        float dir_dot_normal = r_direction.dot(objectNormal);
-
-        //Compute intersection point with triangle
-        // Phit * normal + coef = 0; Phit = origin + t * direction => t = -( coef + origin * normal) / (direction * normal)
-
-        t = - (objectHit.planeEquationCoeff + r_origin.dot(objectNormal)) / dir_dot_normal;
-
-        Vec3 intersection = r_origin + r_direction * t;
+        Vec3 intersection = r.get_origin() + r.get_direction() * t;
 
         //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
-        Ray scatteredRay = objectMaterial.scatter(r, intersection, objectNormal);
+        Ray scatteredRay = objectMaterial->scatter(r, intersection, objectHit.normal);
+        std::cerr<<"SCattered ray: "<<scatteredRay.reflectionDepth<<", "<<scatteredRay.get_direction()<<", "<<scatteredRay.get_origin()<<"\n";
         // We now backtrack ray color as it came from source and hit it with attenuation recursively for each object in its path
         Color resultant = ray_color(scatteredRay,world); //std::cout << r.get_reflectionDepth() << "\n" ;
-        objectMaterial.attenuate(resultant);
+
+        if(resultant.x != 140 && resultant.y != 140 && resultant.z != 255)
+            std::cerr<<"we get the different reflected color : "<<resultant<<"\n";
+        objectMaterial->attenuate(resultant);
         return resultant;
 
     }

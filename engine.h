@@ -55,7 +55,7 @@ public:
         ImGui_ImplOpenGL3_Init();
 
         // Change the shader path names
-        programID = LoadShaders( "../../../../Raytracing/vertexshader.shader", "../../../../Raytracing/fragmentshader.shader" );
+        programID = LoadShaders( "../vertexshader.shader", "../fragmentshader.shader" );
 
         // Ensure we can capture the escape key being pressed below
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);

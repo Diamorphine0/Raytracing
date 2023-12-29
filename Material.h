@@ -9,10 +9,7 @@ class Material
 public:
     Material() {};
 
-    virtual Ray scatter(const Ray&, Vec3, Vec3) {
-        Ray a(Vec3(0,0,0),Vec3(1,1,1));
-        return a;
-    }
+    virtual Ray scatter(const Ray&, Vec3, Vec3) = 0;
 
     Color attenuation;
 

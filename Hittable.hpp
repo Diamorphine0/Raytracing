@@ -22,11 +22,11 @@ public:
 
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
 
-    void setMaterial(Material mat) {this->mat=mat;}
+    void setMaterial(Material *mat) {this->mat=mat;}
 
     //JUST TO DEBUG. TO REMOVE.!
     Vec3 normal;
-    Material mat;
+    Material *mat;
     float planeEquationCoeff;
 protected:
     Hittable() {};
