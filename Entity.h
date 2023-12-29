@@ -111,6 +111,7 @@ class Entity{
 public:
     glm::mat4 worldMatrix = glm::mat4(1.0f);
     glm::mat4 localMatrix = glm::mat4(1.0f);
+    std::vector<Vertex> vertices;
 public:
 
     Entity();
