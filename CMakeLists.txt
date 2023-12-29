@@ -61,6 +61,11 @@ set(PROJECT_SOURCES
         imgui/imstb_truetype.h
         imgui/backends/imgui_impl_glfw.h
         imgui/backends/imgui_impl_opengl3.h
+        Dielectric.cpp
+        Hittable_List.cpp
+        Lambertian.cpp
+        Material.cpp
+        Metal.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

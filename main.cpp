@@ -2,7 +2,7 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-#include "engine.h"
+#include "Engine.h"
 #include "scenegraph.h"
 #include "Camera.hpp"
 #include "Triangle.h"
@@ -12,24 +12,6 @@ int main()
 
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
-
-    // for now we just store the position and color of each vertex
-    // y coord
-
-//    Vertex v1(glm::vec3(-0.995921f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v2(glm::vec3(-2.99592f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v3(glm::vec3( -2.99592f, 0.158561f, -1), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    Vertex v4(glm::vec3(-2.99592f, 2.15856f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v5(glm::vec3(-2.99592f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v6(glm::vec3(-0.995922f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    Vertex v7(glm::vec3(0.995921f, 2.15856f, -0.999999f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v8(glm::vec3(-0.995921f, 0.158561f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v9(glm::vec3(-0.995921f, 0.158561f, 1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    std::vector<Vertex> vertices1{v7, v8, v9};
-
     // Entity instantiation
 
     // only a single face of the object loaded..,

@@ -1,5 +1,5 @@
 // Here we will implement the ECS class.
-#include "engine.h"
+#include "Engine.h"
 
 Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
