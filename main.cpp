@@ -9,7 +9,6 @@
 
 int main()
 {
-
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
@@ -33,23 +32,28 @@ int main()
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../objects/sphere.obj");
-    Entity* entity2 = new Entity("../objects/sphere.obj");
-    Entity* entity3 = new Entity("../objects/sphere.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/cube.obj");
+    //Entity* entity2 = new Entity("..Raytracing/objects/cube.obj");
+    //Entity* entity3 = new Entity("..Raytracing/objects/cube.obj");
+    std::cout << "entities added" << std::endl;
 
-    entity2 -> scale(0.5, 0.5, 0.5);
-    entity2 -> translate(-10, -10, 0);
+    entity1 -> addTexture("../Raytracing/textures/bricks.jpg");
+    //entity2 -> addTexture("../Raytracing/textures/bricks.jpg");
+    //entity3 -> addTexture("../Raytracing/textures/bricks.jpg");
 
-    entity3 -> scale(0.4, 0.4, 0.4);
-    entity3->translate(-10, -10, 0);
+    //entity2 -> scale(0.5, 0.5, 0.5);
+    //entity2 -> translate(-10, -10, 0);
+
+    //entity3 -> scale(0.4, 0.4, 0.4);
+    //entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
-    Node* node3 = new Node(entity3);
+    //Node* node2 = new Node(entity2);
+    //Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 -> setParent(node1);
-    node3 -> setParent(node2);
+    //node2 -> setParent(node1);
+    //node3 -> setParent(node2);
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
 //    engine.world = world;
@@ -59,7 +63,7 @@ int main()
 
     float speed = 0.001f;
 
-    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
+    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     do{
         shader.Bind();

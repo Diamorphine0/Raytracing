@@ -1,151 +1,57 @@
 #include "Entity.h"
 #include <cstring>
-VertexBuffer::VertexBuffer(const void* data, unsigned long size){
-    glGenBuffers(1, &m_RendererID);
-    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-    glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-    std::cout << "Initialized" << std::endl;
-}
-
-VertexBuffer::~VertexBuffer(){
-    glDeleteBuffers(1, &m_RendererID);
-}
-
-void VertexBuffer::Bind() const {
-    std::cout << "Binded" << std::endl;
-    glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
-}
-
-void VertexBuffer::Unbind() const {
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
-VertexArray::VertexArray(){
-    std::cout << "Entity created" << std::endl;
-    glGenVertexArrays(1, &m_RendererID);
-}
-
-VertexArray::~VertexArray(){
-    glDeleteVertexArrays(1, &m_RendererID);
-}
-
-void VertexArray::Bind() const{
-    glBindVertexArray(m_RendererID);
-}
-
-void VertexArray::Unbind() const{
-    glBindVertexArray(0);
-}
-
-void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& layout){
-
-    Bind();
-
-    vb -> Bind();
-
-    // we get vertex buffer elements
-    const auto& elements = layout.GetElements();
-
-    unsigned int offset = 0;
-
-    for(unsigned int i = 0; i < elements.size(); i++){
-
-        const auto& element = elements[i];
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(
-            0,
-            element.count,      // size
-            element.type,       // type
-            element.normalized ? GL_TRUE : GL_FALSE, // normalized?
-            sizeof(Vertex),     // stride - THAT MAY BE WRONG!
-            (const void*) 0     // array buffer offset
-            );
-
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(
-            1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            element.count,                    // size
-            element.type,                     // type
-            element.normalized ? GL_TRUE : GL_FALSE, // normalized?
-            sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
-            (void*) offsetof(Vertex, Color)   // array buffer offset
-            );
-
-        // offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
-    }
-
-}
-
-// This should be a template
-
-Entity::Entity(){
-    va = new VertexArray();
-}
-
-Entity::Entity(std::vector<Vertex>& vertices){
-
-    va = new VertexArray();
-
-    va -> Bind();
-
-    VertexBuffer* vb = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
-
-    VertexBufferLayout layout;
-
-    layout.Push_Vertex(3);
-
-    va -> AddBuffer(vb, layout);
-}
 
 Entity::Entity(const char* path){
-
-    std::vector<Vertex> vertices = {};
-    std::vector< glm::vec2 > uvs;
-    std::vector< glm::vec3 > normals;
-
-    std::cout << "Before loading" << std::endl;
-    loadOBJ(path, vertices, uvs, normals);
-    std::cout << "After loading" << std::endl;
-
-    va = new VertexArray();
-
-    va -> Bind();
-
-    std::cout << "Size" << vertices.size() << std::endl;
-
-    VertexBuffer* vb = new VertexBuffer(&vertices[0], vertices.size() * sizeof(Vertex));
-
-    VertexBufferLayout layout;
-
-    layout.Push_Vertex(3);
-
-    va -> AddBuffer(vb, layout);
+    //load the data
+    loadOBJ(path);
+    //sanity check: is the obj well loaded.
+    printOBJToFile("log.txt");
+    addColor();
+    setup();
 };
 
-bool Entity::loadOBJ(const char * path,
-                     std::vector < Vertex > & out_vertices,
-                     std::vector < glm::vec2 > & out_uvs,
-                     std::vector < glm::vec3 > & out_normals){
+void Entity::setup(){
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
 
-    std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
+    glBindVertexArray(VAO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, mesh.size() * sizeof(Vertex), &mesh[0], GL_STATIC_DRAW);
 
-    std::vector< Vertex > temp_vertices;
-    std::vector< glm::vec2 > temp_uvs;
-    std::vector< glm::vec3 > temp_normals;
 
+    //experiment: colorification.
+    //vertex coordinates
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+
+    //vertex uvs
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+
+    //vertex normals
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normals));
+
+    //vertex colors
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, colors));
+}
+
+void Entity::loadOBJ(const char * path){
     FILE* file = fopen(path, "r");
-    std::cout << file << std::endl;
+
+    //error message
     if( file == NULL ){
         printf("Impossible to open the file !\n");
-        return false;
+        return;
     }
 
-    float color = 0.1f;
-    while( 1 ){
+    std::vector<glm::vec3> coordinates;
+    std::vector<glm::vec2> uv;
+    std::vector<glm::vec3> normals;
+    std::cout << "loading initiated" << std::endl;
 
-        color += 0.01;
-        if (color >= 1.0f) color = 0;
+    while( 1 ){
         char lineHeader[256];
         // read the first word of the line
         int res = fscanf(file, "%s", lineHeader);
@@ -153,56 +59,93 @@ bool Entity::loadOBJ(const char * path,
         if (res == EOF)
             break;
 
+        //coordinates
         if ( strcmp( lineHeader, "v" ) == 0 ){
-            glm::vec3 vertex;
-            fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z );
-
-            std::cout << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
-
-            //should use something like emplace back
-            temp_vertices.push_back(Vertex(vertex, glm::vec3(color,  color,  color)));
-
+            glm::vec3 vertex_coordinates;
+            fscanf(file, "%f %f %f\n", &vertex_coordinates.x, &vertex_coordinates.y, &vertex_coordinates.z );
+            coordinates.push_back(vertex_coordinates);
         }
+
         else if ( strcmp( lineHeader, "vt" ) == 0 ){
-            glm::vec2 uv;
-            fscanf(file, "%f %f\n", &uv.x, &uv.y );
-            temp_uvs.push_back(uv);}
-        else if ( strcmp( lineHeader, "vn" ) == 0 ){
-            glm::vec3 normal;
-            fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
-            temp_normals.push_back(normal);
+            glm::vec2 vertex_uv;
+            fscanf(file, "%f %f\n", &vertex_uv.x, &vertex_uv.y );
+            uv.push_back(vertex_uv);
         }
+
+        else if ( strcmp( lineHeader, "vn" ) == 0 ){
+            glm::vec3 vertex_normals;
+            fscanf(file, "%f %f %f\n", &vertex_normals.x, &vertex_normals.y, &vertex_normals.z );
+            normals.push_back(vertex_normals);
+        }
+
         else if ( strcmp( lineHeader, "f" ) == 0 ){
             std::string vertex1, vertex2, vertex3;
             unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
             int matches = fscanf(file, "%d/%d/%d %d/%d/%d %d/%d/%d\n", &vertexIndex[0], &uvIndex[0], &normalIndex[0], &vertexIndex[1], &uvIndex[1], &normalIndex[1], &vertexIndex[2], &uvIndex[2], &normalIndex[2] );
             if (matches != 9){
                 printf("File can't be read by our simple parser : ( Try exporting with other options\n");
-                return false;
+                return;
             }
-            vertexIndices.push_back(vertexIndex[0]);
-            vertexIndices.push_back(vertexIndex[1]);
-            vertexIndices.push_back(vertexIndex[2]);
-            uvIndices    .push_back(uvIndex[0]);
-            uvIndices    .push_back(uvIndex[1]);
-            uvIndices    .push_back(uvIndex[2]);
-            normalIndices.push_back(normalIndex[0]);
-            normalIndices.push_back(normalIndex[1]);
-            normalIndices.push_back(normalIndex[2]);
+
+            Vertex v0;
+            v0.coordinates = coordinates[vertexIndex[0] - 1];
+            v0.uv = uv[uvIndex[0] - 1];
+            v0.normals = normals[normalIndex[0] - 1];
+
+            Vertex v1;
+            v1.coordinates = coordinates[vertexIndex[1] - 1];
+            v1.uv = uv[uvIndex[1] - 1];
+            v1.normals = normals[normalIndex[1] - 1];
+
+            Vertex v2;
+            v2.coordinates = coordinates[vertexIndex[2] - 1];
+            v2.uv = uv[uvIndex[2] - 1];
+            v2.normals = normals[normalIndex[2] - 1];
+
+            mesh.push_back(v0);
+            mesh.push_back(v1);
+            mesh.push_back(v2);
         }
+    }
+    std::cout << "loading terminated" << std::endl;
+    return;
+}
 
+void Entity::addTexture(const char* path){
+    pTexture = new Texture(GL_TEXTURE_2D, path);
+    if( !pTexture->Load())
+        return;
+
+    pTexture -> Bind(GL_TEXTURE0);
+    glUniform1i(gSamplerLocation, 0);
+}
+
+void Entity::addColor(){
+    for(auto v : mesh){
+        //we just like blue for now!
+        v.colors = glm::vec3(0.0f, 0.0f, 1.0f);
+    }
+}
+
+void Entity::printOBJToFile(const std::string& filename) {
+    // Open the file for writing
+    std::ofstream outputFile(filename);
+
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return;
     }
 
-    // For each vertex of each triangle
-    for( unsigned int i=0; i<vertexIndices.size(); i++ ){
-        unsigned int vertexIndex = vertexIndices[i];
-        Vertex vertex = temp_vertices[ vertexIndex - 1];
-        out_vertices.push_back(vertex);
-        std::cout << vertex.Coordinates.x << " " << vertex.Coordinates.y << " " << vertex.Coordinates.z << std::endl;
+    for (auto v : mesh) {
+        // Write data to the file
+        outputFile << v.coordinates.x << " " << v.coordinates.y << " " << v.coordinates.z << std::endl;
+        outputFile << v.uv.x << " " << v.uv.y << std::endl;
+        outputFile << v.normals.x << " " << v.normals.y << " " << v.normals.z << std::endl;
+        outputFile << std::endl;
     }
 
-    std::cout << "Size: " << out_vertices.size() << std::endl;
-    return true;
+    // Close the file
+    outputFile.close();
 }
 
 // We want to extend the entity functionality to load objects.

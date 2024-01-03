@@ -35,8 +35,6 @@ void Node::updateWorldMatrix(){
 void Node::Draw(const Shader& shader){
 
     if(entity != nullptr){
-        const VertexArray& va = *(entity -> getVA());
-
         // this would happen every time
         entity -> rotate(0.01f, 0.001f, 0.001f, 1);
 
@@ -68,8 +66,6 @@ void Node::Draw(const Shader& shader){
 
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
-        std::cout << "VA Binded " << va.getID() << std::endl;
-        va.Bind();
         // This is really bad !!!
         glDrawArrays(GL_TRIANGLES, 0, 10000);
         std::cout << "Displayed to Screen" << std::endl;
