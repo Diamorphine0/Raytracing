@@ -3,62 +3,75 @@
 #include "imgui/backends/imgui_impl_opengl3.h"
 
 #include "engine.h"
-#include "ecs.h"
+#include "scenegraph.h"
 #include "Camera.hpp"
 #include "Triangle.h"
 
 int main()
 {
-    std::cerr<<"TEST1\n";
-
-
-    std::cerr<<"TEST\n";
 
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
-    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 0 ), 3.14f, 0.0f, 90.0f));
+    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
-    GLuint VertexArrayID;
-    glGenVertexArrays(1, &VertexArrayID);
-    glBindVertexArray(VertexArrayID);
+    // for now we just store the position and color of each vertex
+    // y coord
 
+//    Vertex v1(glm::vec3(-0.995921f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v2(glm::vec3(-2.99592f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v3(glm::vec3( -2.99592f, 0.158561f, -1), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    Vertex v1(glm::vec3(-1.0f,-1.0f,-1.0f), glm::vec3(0.583f,  0.771f,  0.014f));
-    Vertex v2(glm::vec3(1.0f,-1.0f, -1.0f), glm::vec3(0.609f,  0.115f,  0.436f));
-    Vertex v3(glm::vec3(1.0f, 1.0f, -1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v4(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v5(glm::vec3(1.0f, 2.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    Vertex v6(glm::vec3(1.0f, 0.0f, 1.0f), glm::vec3(0.327f,  0.483f,  0.844f));
-    std::vector<Vertex> vertices{v1, v2, v3, v4, v5, v6};
+//    Vertex v4(glm::vec3(-2.99592f, 2.15856f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v5(glm::vec3(-2.99592f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v6(glm::vec3(-0.995922f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    Mesh mesh(vertices);
-    mesh.rotate_mesh(glm::vec3(0, 0, 1.0f), 3.14/2);
+//    Vertex v7(glm::vec3(0.995921f, 2.15856f, -0.999999f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v8(glm::vec3(-0.995921f, 0.158561f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
+//    Vertex v9(glm::vec3(-0.995921f, 0.158561f, 1.f), glm::vec3(1.0f,  1.0f,  1.0f));
 
-    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-    engine.world = world;
+//    std::vector<Vertex> vertices1{v7, v8, v9};
+
+    // Entity instantiation
+
+    // only a single face of the object loaded..,
+    Entity* entity1 = new Entity("../objects/sphere.obj");
+    Entity* entity2 = new Entity("../objects/sphere.obj");
+    Entity* entity3 = new Entity("../objects/sphere.obj");
+
+    entity2 -> scale(0.5, 0.5, 0.5);
+    entity2 -> translate(-10, -10, 0);
+
+    entity3 -> scale(0.4, 0.4, 0.4);
+    entity3->translate(-10, -10, 0);
+
+    Node* node1 = new Node(entity1);
+    Node* node2 = new Node(entity2);
+    Node* node3 = new Node(entity3);
+
+    node1 -> setParent(engine.engineWorld);
+    node2 -> setParent(node1);
+    node3 -> setParent(node2);
+
+//    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
+//    engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;
 
-    float speed = 0.005f; // 0.0 units / second
+    float speed = 0.001f;
+
+    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
 
     do{
+        shader.Bind();
 
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        std::cout << "Adjust camera" << std::endl;
+        // we now also want to rotate
+        engine.camera.movement(currentTime, lastTime, speed, engine.window);
+        std::cout << "Camera adjusted" << std::endl;
 
-        glUseProgram(engine.programID);
-
-        // take care of camera movement
-        engine.movement(currentTime, lastTime, speed);
-
-        // updat the projection
-        glm::mat4 mvp = engine.camera.construct_mvp();
-
-        GLuint MatrixID = glGetUniformLocation(engine.programID, "MVP");
-        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
-
-        // Draw the Mesh
-        mesh.Draw();
-
+        engine.camera.renderScene(engine.engineWorld, shader);
+        std::cout << "Scene rendered" << std::endl;
+        // adding anything to the scene graph should happen here ...
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

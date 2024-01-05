@@ -1,1 +1,0 @@
-11/12/2023. Build the project on the Ubuntu virtual machine. Working on the functionality to allow to load the external objects into the project.

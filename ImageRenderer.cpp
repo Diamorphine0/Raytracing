@@ -18,7 +18,6 @@ ImageRenderer::ImageRenderer(int height, int width){
 
 }
 
-
 void ImageRenderer::reset_pixels() {
     pixel_colors = std::vector< std::vector< Color >> (image_height,
                                                        std::vector< Color >(image_width, Color(0, 0, 0)));

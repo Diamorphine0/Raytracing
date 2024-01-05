@@ -5,9 +5,6 @@
 #include "Ray.hpp"
 #include "Utilities.hpp"
 
-
-
-
 class Triangle: public Hittable {
 public:
     /**
@@ -17,7 +14,7 @@ public:
      */
     Triangle(const Point3 &a, const Point3 &b, const Point3 &c);
 
-    virtual bool intersectWithRay(const Ray &r, float &t) const;
+    virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const;
 
 private:
     Point3 p0, p1, p2;
