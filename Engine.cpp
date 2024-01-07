@@ -131,8 +131,5 @@ void Engine::RenderStats(){
     }
 }
 
-
 void Engine::RenderHierarchy(){
-
-    ImGui::TreeNodeEx()
 }
