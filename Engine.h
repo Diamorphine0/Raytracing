@@ -20,7 +20,9 @@ public:
 
     void update();
 
-    void RenderUI();
+    void RenderProperties();
+    void RenderHierarchy();
+    void RenderStats();
 
     // Scene Graph - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld;

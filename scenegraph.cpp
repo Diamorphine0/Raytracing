@@ -81,3 +81,14 @@ void Node::Draw(const Shader& shader){
         child -> Draw(shader);
     }
 }
+
+
+std::vector<Node*> Node::getChildren(){
+
+
+    return children;
+}
+
+Node* Node::getParent(){
+    return parent;
+}

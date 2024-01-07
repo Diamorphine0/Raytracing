@@ -131,8 +131,18 @@ void Engine::RenderStats(){
     }
 }
 
+void recursive_display(Node* node){
+    
+    for (Node* child : node->getChildren()){
+        Im
+        ImGui::TreeNode("Entity", node->getChildren())
+        
+    }
+    
+}
 
 void Engine::RenderHierarchy(){
-
+    ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_DefaultOpen;
+    
     ImGui::TreeNodeEx()
 }
