@@ -22,7 +22,7 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
 
     auto mvp = construct_mvp();
 
-    std::cout << engineWorld -> entity << std::endl;
+//    std::cout << engineWorld -> entity << std::endl;
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     engineWorld -> Draw(shader);
@@ -41,8 +41,8 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
     glfwGetCursorPos(window, &xpos, &ypos);
     glfwSetCursorPos(window, 1024/2, 768/2);
 
-    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
-    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
+//    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
+//    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
 
     horizontalAngle += mousespeed * deltaTime * float(1024/2 - xpos );
     verticalAngle   += mousespeed * deltaTime * float(768/2 - ypos );

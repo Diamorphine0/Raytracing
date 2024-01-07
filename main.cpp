@@ -13,29 +13,10 @@ int main()
     auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
-    // for now we just store the position and color of each vertex
-    // y coord
-
-//    Vertex v1(glm::vec3(-0.995921f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v2(glm::vec3(-2.99592f, 0.158561f, 1), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v3(glm::vec3( -2.99592f, 0.158561f, -1), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    Vertex v4(glm::vec3(-2.99592f, 2.15856f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v5(glm::vec3(-2.99592f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v6(glm::vec3(-0.995922f, 2.15856f,1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    Vertex v7(glm::vec3(0.995921f, 2.15856f, -0.999999f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v8(glm::vec3(-0.995921f, 0.158561f, -1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-//    Vertex v9(glm::vec3(-0.995921f, 0.158561f, 1.f), glm::vec3(1.0f,  1.0f,  1.0f));
-
-//    std::vector<Vertex> vertices1{v7, v8, v9};
-
-    // Entity instantiation
-
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../objects/sphere.obj");
-    Entity* entity2 = new Entity("../objects/sphere.obj");
-    Entity* entity3 = new Entity("../objects/sphere.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -59,18 +40,18 @@ int main()
 
     float speed = 0.001f;
 
-    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
+    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     do{
         shader.Bind();
 
-        std::cout << "Adjust camera" << std::endl;
+//        std::cout << "Adjust camera" << std::endl;
         // we now also want to rotate
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
-        std::cout << "Camera adjusted" << std::endl;
+//        std::cout << "Camera adjusted" << std::endl;
 
         engine.camera.renderScene(engine.engineWorld, shader);
-        std::cout << "Scene rendered" << std::endl;
+//        std::cout << "Scene rendered" << std::endl;
         // adding anything to the scene graph should happen here ...
         engine.update();
     }
