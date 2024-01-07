@@ -44,6 +44,7 @@ set(PROJECT_SOURCES
         primitives.h
         primitives.cpp
         stb_image.h
+        stb_image.cpp
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
