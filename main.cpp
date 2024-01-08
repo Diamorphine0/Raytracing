@@ -6,6 +6,7 @@
 #include "scenegraph.h"
 #include "Camera.hpp"
 #include "Triangle.h"
+#include "framebuffer.h"
 
 int main()
 {

@@ -83,6 +83,7 @@ else()
     else()
         add_executable(Ray-tracing
             ${PROJECT_SOURCES}
+            framebuffer.h framebuffer.cpp
         )
     endif()
 endif()
