@@ -1,0 +1,4 @@
+#ifndef OBJECTLOADER_H
+#define OBJECTLOADER_H
+
+#endif // OBJECTLOADER_H

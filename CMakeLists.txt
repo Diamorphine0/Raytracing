@@ -9,65 +9,74 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+link_directories("C:/Qt/6.6.0/mingw_64/lib")
+link_directories("C:/Qt/6.2.4/mingw_64/lib")
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets OpenGL)
 find_package(GLEW 2.0 REQUIRED)
-find_package(glfw3 REQUIRED)
+find_package(GLFW3 REQUIRED)
+
+
+
+
 
 set(PROJECT_SOURCES
-        main.cpp
-        Hittable.hpp
-        Utilities.hpp
-        Utilities.cpp
-        Ray.cpp
-        Ray.hpp
-        Triangle.h
-        Triangle.cpp
-        Camera.hpp
-        Camera.cpp
-        ImageRenderer.cpp
-        ImageRenderer.h
-        Entity.h
-        Engine.h
-        engineCamera.h
-        Engine.cpp
-        shader.h
-        imconfig.h
-        pointlightsource.h
-        pointlightsource.cpp
-        Entity.cpp
-        scenegraph.h
-        scenegraph.cpp
-        shader.h
-        shader.h shader.cpp
-        enginecamera.cpp
-        primitives.h
-        primitives.cpp
+            main.cpp
+            Hittable.hpp
+            Utilities.hpp
+            Utilities.cpp
+            Ray.cpp
+            Ray.hpp
+            Triangle.h
+            Triangle.cpp
+            Camera.hpp
+            Camera.cpp
+            ImageRenderer.cpp
+            ImageRenderer.h
+            Entity.h
+            Engine.h
+            engineCamera.h
+            Engine.cpp
+            shader.h
+            imconfig.h
+            pointlightsource.h
+            pointlightsource.cpp
+            Entity.cpp
+            scenegraph.h
+            scenegraph.cpp
+            shader.h
+            shader.h shader.cpp
+            enginecamera.cpp
+            primitives.h
+            primitives.cpp
 
 
 
-        imgui/imgui.cpp
-        imgui/imgui_demo.cpp
-        imgui/imgui_draw.cpp
-        imgui/imgui_tables.cpp
-        imgui/imgui_widgets.cpp
-        imgui/backends/imgui_impl_glfw.cpp
-        imgui/backends/imgui_impl_opengl3.cpp
-        imgui/imgui.h
-        imgui/imconfig.h
-        imgui/imgui_internal.h
-        imgui/imstb_rectpack.h
-        imgui/imstb_textedit.h
-        imgui/imstb_truetype.h
-        imgui/backends/imgui_impl_glfw.h
-        imgui/backends/imgui_impl_opengl3.h
+            imgui/imgui.cpp
+            imgui/imgui_demo.cpp
+            imgui/imgui_draw.cpp
+            imgui/imgui_tables.cpp
+            imgui/imgui_widgets.cpp
+            imgui/backends/imgui_impl_glfw.cpp
+            imgui/backends/imgui_impl_opengl3.cpp
+            imgui/imgui.h
+            imgui/imconfig.h
+            imgui/imgui_internal.h
+            imgui/imstb_rectpack.h
+            imgui/imstb_textedit.h
+            imgui/imstb_truetype.h
+            imgui/backends/imgui_impl_glfw.h
+            imgui/backends/imgui_impl_opengl3.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -87,7 +96,7 @@ else()
     endif()
 endif()
 
-target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw)
+target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw Qt6::OpenGL OpenGL32)
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
