@@ -1,5 +1,6 @@
 // Here we will implement the ECS class.
 #include "engine.h"
+#include "framebuffer.h"
 
 Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
@@ -16,7 +17,7 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow( width, height, "Engine Project", NULL, NULL);
+    window = glfwCreateWindow(width, height, "Engine Project", NULL, NULL);
 
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
@@ -28,6 +29,8 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     if (glewInit() != GLEW_OK) {
         fprintf(stderr, "Failed to initialize GLEW\n");
     }
+
+    framebuffer = new FrameBuffer(width, height);
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
@@ -61,36 +64,25 @@ void Engine::update(){
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
-    ImGui::SetNextWindowPos(ImVec2 (0,0));
-    ImGui::Begin("Hierarchy");
-    RenderHierarchy();
-    ImGui::End();
+    // create and render ImGui window
+    ImGui::NewFrame();
+    ImGui::Begin("My Scene");
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
-    ImGui::SetNextWindowPos(ImVec2 (0,400));
-    ImGui::Begin("Properties");
-    RenderProperties();
-    ImGui::End();
+    // we access the ImGui window size
+    const float imgui_window_width = ImGui::GetContentRegionAvail().x;
+    const float imgui_window_height = ImGui::GetContentRegionAvail().y;
 
-    ImGui::SetNextWindowSize(ImVec2(300,800));
-    ImGui::SetNextWindowPos(ImVec2 (1500,0));
-    ImGui::Begin("Stats");
-    RenderStats();
-    ImGui::End();
+    framebuffer->RescaleFrameBuffer(imgui_window_width, imgui_window_height);
 
-    ImGui::SetNextWindowSize(ImVec2(1100,200));
-    ImGui::SetNextWindowPos(ImVec2 (400,600));
-    ImGui::Begin("Animation");
     ImGui::End();
-
-    // Rendering
     ImGui::Render();
+
+    // render our OpenGL scene
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     glfwSwapBuffers(window);
 }
 

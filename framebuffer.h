@@ -3,7 +3,14 @@
 
 #pragma once
 #include <iostream>
-#include "Engine.h"
+#include "Camera.hpp"
+#include "engineCamera.h"
+#include "scenegraph.h"
+#include "Entity.h"
+
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
 
 class FrameBuffer
 {
@@ -13,6 +20,7 @@ public:
     unsigned int getFrameTexture();
     void Bind() const;
     void Unbind() const;
+    void RescaleFrameBuffer(float width, float height);
 private:
     // stores the ID of the framebuffer object
     unsigned int fbo;
