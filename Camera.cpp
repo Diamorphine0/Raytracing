@@ -40,8 +40,10 @@ void Camera::initialize() {
 
 Color Camera::ray_color(const Ray& r, const Hittable& world) const {
     float t = 0;
-    if (world.intersectWithRay(r, t)) {
+    Vec3 intersectionPoint, barycentricCoords;
+    if (world.intersectWithRayMT(r, intersectionPoint, barycentricCoords)) {
         std::cerr<<"Hit at "<<r.get_direction()<<"\n";
+        std::cerr<<"Bary Coords are"<<barycentricCoords.x<<", "<<barycentricCoords.y<<'\n';
         // we should instead be getting the color from the engine.
         return  Color (255,255,255);
     }

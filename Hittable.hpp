@@ -15,6 +15,7 @@ public:
      * @param t Will be set to distance if function returns true.
      */
     virtual bool intersectWithRay(const Ray &r, float &t) const = 0;
+    virtual bool intersectWithRayMT(const Ray &r, Vec3& intersectionPoint, Vec3& barycentricCoords) const = 0;
 
 protected:
     Hittable() {};
