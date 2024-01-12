@@ -20,10 +20,9 @@ private:
     Vec3 pixel_delta_u;  // Offset to pixel to the right
     Vec3 pixel_delta_v;  // Offset to pixel below
 
-    int max_depth = 10;
     void initialize();
 
-    Color ray_color(const Ray& r, Hittable* world) const;
+    Color ray_color(const Ray& r, const Hittable& world) const;
 };
 
 #endif // CAMERA_HPP
