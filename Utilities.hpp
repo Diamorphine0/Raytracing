@@ -34,9 +34,13 @@ public:
 using Point3 = Vec3; // For clarity
 std::ostream& operator<< (std::ostream& stream, const Vec3& p);
 
+double random_double(double min, double max);
+
 Vec3 random_unit_vector();
+Vec3 random_in_unit_disk();
 
 using Color = Vec3;
 
 const float EPS = 1e-4;
+const double pi = 3.1415926535897932385;
 #endif // UTILITIES_HPP
