@@ -1,0 +1,9 @@
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/Ray-tracing.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/list_install_components.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/install.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/install/local.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/install/strip.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/Ray-tracing_autogen_timestamp_deps.dir
+/home/enastefic/CLionProjects/Raytracing/cmake-build-debug/CMakeFiles/Ray-tracing_autogen.dir

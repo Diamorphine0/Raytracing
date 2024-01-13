@@ -1,0 +1,79 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-9ab9d84a87dd683d566d.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "Ray-tracing",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "Ray-tracing::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Ray-tracing-Debug-eed0f02a05876e9931be.json",
+					"name" : "Ray-tracing",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Ray-tracing_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Ray-tracing_autogen-Debug-fe6ca15c8ab68c83c7cf.json",
+					"name" : "Ray-tracing_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "Ray-tracing_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-Ray-tracing_autogen_timestamp_deps-Debug-7eb9e3aa95077bb24c52.json",
+					"name" : "Ray-tracing_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/enastefic/CLionProjects/Raytracing/cmake-build-debug",
+		"source" : "/home/enastefic/CLionProjects/Raytracing"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}
