@@ -3,7 +3,14 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "Entity.h" // this is just to have all the necessary files (the file structure can definetly be improved)
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
+#include <vector>
+
+#include <iostream>
 
 class Texture
 {

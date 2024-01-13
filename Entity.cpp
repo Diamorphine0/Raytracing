@@ -243,20 +243,53 @@ bool Entity::loadOBJ(const char * path,
         out_vertices[i].UV = uv;
     }
 
+    std::cout << "Loading normals size" << uvIndices.size() << std::endl;
+    for( unsigned int i=0; i < uvIndices.size(); i++ ){
+
+        unsigned int uvIndex = uvIndices[i];
+
+        auto uv = temp_uvs[uvIndex - 1];
+
+        out_vertices[i].UV = uv;
+    }
+
+
     return true;
 }
 
-// We want to extend the entity functionality to load objects.
-// To store the animations -> Basically every element should know it's movement in each frame
-// it suffices to store triangles (in 3s and the normals -)
+int search(int *array, int start_idx, int end_idx, int search_val) {
 
-// we need to get make an interpolation function
-// SLERP rotational interpolation for quaternions
+    if( start_idx == end_idx )
+        return array[start_idx] <= search_val ? start_idx : -1;
 
-// we need to store the keyframes
+    int mid_idx = start_idx + (end_idx - start_idx) / 2;
 
-// the keyframes are made of transforms (vector of object specific transforms) and an associated time stamp
+    if( search_val < array[mid_idx] )
+        return search( array, start_idx, mid_idx, search_val );
 
-// Each object transform contains the associated position and rotation
+    int ret = search( array, mid_idx+1, end_idx, search_val );
+    return ret == -1 ? mid_idx : ret;
+}
 
-// The animator class updates the animation time and determines the current pose before setting the joint transforms (Calculates and sets the object transforms).
+void Entity::interpolate(float timeStamp){
+
+    auto idx = index(timeStamp, 0, keyFrames.size() - 1);
+
+    auto& startTime = keyFrames[idx].first;
+    auto& startFrame = keyFrames[idx].second;
+    auto& finalTime = keyFrames[idx+1].first;
+    auto& finalFrame = keyFrames[idx+1].second;
+
+    auto t = (timeStamp - startTime)/(finalTime - startTime);
+
+    //quaternions
+    glm::quat startRot = glm::quat_cast(startFrame);
+    glm::quat finalRot = glm::quat_cast(finalFrame);
+
+    glm::quat curRot = glm::slerp(startRot, finalRot, t);
+
+    localMatrix = glm::mat4_cast(curRot);
+
+    // we can do a more precise interpolation ... (using Bezier curves instead).
+    localMatrix[3] = startFrame[3] * (1 - t) + finalFrame[3] * t;
+}

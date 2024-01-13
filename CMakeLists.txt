@@ -46,7 +46,6 @@ set(PROJECT_SOURCES
         stb_image.h
         stb_image.cpp
         texture.h texture.cpp
-        keyframe.h keyframe.cpp
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp

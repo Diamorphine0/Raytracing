@@ -22,10 +22,19 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
 
     auto mvp = construct_mvp();
 
-//    std::cout << engineWorld -> entity << std::endl;
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     engineWorld -> Draw(shader);
+};
+
+void engineCamera::AnimateScene(Node* engineWorld, const Shader& shader, float timeStamp){
+    Clear();
+
+    auto mvp = construct_mvp();
+
+    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+
+    engineWorld -> Animate(shader, timeStamp);
 };
 
 // we should have an animation function here and set the delta time to basically know how often we should call the function

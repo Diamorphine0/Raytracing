@@ -4,7 +4,10 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
+
 #include <vector>
+#include <map>
+#include "texture.h"
 
 //for debugging
 #include <iostream>
@@ -19,9 +22,8 @@ struct Vertex{
 
     glm::vec3 Coordinates;
     glm::vec3 Color;
-    // we want to also store the uv Coordinates
     glm::vec2 UV;
-    // a single vertex cannot have a normal associated to it ... -> How can we fix this ?
+    glm::vec3 Norm;
 
     Vertex(glm::vec3 Coordinates, glm::vec3 Color): Coordinates(Coordinates), Color(Color){}
     Vertex(glm::vec3 Coordinates, glm::vec3 Color, glm::vec2 UV): Coordinates(Coordinates), Color(Color), UV(UV){}
@@ -109,8 +111,17 @@ class Entity{
 
 public:
     glm::mat4 worldMatrix = glm::mat4(1.0f);
+
+    // there is not much of a point in keeping the localMatrix
     glm::mat4 localMatrix = glm::mat4(1.0f);
+
+    // this might lead to certain problems
+    std::vector<std::pair<float, glm::mat4>> keyFrames;
+
     std::vector<Vertex> vertices;
+    // we should store a texture pointer this way we can just load the texture
+    Texture* texture;
+
 public:
 
     Entity();
@@ -118,6 +129,8 @@ public:
     Entity(const char* path);
 
     Entity(std::vector<Vertex>& vertices);
+
+    void interpolate(float timeStamp);
 
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z));};
 
@@ -135,6 +148,21 @@ public:
         std::vector < glm::vec2 >& out_uvs,
         std::vector < glm::vec3 >& out_normals
     );
+
+    int index(float searchTime, int startIndex, int endIndex){
+
+        if( startIndex == endIndex )
+            return keyFrames[startIndex].first <= searchTime ? startIndex : -1;
+
+        int mid_idx = startIndex + (endIndex - startIndex) / 2;
+
+        if( searchTime < keyFrames[mid_idx].first)
+            return index(searchTime, startIndex, mid_idx);
+
+        int ret = index(searchTime, mid_idx+1, endIndex);
+        return ret == -1 ? mid_idx : ret;
+
+    };
 
 private:
     // the va should likewise include the normals & we should create an index buffer

@@ -19,7 +19,6 @@ class Node{
 public:
     Entity* entity;
 public:
-
     Node();
     Node(Entity* entity);
     Node(Entity* entity, Node* parent);
@@ -27,6 +26,10 @@ public:
     ~Node();
 
     void setParent(Node* parent);
+    void addKeyframe(float time);
+
+    void Animate(const Shader& shader, float time);
+
     void updateWorldMatrix();
     void Draw(const Shader& shader);
 

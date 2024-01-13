@@ -15,21 +15,27 @@ int main()
 
     // only a single face of the object loaded..,
     Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
-//    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
-//    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
 
-//    entity2 -> scale(0.5, 0.5, 0.5);
-//    entity2 -> translate(-10, -10, 0);
+    entity1 -> texture = new Texture("../Raytracing/Textures/grid.png");
 
-//    entity3 -> scale(0.4, 0.4, 0.4);
-//    entity3->translate(-10, -10, 0);
+    std::cout << "Texture is loaded" << std::endl;
+    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
+
+    entity2 -> texture = new Texture("../Raytracing/Textures/earth.png");
+
+    entity2 -> scale(0.5, 0.5, 0.5);
+    entity2 -> translate(-10, -10, 0);
+
+    entity3 -> scale(0.4, 0.4, 0.4);
+    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-//    Node* node2 = new Node(entity2);
-//    Node* node3 = new Node(entity3);
+    Node* node2 = new Node(entity2);
+    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-//    node2 -> setParent(node1);/*
+    node2 -> setParent(node1);
 //    node3 -> setParent(node2);*/
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
@@ -48,6 +54,8 @@ int main()
 
         // the render scene and animate scene functionalities should be disjoint.
         engine.camera.renderScene(engine.engineWorld, shader);
+
+
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
