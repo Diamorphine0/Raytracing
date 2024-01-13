@@ -14,9 +14,9 @@ int main()
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -44,15 +44,10 @@ int main()
 
     do{
         shader.Bind();
-
-//        std::cout << "Adjust camera" << std::endl;
-        // we now also want to rotate
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
-//        std::cout << "Camera adjusted" << std::endl;
 
+        // the render scene and animate scene functionalities should be disjoint.
         engine.camera.renderScene(engine.engineWorld, shader);
-//        std::cout << "Scene rendered" << std::endl;
-        // adding anything to the scene graph should happen here ...
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

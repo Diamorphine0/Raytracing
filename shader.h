@@ -19,7 +19,7 @@ private:
 
     // we can implement some sort of a cache here
     GLuint compileShader(const char * vertex_file_path,const char * fragment_file_path);
-    unsigned int getUniformStringLocation(const std::string& name);
+    unsigned int getUniformStringLocation(const std::string& name) const;
 
 public:
     Shader(const char * vertex_file_path,const char * fragment_file_path);
@@ -31,6 +31,7 @@ public:
     void setUnifrom4f(const std::string& name, float v0, float v1, float v2, float v3);
 
     void setUniformMatrix4fv(const std::string& name, const GLfloat* data);
+    void SetUniform1i(const std::string& name, int value) const;
 
     inline unsigned int getID() const{return m_RendererID;};
 };

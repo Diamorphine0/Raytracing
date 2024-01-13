@@ -1,4 +1,5 @@
 #include "scenegraph.h"
+#include "texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
 Node::Node(Entity* entity): entity(entity), parent(nullptr), children({}){}
@@ -37,16 +38,36 @@ void Node::Draw(const Shader& shader){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        // this would happen every time
+        // we need to rely on key frames
+        // we need to calculate the interpolation between the key frames
+        // how can we store the key frame data -> ie the transform of each object and the timestamp?
+        // here we should be calling the per second node animation
+
         entity -> rotate(0.01f, 0.001f, 0.001f, 1);
 
-//        std::cout << "Draw Function" << std::endl;
+        // we check the current time in the animation and see in between which 2 keyframes we are
+        // then we do the rotation, scaling and transformation according to the point in the interpolation
+
+        // basically here we set the local matrix transformation -> This should be done relative to the previous timeframe matrix.
+
+        // for rotation we can use quaternions.
+
+        // we want to be able to decompose a matrix. -> Potentially better to just store the decomposition ?
+
+        // Can we assume no projective component ?
+
+        // we can easily compute the interpolation matricies.
+
+        // what is the point of the scene graph -> Just to get the relations
+
+        // we then get that
+
         shader.Bind();
-//        std::cout << "Shader Binded" << std::endl;
 
         // take care of when the parent is null
+
+        // This is the animation step
         if(parent != nullptr){
-//            std::cout << "Are we here ?" << std::endl;
             if(parent -> entity != nullptr){
                 if((parent -> entity -> worldMatrix) != glm::mat4())
                     (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
@@ -58,26 +79,24 @@ void Node::Draw(const Shader& shader){
             }
         }
 
-//        std::cout << "here" << std::endl;
-
-//        std::cout << shader.getID() << std::endl;
-
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
-
-//        std::cout << MatrixID << std::endl;
 
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
-//        std::cout << "VA Binded " << va.getID() << std::endl;
+        // check if the texture is loaded (we should not be initializing a new texture every frame).
+        Texture texture("../Raytracing/Textures/texture.png");
+        texture.Bind();
+        // why are we setting a uniform for the texture ?
+
+        // what value do we want to pass to it ?
+        shader.SetUniform1i("u_Texture", 1);
+
         va.Bind();
-        // This is really bad !!!
         glDrawArrays(GL_TRIANGLES, 0, 10000);
-//        std::cout << "Displayed to Screen" << std::endl;
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
     for(auto child: children){
-//        std::cout << "Child drawn" << std::endl;
         child -> Draw(shader);
     }
 }

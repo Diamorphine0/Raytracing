@@ -28,6 +28,10 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     engineWorld -> Draw(shader);
 };
 
+// we should have an animation function here and set the delta time to basically know how often we should call the function
+// or how precise we want to make the interpolation
+
+
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
 
     lastTime = glfwGetTime();

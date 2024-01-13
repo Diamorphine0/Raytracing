@@ -1,7 +1,10 @@
 #version 330 core
-out vec3 color;
-in vec3 fragmentColor;
+out vec4 color;
+in vec4 texColor;
+//in vec3 fragmentColor;
+//in vec2 v_TexCoord;
 
 void main(){
-  color = fragmentColor;
+  // the problem occurs when passing the texColor
+  color = texColor;
 }

@@ -19,12 +19,12 @@ struct Vertex{
 
     glm::vec3 Coordinates;
     glm::vec3 Color;
-    // a single vertex cannot have a normal associated to it ...
+    // we want to also store the uv Coordinates
+    glm::vec2 UV;
+    // a single vertex cannot have a normal associated to it ... -> How can we fix this ?
 
-    Vertex(glm::vec3 Coordinates, glm::vec3 Color){
-        this->Coordinates = Coordinates;
-        this->Color = Color;
-    }
+    Vertex(glm::vec3 Coordinates, glm::vec3 Color): Coordinates(Coordinates), Color(Color){}
+    Vertex(glm::vec3 Coordinates, glm::vec3 Color, glm::vec2 UV): Coordinates(Coordinates), Color(Color), UV(UV){}
 };
 
 // we should have a mesh object - what the verticies is doing right now ...
@@ -82,11 +82,10 @@ public:
     }
 
     void Push_Vertex(unsigned int count){
+        // so we push back a float ? - how would this work ?
         m_Elements.push_back({ GL_FLOAT, count, false });
         m_Stride += count * VertexBufferElement::GetSizeOfType(GL_FLOAT);
     }
-
-    // we want to create a template for a more complex vertex containing both position and color
 
     inline const std::vector<VertexBufferElement> GetElements() const {return m_Elements;};
     inline unsigned int getStride() const {return m_Stride;};
