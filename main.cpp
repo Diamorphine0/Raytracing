@@ -14,23 +14,23 @@ int main()
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/cube.obj");
-    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+//    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
+//    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
 
-    entity2 -> scale(0.5, 0.5, 0.5);
-    entity2 -> translate(-10, -10, 0);
+//    entity2 -> scale(0.5, 0.5, 0.5);
+//    entity2 -> translate(-10, -10, 0);
 
-    entity3 -> scale(0.4, 0.4, 0.4);
-    entity3->translate(-10, -10, 0);
+//    entity3 -> scale(0.4, 0.4, 0.4);
+//    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
-    Node* node3 = new Node(entity3);
+//    Node* node2 = new Node(entity2);
+//    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 -> setParent(node1);
-    node3 -> setParent(node2);
+//    node2 -> setParent(node1);/*
+//    node3 -> setParent(node2);*/
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
 //    engine.world = world;
@@ -38,7 +38,7 @@ int main()
     float currentTime = glfwGetTime();
     float lastTime;
 
-    float speed = 0.001f;
+    float speed = 0.01f;
 
     Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 

@@ -62,7 +62,7 @@ void Node::Draw(const Shader& shader){
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
         // check if the texture is loaded (we should not be initializing a new texture every frame).
-        Texture texture("../Raytracing/Textures/red.png");
+        Texture texture("../Raytracing/Textures/brick.png");
         texture.Bind();
         // why are we setting a uniform for the texture ?
 
