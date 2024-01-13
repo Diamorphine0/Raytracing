@@ -38,29 +38,7 @@ void Node::Draw(const Shader& shader){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        // we need to rely on key frames
-        // we need to calculate the interpolation between the key frames
-        // how can we store the key frame data -> ie the transform of each object and the timestamp?
-        // here we should be calling the per second node animation
-
-        entity -> rotate(0.01f, 0.001f, 0.001f, 1);
-
-        // we check the current time in the animation and see in between which 2 keyframes we are
-        // then we do the rotation, scaling and transformation according to the point in the interpolation
-
-        // basically here we set the local matrix transformation -> This should be done relative to the previous timeframe matrix.
-
-        // for rotation we can use quaternions.
-
-        // we want to be able to decompose a matrix. -> Potentially better to just store the decomposition ?
-
-        // Can we assume no projective component ?
-
-        // we can easily compute the interpolation matricies.
-
-        // what is the point of the scene graph -> Just to get the relations
-
-        // we then get that
+//        entity -> rotate(0.01f, 0.001f, 0.001f, 1);
 
         shader.Bind();
 
@@ -84,12 +62,12 @@ void Node::Draw(const Shader& shader){
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
         // check if the texture is loaded (we should not be initializing a new texture every frame).
-        Texture texture("../Raytracing/Textures/texture.png");
+        Texture texture("../Raytracing/Textures/red.png");
         texture.Bind();
         // why are we setting a uniform for the texture ?
 
         // what value do we want to pass to it ?
-        shader.SetUniform1i("u_Texture", 1);
+        shader.SetUniform1i("u_Texture", 0);
 
         va.Bind();
         glDrawArrays(GL_TRIANGLES, 0, 10000);

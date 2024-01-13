@@ -7,7 +7,7 @@ Texture::Texture(const std::string& path):
 
     stbi_set_flip_vertically_on_load(1);
     // we are loading to a local buffer
-    localBuffer = stbi_load(path.c_str(), &width, &height, &bitsPerPixel, 4);
+    localBuffer = stbi_load(path.c_str(), &width, &height, &bitsPerPixel, 0);
     // check if the image was actually laoded ?
 
     if(localBuffer){
@@ -27,9 +27,9 @@ Texture::Texture(const std::string& path):
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     // we load the tex image to a local buffer
-    glTexImage2D(GL_TEXTURE_2D, 1, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, localBuffer);
     glGenerateMipmap(GL_TEXTURE_2D);
-//    stbi_image_free(localBuffer);
+    stbi_image_free(localBuffer);
 }
 
 Texture::~Texture(){

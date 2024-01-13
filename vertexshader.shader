@@ -6,7 +6,7 @@ layout(location = 2) in vec2 texCoord;
 
 // we pass the vertex coordinates to the fragment shader
 out vec4 texColor;
-//out vec3 fragmentColor;
+out vec3 fragmentColor;
 
 // we define the Transform uniform
 uniform sampler2D u_Texture;
