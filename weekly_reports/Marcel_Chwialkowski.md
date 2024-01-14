@@ -7,4 +7,5 @@ Weekly report:
 03/01/2024 - implemented the texture class and added it to the drawing process. also edited entity class further to add textures to entities. Wrote new slightly different shader variants which display texture instead of colour. Some bugs remain to be fixed.
 
 13/01/2024 - textures fixed with Alex. Now can load any image onto an object correctly.
+
 14-15/01/2024 - added ambient, diffuse, and specular lighting according to phong model. The user can add up to 20 lightsources. some minor bugs related to specular lighting remain, ambient and diffuse work perfectly well.
