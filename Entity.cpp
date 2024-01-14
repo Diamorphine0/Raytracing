@@ -37,7 +37,7 @@ void VertexArray::Unbind() const{
     glBindVertexArray(0);
 }
 
-enum Attribute {POS, COLOR, UV};
+enum Attribute {POS, COLOR, UV, NORM};
 
 void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& layout){
 
@@ -87,6 +87,16 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
             sizeof(Vertex), // stride - THAT MAY BE WRONG!
             (void*) offsetof(Vertex, UV)  // array buffer offset
         );
+
+        glEnableVertexAttribArray(NORM);
+        glVertexAttribPointer(
+            3,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void*) offsetof(Vertex, Norm)
+            );
 //    }
 
 }
@@ -245,14 +255,14 @@ bool Entity::loadOBJ(const char * path,
         out_vertices[i].UV = uv;
     }
 
-    std::cout << "Loading normals size" << uvIndices.size() << std::endl;
-    for( unsigned int i=0; i < uvIndices.size(); i++ ){
+    std::cout << "Loading normals size" << normalIndices.size() << std::endl;
+    for( unsigned int i=0; i < normalIndices.size(); i++ ){
 
-        unsigned int uvIndex = uvIndices[i];
+        unsigned int normalIndex = normalIndices[i];
 
-        auto uv = temp_uvs[uvIndex - 1];
+        auto norm = temp_normals[normalIndex - 1];
 
-        out_vertices[i].UV = uv;
+        out_vertices[i].Norm = norm;
     }
 
 

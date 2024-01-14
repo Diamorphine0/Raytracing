@@ -36,7 +36,7 @@ void Node::Draw(const Shader& shader){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        entity -> rotate(0.01f, 0.001f, 0.01f, 1);
+        //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
 
         shader.Bind();
 
@@ -55,7 +55,7 @@ void Node::Draw(const Shader& shader){
         GLuint MatrixModelID = glGetUniformLocation(shader.getID(), "ModelMatrix");
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
 
-        glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(getModelMatrix())[0][0]);
+        glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(glm::inverse(getModelMatrix()) * entity -> worldMatrix)[0][0]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
         if(entity -> texture != nullptr){
