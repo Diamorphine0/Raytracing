@@ -52,8 +52,10 @@ void Node::Draw(const Shader& shader){
             }
         }
 
+        GLuint MatrixModelID = glGetUniformLocation(shader.getID(), "ModelMatrix");
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
 
+        glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(getModelMatrix())[0][0]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
         if(entity -> texture != nullptr){
@@ -127,4 +129,11 @@ void Node::Animate(const Shader& shader, float time){
     for(auto child: children){
         child -> Draw(shader);
     }
+}
+
+glm::mat4 Node::getModelMatrix(){
+    if(parent == nullptr){
+        return entity -> worldMatrix;
+    }
+    return parent -> getModelMatrix();
 }

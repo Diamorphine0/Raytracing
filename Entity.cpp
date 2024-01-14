@@ -112,6 +112,8 @@ Entity::Entity(std::vector<Vertex>& vertices){
     layout.Push_Vertex(3);
 
     va -> AddBuffer(vb, layout);
+
+    // we furthermore want to allocate a unique id to it that we will use for coloring (we need to maintain a dictionary associating its pointer and id).
 }
 
 Entity::Entity(const char* path){
@@ -270,6 +272,8 @@ int search(int *array, int start_idx, int end_idx, int search_val) {
     int ret = search( array, mid_idx+1, end_idx, search_val );
     return ret == -1 ? mid_idx : ret;
 }
+
+// Make sure there is no projective component.
 
 void Entity::interpolate(float timeStamp){
 

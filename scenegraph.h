@@ -33,6 +33,8 @@ public:
     void updateWorldMatrix();
     void Draw(const Shader& shader);
 
+    glm::mat4 getModelMatrix();
+
 private:
     Node* parent;
     std::vector<Node*> children;

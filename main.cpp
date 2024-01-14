@@ -16,6 +16,8 @@ int main()
     // only a single face of the object loaded..,
     Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
 
+    // to get the object identifier we can just count hte total number of objects stored in the scene graph
+
     entity1 -> texture = new Texture("../Raytracing/Textures/grid.png");
 
     std::cout << "Texture is loaded" << std::endl;
