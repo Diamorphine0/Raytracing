@@ -10,10 +10,12 @@ layout(location = 3) in vec3 normalCoord;
 out vec2 uv0;
 out vec3 normals;
 out vec3 FragPos;
+out vec3 viewPos0;
 
 // we define the Transform uniform
 uniform mat4 Transform;
 uniform mat4 ModelMatrix;
+uniform vec3 viewPos;
 
 void main(){
   //  Output position of the vertex, in clip space : MVP * position
@@ -21,4 +23,5 @@ void main(){
   uv0 = texCoord;
   normals = normalCoord;
   FragPos = vec3(ModelMatrix * vec4(vertexPosition_modelspace, 1));
+  viewPos0 = viewPos;
 }

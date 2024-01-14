@@ -31,7 +31,7 @@ void Node::updateWorldMatrix(){
 
 }
 
-void Node::Draw(const Shader& shader){
+void Node::Draw(const Shader& shader, glm::vec3 pos){
 
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
@@ -54,7 +54,9 @@ void Node::Draw(const Shader& shader){
 
         GLuint MatrixModelID = glGetUniformLocation(shader.getID(), "ModelMatrix");
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
+        GLuint viewPosID = glGetUniformLocation(shader.getID(), "viewPos");
 
+        glUniform3fv(viewPosID, 1, &pos[0]);
         glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(glm::inverse(getModelMatrix()) * entity -> worldMatrix)[0][0]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
@@ -71,7 +73,7 @@ void Node::Draw(const Shader& shader){
     }
 
     for(auto child: children){
-        child -> Draw(shader);
+        child -> Draw(shader, pos);
     }
 }
 
@@ -90,7 +92,7 @@ void Node::addKeyframe(float time){
 
 }
 
-void Node::Animate(const Shader& shader, float time){
+void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
 
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
@@ -127,7 +129,7 @@ void Node::Animate(const Shader& shader, float time){
     }
 
     for(auto child: children){
-        child -> Draw(shader);
+        child -> Draw(shader, pos);
     }
 }
 
