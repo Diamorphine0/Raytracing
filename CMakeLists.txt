@@ -84,6 +84,8 @@ else()
         add_executable(Ray-tracing
             ${PROJECT_SOURCES}
             framebuffer.h framebuffer.cpp
+            hirarchy.cpp
+            hirarchy.h
         )
     endif()
 endif()

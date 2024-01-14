@@ -68,24 +68,26 @@ void Engine::update(){
     ImGui::SetNextWindowSize(ImVec2(400,400));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
+
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
+    ImGui::SetNextWindowSize(ImVec2(400,200));
     ImGui::SetNextWindowPos(ImVec2 (0,400));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,800));
-    ImGui::SetNextWindowPos(ImVec2 (1500,0));
-    ImGui::Begin("Stats");
+    ImGui::SetNextWindowSize(ImVec2(300,600));
+    ImGui::SetNextWindowPos(ImVec2 (1200,0));
+    ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(1100,200));
-    ImGui::SetNextWindowPos(ImVec2 (400,600));
+    ImGui::SetNextWindowSize(ImVec2(1500,200));
+    ImGui::SetNextWindowPos(ImVec2 (0,600));
     ImGui::Begin("Animation");
+    RenderAnimation();
     ImGui::End();
 
     // Rendering
@@ -130,6 +132,98 @@ void Engine::RenderStats(){
         rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
+struct EntityNode {
+    int id;
+    std::string name;
+    std::vector<EntityNode> children;
+};
 
-void Engine::RenderHierarchy(){
+void RenderEntityHierarchy(EntityNode& entity) {
+    // Display each entity as a tree node
+    if (ImGui::TreeNodeEx(entity.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
+
+        // Add drag-and-drop source
+        if (ImGui::BeginDragDropSource()) {
+            // Set payload to the entity's id
+            ImGui::SetDragDropPayload("ENTITY_ID", &entity.id, sizeof(entity.id));
+            ImGui::Text("Dragging %s", entity.name.c_str());
+            ImGui::EndDragDropSource();
+        }
+
+        // Context menu when right-clicking an entity
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem("Delete Entity")) {
+            }
+            if (ImGui::MenuItem("Create Child")) {
+            }
+            ImGui::EndPopup();
+        }
+        if (ImGui::BeginDragDropTarget()) {
+            // Accept the payload
+            const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_ID");
+            if (payload) {
+                // Process the payload (in this example, rearrange the hierarchy)
+                int draggedEntityId = *static_cast<const int*>(payload->Data);
+                std::cout << "Dropped entity with ID " << draggedEntityId << " onto " << entity.name << std::endl;
+                // Implement logic to rearrange the hierarchy based on the dropped entity ID
+            }
+
+            // End the drag-and-drop target
+            ImGui::EndDragDropTarget();
+        }
+
+        // Render child entities recursively
+        for (auto& child : entity.children) {
+            RenderEntityHierarchy(child);
+        }
+
+        // End the tree node
+        ImGui::TreePop();
+
+
+    }
+}
+
+void Engine::RenderHierarchy() {
+    ImGui::Text("Entity Hierarchy View");
+
+    // Sample hierarchy with parent-child relationships
+    static EntityNode rootNode = {1, "Root", {{2, "Child1"}, {3, "Child2", {{4, "Grandchild1"}, {5, "Grandchild2"}}}}};
+
+    // Render the hierarchy
+    RenderEntityHierarchy(rootNode);
+}
+
+
+
+void Engine::RenderAnimation() {
+    ImGui::Begin("Animation");
+
+
+    static int coarseFrame = 0;
+    ImGui::SliderInt("Coarse Slider", &coarseFrame, 0, 500, "Frame %d");
+
+
+    if (ImGui::Button("Mark Position")) {
+        markedPositions.push_back(coarseFrame);
+    }
+
+
+    if (ImGui::Button("Clear All Marks")) {
+        markedPositions.clear();
+    }
+
+    ImGui::Text("Coarse Frame: %d", coarseFrame);
+
+    ImVec2 sliderMin = ImGui::GetItemRectMin();
+    ImVec2 sliderMax = ImGui::GetItemRectMax();
+    float sliderRange = sliderMax.x - sliderMin.x;
+
+    for (int markedPosition : markedPositions) {
+        float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
+        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
+        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
+    }
+
+    ImGui::End();
 }
