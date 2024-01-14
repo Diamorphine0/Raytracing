@@ -67,6 +67,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        BoundingBox.h
+        BoundingBox.cpp
+
 
     )
 # Define target properties for Android with Qt 6 as:
