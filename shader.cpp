@@ -3,7 +3,7 @@
 Shader::Shader(const char * vertex_file_path,const char * fragment_file_path)
     :m_RendererID(0)
 {
-    m_RendererID = compileShader( vertex_file_path, fragment_file_path );
+    m_RendererID = compileShader( vertex_file_path, fragment_file_path);
 }
 
 Shader::~Shader(){
@@ -18,7 +18,7 @@ void Shader::Unbind() const{
     glUseProgram(0);
 }
 
-unsigned int Shader::getUniformStringLocation(const std::string& name){
+unsigned int Shader::getUniformStringLocation(const std::string& name) const{
     int location = glGetUniformLocation(m_RendererID, name.c_str());
     return location;
 }
@@ -29,6 +29,10 @@ void Shader::setUnifrom4f(const std::string& name, float v0, float v1, float v2,
 
 void Shader::setUniformMatrix4fv(const std::string& name, const GLfloat* data){
     glUniformMatrix4fv(getUniformStringLocation(name), 1, GL_FALSE, data);
+}
+
+void Shader::SetUniform1i(const std::string& name, int value) const{
+    glUniform1i(this -> getUniformStringLocation(name), value);
 }
 
 GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment_file_path){
@@ -107,6 +111,7 @@ GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment
         glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
         printf("%s\n", &ProgramErrorMessage[0]);
     }
+
 
     glDetachShader(ProgramID, VertexShaderID);
     glDetachShader(ProgramID, FragmentShaderID);

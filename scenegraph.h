@@ -19,7 +19,6 @@ class Node{
 public:
     Entity* entity;
 public:
-
     Node();
     Node(Entity* entity);
     Node(Entity* entity, Node* parent);
@@ -27,8 +26,14 @@ public:
     ~Node();
 
     void setParent(Node* parent);
+    void addKeyframe(float time);
+
+    void Animate(const Shader& shader, float time, glm::vec3 pos);
+
     void updateWorldMatrix();
-    void Draw(const Shader& shader);
+    void Draw(const Shader& shader, glm::vec3 pos); //camera position - somewhere we do need to pass it
+
+    glm::mat4 getModelMatrix();
 
 private:
     Node* parent;

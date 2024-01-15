@@ -3,9 +3,8 @@
 
 #include "Ray.hpp"
 
-
 /// This is the  abstract class for "hittable" objects and it's interface
-/// ToDO: figure out a more advanced interface
+/// Todo: figure out a more advanced interface
 
 class Hittable {
 public:
@@ -20,6 +19,7 @@ public:
 
     //JUST TO DEBUG. TO REMOVE.!
     Color color;
+
 protected:
     Hittable() {};
 };

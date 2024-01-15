@@ -6,6 +6,7 @@
 #include "scenegraph.h"
 #include "Camera.hpp"
 #include "Triangle.h"
+#include "lightsource.h"
 
 int main()
 {
@@ -15,8 +16,20 @@ int main()
 
     // only a single face of the object loaded..,
     Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity2 = new Entity("../Raytracing/objects/sphere.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/sphere.obj");
+
+    // to get the object identifier we can just count hte total number of objects stored in the scene grap
+
+    lightarray lights;
+    lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
+    lights.addSource(lamp);
+
+    entity1 -> texture = new Texture("../Raytracing/Textures/earth.png");
+
+    std::cout << "Texture is loaded" << std::endl;
+    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
+
+    entity2 -> texture = new Texture("../Raytracing/Textures/purple.png");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -30,7 +43,7 @@ int main()
 
     node1 -> setParent(engine.engineWorld);
     node2 -> setParent(node1);
-    node3 -> setParent(node2);
+//    node3 -> setParent(node2);*/
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
 //    engine.world = world;
@@ -38,21 +51,36 @@ int main()
     float currentTime = glfwGetTime();
     float lastTime;
 
-    float speed = 0.001f;
+    float speed = 0.01f;
 
     Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     do{
         shader.Bind();
 
-//        std::cout << "Adjust camera" << std::endl;
-        // we now also want to rotate
-        engine.camera.movement(currentTime, lastTime, speed, engine.window);
-//        std::cout << "Camera adjusted" << std::endl;
+        //this should handle lighting loading
+        for(int i = 0; i < 20; i++){
 
+            std::string istring = "lights[" + std::to_string(i) + "].lightPos";
+            const char* annoying = istring.c_str();
+            GLuint lightPosi = glGetUniformLocation(shader.getID(), annoying);
+
+            istring = "lights[" + std::to_string(i) + "].lightColor";
+            annoying = istring.c_str();
+            GLuint lightColori = glGetUniformLocation(shader.getID(), annoying);
+
+            glUniform3fv(lightPosi, 1, &lights.arr[i].lightPos[0]);
+            glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
+            //cannot initialize a parameter of type const GLfloat with an rvalue of typue glm::vec3
+
+        }
+
+        engine.camera.movement(currentTime, lastTime, speed, engine.window);
+
+        // the render scene and animate scene functionalities should be disjoint.
         engine.camera.renderScene(engine.engineWorld, shader);
-//        std::cout << "Scene rendered" << std::endl;
-        // adding anything to the scene graph should happen here ...
+
+
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

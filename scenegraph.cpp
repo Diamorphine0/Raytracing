@@ -1,4 +1,5 @@
 #include "scenegraph.h"
+#include "texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
 Node::Node(Entity* entity): entity(entity), parent(nullptr), children({}){}
@@ -24,29 +25,22 @@ void Node::updateWorldMatrix(){
     else
         (entity -> worldMatrix) = (entity -> localMatrix);
 
-    // we can then draw everything relative to the main matrix
-
     for(auto child: children){
         child -> updateWorldMatrix();
     }
 
 }
 
-void Node::Draw(const Shader& shader){
+void Node::Draw(const Shader& shader, glm::vec3 pos){
 
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        // this would happen every time
-        entity -> rotate(0.01f, 0.001f, 0.001f, 1);
+        //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
 
-//        std::cout << "Draw Function" << std::endl;
         shader.Bind();
-//        std::cout << "Shader Binded" << std::endl;
 
-        // take care of when the parent is null
         if(parent != nullptr){
-//            std::cout << "Are we here ?" << std::endl;
             if(parent -> entity != nullptr){
                 if((parent -> entity -> worldMatrix) != glm::mat4())
                     (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
@@ -58,26 +52,90 @@ void Node::Draw(const Shader& shader){
             }
         }
 
-//        std::cout << "here" << std::endl;
-
-//        std::cout << shader.getID() << std::endl;
-
+        GLuint MatrixModelID = glGetUniformLocation(shader.getID(), "ModelMatrix");
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
+        GLuint viewPosID = glGetUniformLocation(shader.getID(), "viewPos");
 
-//        std::cout << MatrixID << std::endl;
-
+        glUniform3fv(viewPosID, 1, &pos[0]);
+        glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(glm::inverse(getModelMatrix()) * entity -> worldMatrix)[0][0]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
 
-//        std::cout << "VA Binded " << va.getID() << std::endl;
+        if(entity -> texture != nullptr){
+            entity -> texture -> Bind();
+        }
+
+        shader.SetUniform1i("u_Texture", 0);
+
         va.Bind();
-        // This is really bad !!!
-        glDrawArrays(GL_TRIANGLES, 0, 10000);
-//        std::cout << "Displayed to Screen" << std::endl;
+        // This can be fixed as soon as we store the verticies ...
+        glDrawArrays(GL_TRIANGLES, 0, entity -> vertices.size());
         glClear(GL_DEPTH_BUFFER_BIT);
     }
 
     for(auto child: children){
-//        std::cout << "Child drawn" << std::endl;
-        child -> Draw(shader);
+        child -> Draw(shader, pos);
     }
+}
+
+void Node::addKeyframe(float time){
+
+    if(entity != nullptr){
+        // In the UI don't forget to set the local matrix when adjusting thre
+        // We know what the localmatrix of the function looks like so we just set it.
+        std::pair entityKeyframe(time, (entity -> localMatrix));
+        entity -> keyFrames.push_back(entityKeyframe);
+    }
+
+    for(auto child: children){
+        child->addKeyframe(time);
+    }
+
+}
+
+void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
+
+    if(entity != nullptr){
+        const VertexArray& va = *(entity -> getVA());
+
+        // The interpolation finds the desired local transformation matrix (relative to the intial verticies stored in the buffer - they remain unchanged).
+        entity -> interpolate(time);
+
+        shader.Bind();
+
+        if(parent != nullptr){
+            if(parent -> entity != nullptr){
+                if((parent -> entity -> worldMatrix) != glm::mat4())
+                    (entity -> worldMatrix) = (parent -> entity -> worldMatrix) * (entity -> localMatrix);
+                else
+                    (entity -> worldMatrix) = (entity -> localMatrix);
+            }
+            else{
+                (entity -> worldMatrix) = (entity -> localMatrix);
+            }
+        }
+
+        GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
+
+        glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
+
+        if(entity -> texture != nullptr)
+            entity -> texture -> Bind();
+
+        shader.SetUniform1i("u_Texture", 0);
+
+        va.Bind();
+        glDrawArrays(GL_TRIANGLES, 0, entity -> vertices.size());
+        glClear(GL_DEPTH_BUFFER_BIT);
+    }
+
+    for(auto child: children){
+        child -> Draw(shader, pos);
+    }
+}
+
+glm::mat4 Node::getModelMatrix(){
+    if(parent == nullptr){
+        return entity -> worldMatrix;
+    }
+    return parent -> getModelMatrix();
 }

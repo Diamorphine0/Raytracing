@@ -37,6 +37,8 @@ void VertexArray::Unbind() const{
     glBindVertexArray(0);
 }
 
+enum Attribute {POS, COLOR, UV, NORM};
+
 void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& layout){
 
     Bind();
@@ -48,32 +50,54 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 
     unsigned int offset = 0;
 
-    for(unsigned int i = 0; i < elements.size(); i++){
+//    for(unsigned int i = 0; i < elements.size(); i++){
 
-        const auto& element = elements[i];
+//        const auto& element = elements[i];
 
-        glEnableVertexAttribArray(0);
+        // the first attribute is the position
+        glEnableVertexAttribArray(POS);
         glVertexAttribPointer(
             0,
-            element.count,      // size
-            element.type,       // type
-            element.normalized ? GL_TRUE : GL_FALSE, // normalized?
+            3,      // size
+            GL_FLOAT,       // type
+            GL_FALSE, // normalized?
             sizeof(Vertex),     // stride - THAT MAY BE WRONG!
             (const void*) 0     // array buffer offset
-            );
+        );
 
-        glEnableVertexAttribArray(1);
+        // the second attribute is color -> This is not always going to happen
+        glEnableVertexAttribArray(COLOR);
         glVertexAttribPointer(
             1,                                // attribute. No particular reason for 1, but must match the layout in the shader.
-            element.count,                    // size
-            element.type,                     // type
-            element.normalized ? GL_TRUE : GL_FALSE, // normalized?
+            3,                    // size
+            GL_FLOAT,                     // type
+            GL_FALSE, // normalized?
             sizeof(Vertex),                   // stride - THAT MAY BE WRONG!
             (void*) offsetof(Vertex, Color)   // array buffer offset
-            );
+        );
 
-        // offset += element.count * VertexBufferElement::GetSizeOfType(element.type);
-    }
+        // we need to use the object UVs
+        glEnableVertexAttribArray(UV);
+        glVertexAttribPointer(
+            // this sets the name
+            2,
+            2, // size
+            GL_FLOAT, // type
+            GL_FALSE, // normalized?
+            sizeof(Vertex), // stride - THAT MAY BE WRONG!
+            (void*) offsetof(Vertex, UV)  // array buffer offset
+        );
+
+        glEnableVertexAttribArray(NORM);
+        glVertexAttribPointer(
+            3,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            sizeof(Vertex),
+            (void*) offsetof(Vertex, Norm)
+            );
+//    }
 
 }
 
@@ -98,6 +122,8 @@ Entity::Entity(std::vector<Vertex>& vertices){
     layout.Push_Vertex(3);
 
     va -> AddBuffer(vb, layout);
+
+    // we furthermore want to allocate a unique id to it that we will use for coloring (we need to maintain a dictionary associating its pointer and id).
 }
 
 Entity::Entity(const char* path){
@@ -106,9 +132,8 @@ Entity::Entity(const char* path){
     std::vector< glm::vec2 > uvs;
     std::vector< glm::vec3 > normals;
 
-    std::cout << "Before loading" << std::endl;
+    // we might as well just pass the vertices without uvs.
     loadOBJ(path, vertices, uvs, normals);
-    std::cout << "After loading" << std::endl;
 
     this -> vertices = vertices;
 
@@ -129,6 +154,8 @@ Entity::Entity(const char* path){
 
 bool Entity::loadOBJ(const char * path,
                      std::vector < Vertex > & out_vertices,
+                     // we want to store the uvs;
+                     // they have to also somehow be passed to opengl;
                      std::vector < glm::vec2 > & out_uvs,
                      std::vector < glm::vec3 > & out_normals){
 
@@ -163,14 +190,18 @@ bool Entity::loadOBJ(const char * path,
 
             std::cout << vertex.x << " " << vertex.y << " " << vertex.z << std::endl;
 
-            //should use something like emplace back
+            // no need to create a vertex object here come to think of it
             temp_vertices.push_back(Vertex(vertex, glm::vec3(color,  color,  color)));
         }
 
         else if ( strcmp( lineHeader, "vt" ) == 0 ){
             glm::vec2 uv;
             fscanf(file, "%f %f\n", &uv.x, &uv.y );
-            temp_uvs.push_back(uv);}
+            temp_uvs.push_back(uv);
+
+            // we want to store the uvs; - do we associate one to every ... ?
+            // basically we want to store the uvs in the layout ...
+        }
         else if ( strcmp( lineHeader, "vn" ) == 0 ){
             glm::vec3 normal;
             fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z );
@@ -194,21 +225,85 @@ bool Entity::loadOBJ(const char * path,
             normalIndices.push_back(normalIndex[1]);
             normalIndices.push_back(normalIndex[2]);
         }
-
     }
 
-    // For each vertex of each triangle
+    std::cout << "Vert size: " << temp_vertices.size() << std::endl;
+    std::cout << "UV size: " << temp_uvs.size() << std::endl;
+
+    // the same way that we are going through the vertexIndicies
+    // we have to go through the uv inidices and put all of this shit into a vertex
+    // we don't really care about the normals ?
+
     for( unsigned int i=0; i<vertexIndices.size(); i++ ){
+
         unsigned int vertexIndex = vertexIndices[i];
         Vertex vertex = temp_vertices[ vertexIndex - 1];
+
         out_vertices.push_back(vertex);
+        // we likewise want to push the uvs
         std::cout << vertex.Coordinates.x << " " << vertex.Coordinates.y << " " << vertex.Coordinates.z << std::endl;
     }
 
-    std::cout << "Size: " << out_vertices.size() << std::endl;
+    // now we simply iterate through the uv coordinates and append them to the texture -> ideally we just want to add to the definitions of the verticies.
+    std::cout << "Loading uvIndicies size" << uvIndices.size() << std::endl;
+    for( unsigned int i=0; i < uvIndices.size(); i++ ){
+
+        unsigned int uvIndex = uvIndices[i];
+
+        auto uv = temp_uvs[uvIndex - 1];
+
+        out_vertices[i].UV = uv;
+    }
+
+    std::cout << "Loading normals size" << normalIndices.size() << std::endl;
+    for( unsigned int i=0; i < normalIndices.size(); i++ ){
+
+        unsigned int normalIndex = normalIndices[i];
+
+        auto norm = temp_normals[normalIndex - 1];
+
+        out_vertices[i].Norm = norm;
+    }
+
+
     return true;
 }
 
-// We want to extend the entity functionality to load objects.
-// To store the animations -> Basically every element should know it's movement in each frame
-// it suffices to store triangles (in 3s and the normals -)
+int search(int *array, int start_idx, int end_idx, int search_val) {
+
+    if( start_idx == end_idx )
+        return array[start_idx] <= search_val ? start_idx : -1;
+
+    int mid_idx = start_idx + (end_idx - start_idx) / 2;
+
+    if( search_val < array[mid_idx] )
+        return search( array, start_idx, mid_idx, search_val );
+
+    int ret = search( array, mid_idx+1, end_idx, search_val );
+    return ret == -1 ? mid_idx : ret;
+}
+
+// Make sure there is no projective component.
+
+void Entity::interpolate(float timeStamp){
+
+    auto idx = index(timeStamp, 0, keyFrames.size() - 1);
+
+    auto& startTime = keyFrames[idx].first;
+    auto& startFrame = keyFrames[idx].second;
+    auto& finalTime = keyFrames[idx+1].first;
+    auto& finalFrame = keyFrames[idx+1].second;
+
+    auto t = (timeStamp - startTime)/(finalTime - startTime);
+
+    //quaternions
+    glm::quat startRot = glm::quat_cast(startFrame);
+    glm::quat finalRot = glm::quat_cast(finalFrame);
+
+    glm::quat curRot = glm::slerp(startRot, finalRot, t);
+
+    localMatrix = glm::mat4_cast(curRot);
+
+    // we can do a more precise interpolation ... (using Bezier curves instead).
+    localMatrix[3] = startFrame[3] * (1 - t) + finalFrame[3] * t;
+}

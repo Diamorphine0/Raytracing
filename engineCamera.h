@@ -13,6 +13,7 @@ public:
     engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV);
 
     void renderScene(Node* SG, const Shader& shader);
+    void AnimateScene(Node* SG, const Shader& shader, float timeStamp);
 
     inline void Clear() const{ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);};
 

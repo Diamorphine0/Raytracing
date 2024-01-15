@@ -22,11 +22,26 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
 
     auto mvp = construct_mvp();
 
-//    std::cout << engineWorld -> entity << std::endl;
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
-    engineWorld -> Draw(shader);
+    glm::vec3 pos = getPosition();
+    engineWorld -> Draw(shader, pos);
 };
+
+void engineCamera::AnimateScene(Node* engineWorld, const Shader& shader, float timeStamp){
+    Clear();
+
+    auto mvp = construct_mvp();
+
+    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+
+    glm::vec3 pos = getPosition();
+    engineWorld -> Animate(shader, timeStamp, pos);
+};
+
+// we should have an animation function here and set the delta time to basically know how often we should call the function
+// or how precise we want to make the interpolation
+
 
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
 
@@ -34,18 +49,18 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     float deltaTime = float(currentTime - lastTime);
 
-//    auto x_prev = xpos;
-//    auto y_prev = ypos;
+    auto x_prev = xpos;
+    auto y_prev = ypos;
 
-//     we want to adjust some shit
+    //     we want to adjust some shit
     glfwGetCursorPos(window, &xpos, &ypos);
-    glfwSetCursorPos(window, 1024/2, 768/2);
+    //    glfwSetCursorPos(window, 1024/2, 768/2);
 
-//    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
-//    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
+    //    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
+    //    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
 
-    horizontalAngle += mousespeed * deltaTime * float(1024/2 - xpos );
-    verticalAngle   += mousespeed * deltaTime * float(768/2 - ypos );
+    horizontalAngle += mousespeed * deltaTime * float(x_prev - xpos );
+    verticalAngle   += mousespeed * deltaTime * float(y_prev - ypos );
 
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
@@ -81,6 +96,7 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 glm::mat4 engineCamera::construct_mvp(){
 
     glm::mat4 Projection = glm::perspective(glm::radians(initialFoV), 4.0f / 3.0f, 0.1f, 100.0f);
+
     // Camera matrix
     glm::mat4 View = glm::lookAt(
         position,           // Camera is here
