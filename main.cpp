@@ -60,17 +60,14 @@ int main()
 
     float speed = 0.001f;
 
-    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
-
     do{
-        shader.Bind();
+        engine.shader -> Bind();
 
         std::cout << "Adjust camera" << std::endl;
         // we now also want to rotate
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
         std::cout << "Camera adjusted" << std::endl;
 
-        engine.camera.renderScene(engine.engineWorld, shader);
         std::cout << "Scene rendered" << std::endl;
         // adding anything to the scene graph should happen here ...
         engine.update();

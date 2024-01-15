@@ -48,10 +48,14 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     // Cull triangles which normal is not towards the camera
-//    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
+
+    shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
+
+    // It suffices to load the framebuffer here.
+    fb = new frameBuffer(width, height);
 
     Entity* cameraentity = new Entity();
-//    cameraentity -> translate(0, 0, 8);
     engineWorld = new Node(cameraentity);
 }
 
@@ -70,6 +74,12 @@ void Engine::update(){
     ImGui::Begin("Hierarchy");
 
     RenderHierarchy();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(800, 600));
+    ImGui::SetNextWindowPos(ImVec2 (400, 0));
+    ImGui::Begin("Engine Visualization");
+    LoadEngine();
     ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(400,200));
@@ -92,8 +102,40 @@ void Engine::update(){
 
     // Rendering
     ImGui::Render();
+
+    fb -> Bind();
+
+    // all the draw things should happen here
+
+    camera.renderScene(engineWorld, *shader);
+
+    fb -> Unbind();
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
+}
+
+void Engine::LoadEngine(){
+    // we access the ImGui window size
+    const float window_width = ImGui::GetContentRegionAvail().x;
+    const float window_height = ImGui::GetContentRegionAvail().y;
+
+    // we rescale the framebuffer to the actual window size here and reset the glViewport
+    fb -> Rescale(window_width, window_height);
+    glViewport(0, 0, window_width, window_height);
+
+    // we get the screen position of the window
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    // and here we can add our created texture as image to ImGui
+    // unfortunately we need to use the cast to void* or I didn't find another way tbh
+    ImGui::GetWindowDrawList()->AddImage(
+        (void *) fb -> texture_id,
+        ImVec2(pos.x, pos.y),
+        ImVec2(pos.x + window_width, pos.y + window_height),
+        ImVec2(0, 1),
+        ImVec2(1, 0)
+    );
 }
 
 void Engine::RenderProperties(){
@@ -193,8 +235,6 @@ void Engine::RenderHierarchy() {
     // Render the hierarchy
     RenderEntityHierarchy(rootNode);
 }
-
-
 
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");

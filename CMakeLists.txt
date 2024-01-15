@@ -41,10 +41,8 @@ set(PROJECT_SOURCES
         shader.h
         shader.h shader.cpp
         enginecamera.cpp
-        primitives.h
-        primitives.cpp
-
-
+        primitives.h primitives.cpp
+        framebuffer.h framebuffer.cpp
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
