@@ -4,6 +4,7 @@
 #include "Hittable.hpp"
 #include "Ray.hpp"
 #include "Utilities.hpp"
+#include "BoundingBox.h"
 
 class Triangle: public Hittable {
 public:
@@ -19,6 +20,7 @@ public:
 private:
     Point3 p0, p1, p2;
     Point3 normal;
+    BoundingBox boundingBox = BoundingBox(p0, p0);
     float planeEquationCoeff{};
 
     bool checkOnPlane(const Point3 &p) const;
@@ -27,6 +29,7 @@ private:
 
     void computeNormal();
     void computePlaneEquation();
+    void computeBoundingBox();
 };
 
 #endif //RAY_TRACING_TRIANGLE_H

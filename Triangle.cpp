@@ -11,6 +11,28 @@ void Triangle::computePlaneEquation() {
     planeEquationCoeff = - normal.dot(p0);
 }
 
+void Triangle::computeBoundingBox() {
+    Vec3 min = p0;
+    Vec3 max = p0;
+
+    min.x = std::min(min.x, p1.x);
+    min.x = std::min(min.x, p2.x);
+    max.x = std::max(max.x, p1.x);
+    max.x = std::max(max.x, p2.x);
+
+    min.y = std::min(min.y, p1.y);
+    min.y = std::min(min.y, p2.y);
+    max.y = std::max(max.y, p1.y);
+    max.y = std::max(max.y, p2.y);
+
+    min.z = std::min(min.z, p1.z);
+    min.z = std::min(min.z, p2.z);
+    max.z = std::max(max.z, p1.z);
+    max.z = std::max(max.z, p2.z);
+
+    boundingBox = BoundingBox(min, max);
+}
+
 Triangle::Triangle(const Point3 &a, const Point3 &b, const Point3 &c) {
     p0 = a;
     p1 = b;
@@ -18,6 +40,7 @@ Triangle::Triangle(const Point3 &a, const Point3 &b, const Point3 &c) {
 
     computeNormal();
     computePlaneEquation();
+    computeBoundingBox();
 
     std::cerr<<"Normal is "<<normal<<"\n";
     std::cerr<<"THe coefficient is "<<planeEquationCoeff<<std::endl;
