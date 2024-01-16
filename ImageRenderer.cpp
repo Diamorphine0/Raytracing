@@ -48,11 +48,11 @@ void ImageRenderer::render_image(const std::string &file_image) {
     outFile<<image_width<<" "<<image_height<<" "<<255<<"\n";
     for(int i = 0; i < image_height; i++){
         for(int j = 0; j < image_width; j++){
-            outFile<<pixel_colors[i][j]<<"\n";
+            outFile<<static_cast<int> (pixel_colors[i][j].x * 255.999)<<" "<<static_cast<int> (pixel_colors[i][j].y * 255.999)<<" "<<static_cast<int> (pixel_colors[i][j].z * 255.999)<<"\n";
 
         }
     }
-    std::cerr<<"Done printing!\n"<<image_height<<" "<<image_width<<"\n"<<pixel_colors[0][0]<<"\n";
+    std::cerr<<"Done printing!\n"<<image_height<<" "<<image_width<<"\n";
     outFile.flush();
 }
 

@@ -4,55 +4,41 @@ void Camera::render(Hittable *world, const std::string &imagePath) {
     initialize();
     imageRenderer.reset_pixels();
 
-    for (int j = 0; j < imageRenderer.get_height(); ++j) {
-        for (int i = 0; i < imageRenderer.get_width(); ++i) {
+    for (int row = 0; row < imageRenderer.get_height(); ++row) {
+        for (int col = 0; col < imageRenderer.get_width(); ++col) {
             Color pixel_color(0,0,0);
             for (int sample = 0; sample < samples_per_pixel; ++sample) {
-                Ray r = get_ray(i, j);
+                Ray r = get_ray(row, col);
                 pixel_color = pixel_color + ray_color(r, world);
             }
-            pixel_color = Color(static_cast<int>(pixel_color.x/samples_per_pixel),static_cast<int>(pixel_color.y/samples_per_pixel),static_cast<int>(pixel_color.z/samples_per_pixel));
+            pixel_color = Color(pixel_color.x/samples_per_pixel,
+                                pixel_color.y/samples_per_pixel,
+                                pixel_color.z/samples_per_pixel);
+
             //divided by samples_per_pixel to get the final color after antialiasing
-            imageRenderer.set_pixel(j, i, pixel_color);
+            imageRenderer.set_pixel(row, col, pixel_color);
         }
     }
     imageRenderer.render_image(imagePath);
 }
 
 void Camera::initialize() {
-
-    center = lookfrom;
-
     // Determine viewport dimensions.
-    auto theta = vfov * pi / 180.0;
-    auto h = tan(theta/2);
-    auto viewport_height = 2 * h * focus_dist;
-    auto viewport_width = viewport_height * (static_cast<double>(imageRenderer.get_width())/imageRenderer.get_height());
-
-    // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
-    w = (lookfrom - lookat);
-    w.normalize();
-    u = vup.cross(w);
-    u.normalize();
-    v = w.cross(u);
+    auto focal_length = 1;
+    auto viewport_height = 2.0f;
+    auto viewport_width = viewport_height * (static_cast<float>(imageRenderer.get_width())/imageRenderer.get_height());
 
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    auto viewport_u = u * viewport_width;    // Vector across viewport horizontal edge
-    auto viewport_v = -v * viewport_height;  // Vector down viewport vertical edge
-
+    auto viewport_right = Vec3(viewport_width, 0, 0);
+    auto viewport_down = Vec3(0, -viewport_height, 0);
 
     // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-    pixel_delta_u = viewport_u * (1.0 / imageRenderer.get_width());
-    pixel_delta_v = viewport_v * (1.0 / imageRenderer.get_height());
+    pixel_delta_right = viewport_right * (1.0f / imageRenderer.get_width());
+    pixel_delta_down = viewport_down * (1.0f / imageRenderer.get_height());
 
     // Calculate the location of the upper left pixel.
-    auto viewport_upper_left = center - ( w * focus_dist) - viewport_u/2 - viewport_v/2;
-    pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5;
-
-    // Calculate the camera defocus disk basis vectors.
-    auto defocus_radius = focus_dist * tan((defocus_angle / 2)*pi/180);
-    defocus_disk_u = u * defocus_radius;
-    defocus_disk_v = v * defocus_radius;
+    auto viewport_upper_left = center - Vec3(0, 0, focal_length) - viewport_right * 0.5 - viewport_down * 0.5;
+    pixel00_loc = viewport_upper_left + (pixel_delta_right + pixel_delta_down) * 0.5;
 }
 
 Color Camera::ray_color(const Ray& r, Hittable *world) const {
@@ -71,7 +57,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
 
         Material* objectMaterial = objectHit.mat;
 
-        Vec3 intersection = r.get_origin() + r.get_direction() * t;
+        Vec3 intersection = r.at(t);
         //std::cerr<<"intersection point is: "<<intersection<<"\n";
         //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
         Ray scatteredRay = objectMaterial->scatter(r, intersection, objectHit.normal);
@@ -86,10 +72,22 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
     }
     else{
         //For now we have intense light sources surrounding the scene
-        return Color(215, 215, 255);
+        return Color(0.7, 0.7, 1);
     }
 
 }
+
+
+Ray Camera::get_ray(int row, int col) const {
+    auto origin = center;
+    auto position = pixel00_loc + (pixel_delta_right * col) + (pixel_delta_down * row);
+    auto rdisk = random_in_unit_disk();
+    position = position + pixel_delta_right * rdisk.x +  pixel_delta_down * rdisk.y ;
+
+    auto direction = position - origin;
+    return Ray(origin, direction);
+}
+/*
 Ray Camera::get_ray(int i, int j) const {
     // Get a randomly sampled camera ray for the pixel at location i,j.
 
@@ -115,4 +113,4 @@ Vec3 Camera::pixel_sample_square() const {
     auto py = -0.5 + (rand() / (RAND_MAX + 1.0));
     return (pixel_delta_u * px) + (pixel_delta_v * py);
 }
-
+*/

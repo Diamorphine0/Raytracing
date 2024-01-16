@@ -80,7 +80,7 @@ void Engine::RenderUI(){
 
     if(ImGui::Button("Raytrace")){
         counter++;
-        rayTracingCamera = new Camera(height, width, camera.getPosition());
+        rayTracingCamera = new Camera(height, width, {0,0,10}, 10);
         rayTracingCamera->render(engineWorld, "imageRender.ppm");
     }
 

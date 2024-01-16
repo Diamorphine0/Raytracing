@@ -38,7 +38,7 @@ void Node::Draw(const Shader& shader){
         const VertexArray& va = *(entity -> getVA());
 
         // this would happen every time
-        entity -> rotate(0.01f, 0.001f, 0.001f, 1);
+      //  entity -> rotate(0.01f, 0.001f, 0.001f, 1);
 
         //std::cout << "Draw Function" << std::endl;
         shader.Bind();

@@ -3,6 +3,11 @@
 #include <cmath>
 #include <iostream>
 #include <glm/glm.hpp>
+#include<random>
+
+
+//random to be used
+extern std::mt19937 rand_gen;
 
 class Vec3 {
 public:
@@ -40,6 +45,7 @@ Vec3 random_unit_vector();
 Vec3 random_in_unit_disk();
 
 using Color = Vec3;
+
 
 const float EPS = 1e-4;
 const double pi = 3.1415926535897932385;

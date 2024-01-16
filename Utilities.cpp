@@ -1,7 +1,10 @@
 #include "Utilities.hpp"
 #include <random>
-//Defining operators of the class Vec3
+#include <chrono>
+//random to be used
+std::mt19937 rand_gen(std::chrono::system_clock::now().time_since_epoch().count());
 
+//Defining operators of the class Vec3
 // Constructors
 Vec3::Vec3(float x, float y, float z) : x(x), y(y), z(z) {}
 
@@ -67,13 +70,11 @@ std::ostream &operator<<(std::ostream &out, const Vec3 &p) {
 
 Vec3 random_unit_vector() {
 // Create a random number generator and distribution
-    std::random_device rd;
-    std::mt19937 generator(rd());
     std::uniform_real_distribution<float> distribution(0.0, 1.0);
 
-    float x = distribution(generator);
-    float y = distribution(generator);
-    float z = distribution(generator);
+    float x = distribution(rand_gen);
+    float y = distribution(rand_gen);
+    float z = distribution(rand_gen);
 
     Vec3 randomVector(x, y, z);
     randomVector.normalize();
@@ -82,13 +83,11 @@ Vec3 random_unit_vector() {
 }
 
 Vec3 random_in_unit_disk() {
+    std::uniform_real_distribution<float> distrib(-1 , 1);
     while (true) {
-        auto p = Vec3(random_double(-1,1), random_double(-1,1), 0);
+        auto p = Vec3(distrib(rand_gen), distrib(rand_gen), 0);
         if (p.lengthSquared() < 1)
             return p;
     }
 }
 
-double random_double(double min, double max) {
-    return min + (max-min)*(rand()/RAND_MAX);
-}

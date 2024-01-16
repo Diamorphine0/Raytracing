@@ -10,6 +10,10 @@
 
 class Hittable {
 public:
+
+
+    virtual float getFacingRatio(const Ray &r) const {return (float) 0;}
+
     /** Computes if ray intersects with object and returns true/false.
      *
      * @param r The ray with which to intersect.
@@ -17,16 +21,13 @@ public:
      *
      * @returns pair of true/false and the pointer to the object which it hit (if it did, otherwise null)
      */
-
-    virtual float getFacingRatio(const Ray &r) const {return (float) 0;}
-
     virtual std::pair<bool, Hittable*> intersectWithRay(const Ray &r, float &t) const = 0;
 
     void setMaterial(Material *mat) {this->mat=mat;}
 
     //JUST TO DEBUG. TO REMOVE.!
     Vec3 normal;
-    Material *mat;
+    Material *mat = nullptr;
     float planeEquationCoeff;
 protected:
     Hittable() {};
