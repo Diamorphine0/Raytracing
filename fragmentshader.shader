@@ -3,7 +3,7 @@ out vec4 color;
 in vec2 uv0;
 in vec3 normals;
 in vec3 FragPos;
-in vec3 viewPos;
+in vec3 viewPos0;
 
 uniform sampler2D u_Texture;
 uniform vec3 ambientColor = vec3(0.0, 0.0, 1.0); //default light green
@@ -35,7 +35,7 @@ void main(){
 
                // Specular
                float specularStrength = 0.5;
-               vec3 viewDir = normalize(viewPos - FragPos);
+               vec3 viewDir = normalize(viewPos0 - FragPos);
                vec3 reflectDir = reflect(-lightDir, norm);
 
                float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
