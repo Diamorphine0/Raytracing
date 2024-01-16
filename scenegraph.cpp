@@ -36,7 +36,7 @@ void Node::Draw(const Shader& shader, glm::vec3 pos){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
+       entity -> rotate(0.01f, 0.001f, 0.01f, 1);
 
         shader.Bind();
 

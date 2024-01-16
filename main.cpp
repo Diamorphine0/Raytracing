@@ -7,6 +7,7 @@
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "lightsource.h"
+#include "gridline.h"
 
 int main()
 {
@@ -23,10 +24,13 @@ int main()
     lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
-    entity1 -> texture = new Texture("../Raytracing/Textures/earth.png");
+    grid axes;
+    axes.gen_axes(100);
+
+    entity1 -> texture = new Texture("../Raytracing/Textures/sun.png");
 
     std::cout << "Texture is loaded" << std::endl;
-    Entity* entity2 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity2 = new Entity("../Raytracing/objects/earth.obj");
     Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
 
     entity2 -> texture = new Texture("../Raytracing/Textures/purple.png");
@@ -54,6 +58,7 @@ int main()
     float speed = 0.01f;
 
     Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
+    Shader shaderLine("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
 
     do{
         shader.Bind();
@@ -79,8 +84,12 @@ int main()
 
         // the render scene and animate scene functionalities should be disjoint.
         engine.camera.renderScene(engine.engineWorld, shader);
+        shader.Unbind();
 
-
+        /*shaderLine.Bind();
+        axes.draw(shaderLine, engine);
+        shaderLine.Unbind();
+        */
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&

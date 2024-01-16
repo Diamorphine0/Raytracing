@@ -93,7 +93,7 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
     }
 }
 
-glm::mat4 engineCamera::construct_mvp(){
+glm::mat4 engineCamera::construct_mvp() const{
 
     glm::mat4 Projection = glm::perspective(glm::radians(initialFoV), 4.0f / 3.0f, 0.1f, 100.0f);
 

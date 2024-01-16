@@ -69,6 +69,9 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
         lightsource.h lightsource.cpp
+        vertexshaderLine.shader
+        fragmentshaderLine.shader
+        gridline.h gridline.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

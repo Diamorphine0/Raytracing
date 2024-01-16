@@ -17,7 +17,7 @@ public:
 
     inline void Clear() const{ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);};
 
-    glm::mat4 construct_mvp();
+    glm::mat4 construct_mvp() const;
 
     void movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window);
 

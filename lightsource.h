@@ -1,10 +1,11 @@
 #ifndef LIGHTSOURCE_H
 #define LIGHTSOURCE_H
 
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include<vector>
+#include <vector>
 
 class lightsource
 {

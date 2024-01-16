@@ -48,7 +48,7 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     // Cull triangles which normal is not towards the camera
-//    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);
 
     Entity* cameraentity = new Entity();
 //    cameraentity -> translate(0, 0, 8);
