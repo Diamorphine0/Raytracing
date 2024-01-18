@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include "texture.h"
+#include "lightsource.h"
 
 //for debugging
 #include <iostream>
@@ -121,6 +122,7 @@ public:
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
     Texture* texture;
+    Lightsource* lightsource;
 
 public:
 

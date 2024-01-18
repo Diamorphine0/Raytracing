@@ -1,4 +1,5 @@
 #include "engineCamera.h"
+#include <math.h>
 
 engineCamera::engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV):  position(position), horizontalAngle(horizontalAngle), verticalAngle(verticalAngle), initialFoV(initialFoV){
 
@@ -47,9 +48,10 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     lastTime = glfwGetTime();
 
+    float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);
 
-    auto x_prev = xpos;
+   /* auto x_prev = xpos;
     auto y_prev = ypos;
 
     //     we want to adjust some shit
@@ -58,9 +60,26 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     //    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
     //    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
+    */
 
-    horizontalAngle += mousespeed * deltaTime * float(x_prev - xpos );
-    verticalAngle   += mousespeed * deltaTime * float(y_prev - ypos );
+    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+        horizontalAngle += mousespeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+        horizontalAngle -= mousespeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
+        verticalAngle += mousespeed * deltaTime;
+        verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
+    }
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
+        verticalAngle -= mousespeed * deltaTime;
+        verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
+    }
+    //z jakiegoś powodu sie tego nie da zroboc
+
+    //horizontalAngle += mousespeed * deltaTime * float(x_prev - xpos );
+    //verticalAngle   += mousespeed * deltaTime * float(y_prev - ypos );
 
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
@@ -69,25 +88,25 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         );
 
     // Move forward
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
         // we want to simulate movement in a circle
-        position += direction * deltaTime * speed;
+        position -= direction * deltaTime * speed;
 //        verticalAngle+= 0.001f;
 
     }
     // Move backward
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-        position -= direction * deltaTime * speed;
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
+        position += direction * deltaTime * speed;
 //        verticalAngle-= 0.001f;
     }
 
     // Strafe right
-    if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
         position -= right * deltaTime * speed;
 //        horizontalAngle+= 0.001f;
     }
     // Strafe left
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
         position += right * deltaTime * speed;
 //        horizontalAngle-= 0.001f;
     }
