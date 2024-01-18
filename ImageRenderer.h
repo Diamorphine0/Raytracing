@@ -22,7 +22,7 @@ public:
 
     void reset_pixels();
 
-    void render_image(const std::string &file_image);
+    void render_image();
 
 private:
     int image_height;   // Rendered image height

@@ -8,12 +8,13 @@
 #include "Triangle.h"
 #include "lightsource.h"
 #include "gridline.h"
+#include "framebuffer.h"
 
 int main()
 {
 
-    auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
-    Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
+    auto rayTracingCamera = new Camera(1800, 800, Point3(0, 0, 0));
+    Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
     Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
@@ -64,9 +65,8 @@ int main()
     Shader shaderLine("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
     Shader shaderAx("../Raytracing/vertexshaderAx.shader", "../Raytracing/fragmentshaderAx.shader");
 
-
     do{
-        shader.Bind();
+        engine.shader -> Bind();
 
         //this should handle lighting loading
         for(int i = 0; i < 20; i++){

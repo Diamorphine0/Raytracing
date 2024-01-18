@@ -6,6 +6,11 @@
 #include "engineCamera.h"
 #include "scenegraph.h"
 #include "Entity.h"
+#include "frameBuffer.h"
+#include <vector>
+#include <string>
+#include <iostream>
+#include "shader.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -13,6 +18,8 @@
 
 
 // We need to figure out what goes into the engine class and what goes into the ECS class as well as how they relate to one another.
+
+
 class Engine{
 public:
 
@@ -20,9 +27,14 @@ public:
 
     void update();
 
-    void RenderUI();
+    // ImGUI rendering functions
+    void LoadEngine();
+    void RenderProperties();
+    void RenderHierarchy();
+    void RenderStats();
+    void RenderAnimation();
 
-    // Scene Graph - we can achieve camera movement by applying entity transformations to the object.
+    // Scene Graph Root Node - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld;
 
     GLFWwindow* window;
@@ -31,6 +43,11 @@ public:
     int width, height;
     Camera *rayTracingCamera;
     Hittable *world;
+    frameBuffer* fb;
+    Shader* shader;
+private:
+    std::vector<int> markedPositions;
 };
+
 
 #endif // ENGINE_H

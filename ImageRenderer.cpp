@@ -3,6 +3,11 @@
 //
 
 #include "ImageRenderer.h"
+#include "GLFW/glfw3.h"
+
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_glfw.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
 
 ImageRenderer::ImageRenderer(int height, int width){
     image_height = height;
@@ -38,22 +43,42 @@ bool ImageRenderer::set_all_pixels(const std::vector<std::vector<Color>> &colors
     return true;
 }
 
-void ImageRenderer::render_image(const std::string &file_image) {
-    std::ofstream  outFile(file_image);
+void ImageRenderer::render_image() {
 
-    if(outFile.is_open()){
-        std::cerr<<"Ok?\n";
+    if (!glfwInit()) {
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        exit(EXIT_FAILURE);
     }
-    outFile<<"P3\n";
-    outFile<<image_width<<" "<<image_height<<" "<<255<<"\n";
-    for(int i = 0; i < image_height; i++){
-        for(int j = 0; j < image_width; j++){
-            outFile<<pixel_colors[i][j]<<"\n";
 
-        }
+    // Set OpenGL version to 3.3 and use the core profile
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Create a window
+    GLFWwindow* window = glfwCreateWindow(image_width, image_height, "Rendered Image", NULL, NULL);
+    if (!window) {
+        fprintf(stderr, "Failed to open GLFW window\n");
+        glfwTerminate();
+        exit(EXIT_FAILURE);
     }
-    std::cerr<<"Done printing!\n"<<image_height<<" "<<image_width<<"\n"<<pixel_colors[0][0]<<"\n";
-    outFile.flush();
-}
 
+    // Make the window's context current
+    glfwMakeContextCurrent(window);
 
+    // Ensure we can capture the escape key being pressed
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+
+    // Set the viewport size
+    glViewport(0, 0, image_width, image_height);
+
+    // Create texture object from our 2D pixel_colors array
+    // to be added
+
+    // Display the texture object on the window
+    // to be added
+
+    // Check for window close events
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(window))
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    };

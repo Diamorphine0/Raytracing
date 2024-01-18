@@ -46,6 +46,8 @@ set(PROJECT_SOURCES
         stb_image.h
         stb_image.cpp
         texture.h texture.cpp
+        primitives.h primitives.cpp
+        framebuffer.h framebuffer.cpp
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
@@ -89,6 +91,9 @@ else()
     else()
         add_executable(Ray-tracing
             ${PROJECT_SOURCES}
+            framebuffer.h framebuffer.cpp
+            hirarchy.cpp
+            hirarchy.h
         )
     endif()
 endif()

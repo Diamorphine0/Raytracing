@@ -15,7 +15,7 @@ void Camera::render(Hittable *world, const std::string &imagePath) {
             imageRenderer.set_pixel(j, i, pixel_color);
         }
     }
-    imageRenderer.render_image(imagePath);
+    imageRenderer.render_image();
 }
 
 void Camera::initialize() {

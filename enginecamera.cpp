@@ -52,11 +52,13 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
     float deltaTime = float(currentTime - lastTime);
 
    /* auto x_prev = xpos;
+    auto x_prev = xpos;
     auto y_prev = ypos;
 
     //     we want to adjust some shit
     glfwGetCursorPos(window, &xpos, &ypos);
     //    glfwSetCursorPos(window, 1024/2, 768/2);
+//    glfwSetCursorPos(window, 1024/2, 768/2);
 
     //    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
     //    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
