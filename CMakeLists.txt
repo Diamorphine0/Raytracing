@@ -45,6 +45,8 @@ set(PROJECT_SOURCES
         primitives.cpp
         DiffuseLight.h
         DiffuseLight.cpp
+        collimatedlight.h
+        collimatedlight.cpp
 
 
 
