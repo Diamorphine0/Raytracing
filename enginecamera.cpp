@@ -99,15 +99,15 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         position += direction * deltaTime * speed;
 //        verticalAngle-= 0.001f;
     }
-
+    glm::vec3 left = cross(glm::vec3(0.0f, 1.0f, 0.0f), direction);
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        position -= right * deltaTime * speed;
+        position += left * deltaTime * speed;
 //        horizontalAngle+= 0.001f;
     }
     // Strafe left
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        position += right * deltaTime * speed;
+        position -= left * deltaTime * speed;
 //        horizontalAngle-= 0.001f;
     }
 }
