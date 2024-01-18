@@ -35,9 +35,8 @@ public:
         glGenBuffers(1, &vbo);
 
         glBindVertexArray(vao);
-
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(segments), &segments, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * segments.size(), segments.data(), GL_STATIC_DRAW);
 
         // Specify the layout of the vertex data
         glEnableVertexAttribArray(0);
@@ -53,6 +52,7 @@ public:
 
         glBindVertexArray(vao);
         glDrawArrays(GL_LINES, 0, segments.size());
+        glClear(GL_DEPTH_BUFFER_BIT);
     }
 };
 
@@ -74,6 +74,17 @@ public:
         lines.push_back(y);
         lines.push_back(z);
         std::cout<<"Loaded 3 axes \n";
+    }
+    //just horizontal!
+    void gen_big_grid(GLfloat limit, GLuint subdivisions){
+        for(int i = 0; i < subdivisions; i++){
+            GLfloat ratio = (-limit) * (GLfloat)i / (GLfloat)(subdivisions + 1) + (limit) * (GLfloat)(subdivisions + 1 - i) / (GLfloat)(subdivisions + 1);
+            line x_aux = line(glm::vec3(-limit, 0, ratio), glm::vec3(limit, 0, ratio));
+            line y_aux = line(glm::vec3(ratio, 0, -limit), glm::vec3(ratio, 0, limit));
+            lines.push_back(x_aux);
+            lines.push_back(y_aux);
+        }
+
     }
 
     void draw(const Shader& shader,const Engine& engine){
