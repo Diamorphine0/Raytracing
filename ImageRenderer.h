@@ -17,8 +17,8 @@ public:
     int get_width() const { return image_width; }
 
     //Returns if operation was succesful
-    bool set_pixel(int pixel_row, int pixel_column, const Color &color);
-    bool set_all_pixels(const std::vector<std::vector<Color>> &colors);
+    bool set_pixel(int pixel_row, int pixel_column, const color3 &color3);
+    bool set_all_pixels(const std::vector<std::vector<color3>> &color3s);
 
     void reset_pixels();
 
@@ -28,7 +28,7 @@ private:
     int image_height;   // Rendered image height
     int image_width; // width
 
-    std::vector< std::vector<Color>> pixel_colors;
+    std::vector< std::vector<color3>> pixel_color3s;
 };
 
 

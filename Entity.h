@@ -13,6 +13,7 @@
 #include <iostream>
 // for .obj model reading
 #include <fstream>
+#include <string>
 
 #ifndef ECS_H
 #define ECS_H
@@ -126,7 +127,7 @@ public:
 
     Entity();
 
-    Entity(const char* path);
+    Entity(std::string path);
 
     Entity(std::vector<Vertex>& vertices);
 
@@ -143,7 +144,7 @@ public:
     inline auto getVA(){ return va;};
 
     bool loadOBJ(
-        const char* path,
+        std::string path,
         std::vector < Vertex >& out_vertices,
         std::vector < glm::vec2 >& out_uvs,
         std::vector < glm::vec3 >& out_normals

@@ -50,9 +50,9 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 
     unsigned int offset = 0;
 
-//    for(unsigned int i = 0; i < elements.size(); i++){
+//    for(unsigned int i = 0; i < elements.size(); hit++){
 
-//        const auto& element = elements[i];
+//        const auto& element = elements[hit];
 
         // the first attribute is the position
         glEnableVertexAttribArray(POS);
@@ -126,7 +126,7 @@ Entity::Entity(std::vector<Vertex>& vertices){
     // we furthermore want to allocate a unique id to it that we will use for coloring (we need to maintain a dictionary associating its pointer and id).
 }
 
-Entity::Entity(const char* path){
+Entity::Entity(std::string path){
 
     std::vector<Vertex> vertices = {};
     std::vector< glm::vec2 > uvs;
@@ -152,7 +152,7 @@ Entity::Entity(const char* path){
     va -> AddBuffer(vb, layout);
 };
 
-bool Entity::loadOBJ(const char * path,
+bool Entity::loadOBJ(std::string path,
                      std::vector < Vertex > & out_vertices,
                      // we want to store the uvs;
                      // they have to also somehow be passed to opengl;
@@ -165,7 +165,7 @@ bool Entity::loadOBJ(const char * path,
     std::vector< glm::vec2 > temp_uvs;
     std::vector< glm::vec3 > temp_normals;
 
-    FILE* file = fopen(path, "r");
+    FILE* file = fopen(path.c_str(), "r");
     std::cout << file << std::endl;
     if( file == NULL ){
         printf("Impossible to open the file !\n");

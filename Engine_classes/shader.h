@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
+#include <string>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -18,11 +18,11 @@ private:
     unsigned int m_RendererID;
 
     // we can implement some sort of a cache here
-    GLuint compileShader(const char * vertex_file_path,const char * fragment_file_path);
+    GLuint compileShader(const std::string &vertex_file_path, const  std::string &fragment_file_path);
     unsigned int getUniformStringLocation(const std::string& name) const;
 
 public:
-    Shader(const char * vertex_file_path,const char * fragment_file_path);
+    Shader(const std::string &vertex_file_path, const std::string &fragment_file_path);
     ~Shader();
 
     void Bind() const;

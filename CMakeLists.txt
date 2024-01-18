@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
+set(SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 project(Ray-tracing VERSION 0.1 LANGUAGES CXX)
 
@@ -14,38 +15,61 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
 
+set (INCLUDE_DIR
+        Objects_classes
+        shaders
+        imgui
+        Engine_classes)
+
 set(PROJECT_SOURCES
+        Objects_classes/Triangle.h
+        Objects_classes/Triangle.cpp
+        Objects_classes/Objects_List.cpp
+        Objects_classes/Objects_List.h
+        Objects_classes/Objects.hpp
+
         main.cpp
-        Hittable.hpp
         Utilities.hpp
         Utilities.cpp
         Ray.cpp
         Ray.hpp
-        Triangle.h
-        Triangle.cpp
         Camera.hpp
         Camera.cpp
         ImageRenderer.cpp
         ImageRenderer.h
         Entity.h
-        Engine.h
-        engineCamera.h
-        Engine.cpp
-        shader.h
-        imconfig.h
-        pointlightsource.h
-        pointlightsource.cpp
         Entity.cpp
-        scenegraph.h
-        scenegraph.cpp
-        shader.h
-        shader.h shader.cpp
-        enginecamera.cpp
-        primitives.h
-        primitives.cpp
-        stb_image.h
-        stb_image.cpp
-        texture.h texture.cpp
+
+        texture.h
+        texture.cpp
+
+        HitRecord.cpp
+        HitRecord.h
+        Interval.cpp
+        Interval.h
+
+        Engine_classes/Engine.h
+        Engine_classes/engineCamera.h
+        Engine_classes/Engine.cpp
+        Engine_classes/shader.h
+        Engine_classes/imconfig.h
+        Engine_classes/pointlightsource.h
+        Engine_classes/pointlightsource.cpp
+        Engine_classes/scenegraph.h
+        Engine_classes/scenegraph.cpp
+        Engine_classes/shader.h
+        Engine_classes/shader.cpp
+        Engine_classes/enginecamera.cpp
+        Engine_classes/primitives.h
+        Engine_classes/primitives.cpp
+        Engine_classes/stb_image.h
+        Engine_classes/stb_image.cpp
+
+        Engine_classes/lightsource.h
+        Engine_classes/lightsource.cpp
+        Engine_classes/gridline.h
+        Engine_classes/gridline.cpp
+
 
         imgui/imgui.cpp
         imgui/imgui_demo.cpp
@@ -64,14 +88,11 @@ set(PROJECT_SOURCES
         imgui/backends/imgui_impl_opengl3.h
 )
 
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        lightsource.h lightsource.cpp
-        vertexshaderLine.shader
-        fragmentshaderLine.shader
-        gridline.h gridline.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -91,7 +112,9 @@ else()
     endif()
 endif()
 
+target_include_directories(Ray-tracing PRIVATE ${INCLUDE_DIR} ${SOURCE_DIR})
 target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw)
+target_compile_definitions(Ray-tracing PRIVATE SOURCE_DIR="${SOURCE_DIR}")
 
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

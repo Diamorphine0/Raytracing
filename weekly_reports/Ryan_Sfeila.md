@@ -5,7 +5,7 @@ After: Determine reflection parameters for materials, refraction, and optimize c
 
 
 14/12/23
-My previous Reflection Branch was quasi-useless after the engine-Raytracer merge, so i reimplemented it, and at this stage have pretty naive shading algorithm implemented. Needs more work, interpolation methods, and then implementation of reflection. the facing ratio principle is based on Lambertian Reflectance. 
+My previous Reflection Branch was quasi-useless after the engine-Raytracer merge, so hit reimplemented it, and at this stage have pretty naive shading algorithm implemented. Needs more work, interpolation methods, and then implementation of reflection. the facing ratio principle is based on Lambertian Reflectance. 
 
 29/12/23
 Diffuse Reflection, Metallic (mirrorlike reflection), color attenuation, material classes, transparent/translucent materials and basis for refraction in closed objects. 

@@ -30,7 +30,7 @@ public:
     engineCamera camera;
     int width, height;
     Camera *rayTracingCamera;
-    Hittable *world;
+    Objects *world;
 };
 
 #endif // ENGINE_H

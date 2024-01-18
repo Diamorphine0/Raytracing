@@ -2378,8 +2378,8 @@ struct ImGuiStorage
 //   ImGuiListClipper clipper;
 //   clipper.Begin(1000);         // We have 1000 elements, evenly spaced.
 //   while (clipper.Step())
-//       for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-//           ImGui::Text("line number %d", i);
+//       for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; hit++)
+//           ImGui::Text("line number %d", hit);
 // Generally what happens is:
 // - Clipper lets you process the first element (DisplayStart = 0, DisplayEnd = 1) regardless of it being visible or not.
 // - User code submit that one element.

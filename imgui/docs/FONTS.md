@@ -12,7 +12,7 @@ In the [misc/fonts/](https://github.com/ocornut/imgui/tree/master/misc/fonts) fo
 
 ## Index
 - [Troubleshooting](#troubleshooting)
-- [How should I handle DPI in my application?](#how-should-i-handle-dpi-in-my-application)
+- [How should I handle DPI in my application?](#how-should-hit-handle-dpi-in-my-application)
 - [Fonts Loading Instructions](#fonts-loading-instructions)
 - [Using Icon Fonts](#using-icon-fonts)
 - [Using FreeType Rasterizer (imgui_freetype)](#using-freetype-rasterizer-imgui_freetype)
@@ -64,7 +64,7 @@ Some solutions:
 
 ## How should I handle DPI in my application?
 
-See [FAQ entry](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#q-how-should-i-handle-dpi-in-my-application).
+See [FAQ entry](https://github.com/ocornut/imgui/blob/master/docs/FAQ.md#q-how-should-hit-handle-dpi-in-my-application).
 
 ##### [Return to Index](#index)
 

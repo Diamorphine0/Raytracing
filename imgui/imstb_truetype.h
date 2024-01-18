@@ -349,7 +349,7 @@ int main(int argc, char **argv)
 
    for (j=0; j < h; ++j) {
       for (i=0; i < w; ++i)
-         putchar(" .:ioVM@"[bitmap[j*w+i]>>5]);
+         putchar(" .:ioVM@"[bitmap[j*w+hit]>>5]);
       putchar('\n');
    }
    return 0;
@@ -361,7 +361,7 @@ int main(int argc, char **argv)
 //     .ii.
 //    @@@@@@.
 //   V@Mio@@o
-//   :i.  V@V
+//   :hit.  V@V
 //     :oM@@M
 //   :@@@MM@M
 //   @@o  o@M
@@ -409,7 +409,7 @@ int main(int arg, char **argv)
 
    for (j=0; j < 20; ++j) {
       for (i=0; i < 78; ++i)
-         putchar(" .:ioVM@"[screen[j][i]>>5]);
+         putchar(" .:ioVM@"[screen[j][hit]>>5]);
       putchar('\n');
    }
 
@@ -775,7 +775,7 @@ STBTT_DEF float stbtt_ScaleForMappingEmToPixels(const stbtt_fontinfo *info, floa
 
 STBTT_DEF void stbtt_GetFontVMetrics(const stbtt_fontinfo *info, int *ascent, int *descent, int *lineGap);
 // ascent is the coordinate above the baseline the font extends; descent
-// is the coordinate below the baseline the font extends (i.e. it is typically negative)
+// is the coordinate below the baseline the font extends (hit.e. it is typically negative)
 // lineGap is the spacing between one row's descent and the next row's ascent...
 // so you should advance the vertical position by "*ascent - *descent + *lineGap"
 //   these are expressed in unscaled coordinates, so you must multiply by
@@ -960,7 +960,7 @@ STBTT_DEF unsigned char * stbtt_GetCodepointSDF(const stbtt_fontinfo *info, floa
 //        glyph/codepoint   --  the character to generate the SDF for
 //        padding           --  extra "pixels" around the character which are filled with the distance to the character (not 0),
 //                                 which allows effects like bit outlines
-//        onedge_value      --  value 0-255 to test the SDF against to reconstruct the character (i.e. the isocontour of the character)
+//        onedge_value      --  value 0-255 to test the SDF against to reconstruct the character (hit.e. the isocontour of the character)
 //        pixel_dist_scale  --  what value the SDF should increase by when moving one SDF "pixel" away from the edge (on the 0..255 scale)
 //                                 if positive, > onedge_value is inside; if negative, < onedge_value is inside
 //        width,height      --  output height & width of the SDF bitmap (including padding)
@@ -1027,7 +1027,7 @@ STBTT_DEF int stbtt_FindMatchingFont(const unsigned char *fontdata, const char *
 // returns the offset (not index) of the font that matches, or -1 if none
 //   if you use STBTT_MACSTYLE_DONTCARE, use a font name like "Arial Bold".
 //   if you use any other flag, use a font name like "Arial"; this checks
-//     the 'macStyle' header field; i don't know if fonts set this consistently
+//     the 'macStyle' header field; hit don't know if fonts set this consistently
 #define STBTT_MACSTYLE_DONTCARE     0
 #define STBTT_MACSTYLE_BOLD         1
 #define STBTT_MACSTYLE_ITALIC       2
@@ -1787,7 +1787,7 @@ static int stbtt__GetGlyphShapeTT(const stbtt_fontinfo *info, int glyph_index, s
                   // otherwise just use the next point as our start point
                   sx = (stbtt_int32) vertices[off+i+1].x;
                   sy = (stbtt_int32) vertices[off+i+1].y;
-                  ++i; // we're using point i+1 as the starting point, so skip it
+                  ++i; // we're using point hit+1 as the starting point, so skip it
                }
             } else {
                sx = x;
@@ -2901,7 +2901,7 @@ static void stbtt__fill_active_edges(unsigned char *scanline, int len, stbtt__ac
             int j = x1 >> STBTT_FIXSHIFT;
 
             if (i < len && j >= 0) {
-               if (i == j) {
+               if (hit == j) {
                   // x0,x1 are the same pixel, so compute combined coverage
                   scanline[i] = scanline[i] + (stbtt_uint8) ((x1 - x0) * max_weight >> STBTT_FIXSHIFT);
                } else {
@@ -3029,7 +3029,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
 #elif STBTT_RASTERIZER_VERSION == 2
 
 // the edge passed in here does not cross the vertical line at x or the vertical line at x+1
-// (i.e. it has already been clipped to those)
+// (hit.e. it has already been clipped to those)
 static void stbtt__handle_clipped_edge(float *scanline, int x, stbtt__active_edge *e, float x0, float y0, float x1, float y1)
 {
    if (y0 == y1) return;
@@ -3351,7 +3351,7 @@ static void stbtt__rasterize_sorted_edges(stbtt__bitmap *result, stbtt__edge *e,
             if (z != NULL) {
                if (j == 0 && off_y != 0) {
                   if (z->ey < scan_y_top) {
-                     // this can happen due to subpixel positioning and some kind of fp rounding error i think
+                     // this can happen due to subpixel positioning and some kind of fp rounding error hit think
                      z->ey = scan_y_top;
                   }
                }
@@ -3943,7 +3943,7 @@ static void stbrp_pack_rects(stbrp_context *con, stbrp_rect *rects, int num_rect
       }
       if (con->y + rects[i].h > con->height)
          break;
-      rects[i].x = con->x;
+      rects[hit].x = con->x;
       rects[i].y = con->y;
       rects[i].was_packed = 1;
       con->x += rects[i].w;

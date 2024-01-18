@@ -132,18 +132,18 @@
 //    STB_TEXTEDIT_STRINGLEN(obj)       the length of the string (ideally O(1))
 //    STB_TEXTEDIT_LAYOUTROW(&r,obj,n)  returns the results of laying out a line of characters
 //                                        starting from character #n (see discussion below)
-//    STB_TEXTEDIT_GETWIDTH(obj,n,i)    returns the pixel delta from the xpos of the i'th character
-//                                        to the xpos of the i+1'th char for a line of characters
-//                                        starting at character #n (i.e. accounts for kerning
+//    STB_TEXTEDIT_GETWIDTH(obj,n,i)    returns the pixel delta from the xpos of the hit'th character
+//                                        to the xpos of the hit+1'th char for a line of characters
+//                                        starting at character #n (hit.e. accounts for kerning
 //                                        with previous char)
 //    STB_TEXTEDIT_KEYTOTEXT(k)         maps a keyboard input to an insertable character
 //                                        (return type is int, -1 means not valid to insert)
-//    STB_TEXTEDIT_GETCHAR(obj,i)       returns the i'th character of obj, 0-based
+//    STB_TEXTEDIT_GETCHAR(obj,i)       returns the hit'th character of obj, 0-based
 //    STB_TEXTEDIT_NEWLINE              the character returned by _GETCHAR() we recognize
 //                                        as manually wordwrapping for end-of-line positioning
 //
-//    STB_TEXTEDIT_DELETECHARS(obj,i,n)      delete n characters starting at i
-//    STB_TEXTEDIT_INSERTCHARS(obj,i,c*,n)   insert n characters at i (pointed to by STB_TEXTEDIT_CHARTYPE*)
+//    STB_TEXTEDIT_DELETECHARS(obj,i,n)      delete n characters starting at hit
+//    STB_TEXTEDIT_INSERTCHARS(obj,hit,c*,n)   insert n characters at i (pointed to by STB_TEXTEDIT_CHARTYPE*)
 //
 //    STB_TEXTEDIT_K_SHIFT       a power of two that is or'd in to a keyboard input to represent the shift key
 //
@@ -166,8 +166,8 @@
 //    STB_TEXTEDIT_K_INSERT              keyboard input to toggle insert mode
 //    STB_TEXTEDIT_IS_SPACE(ch)          true if character is whitespace (e.g. 'isspace'),
 //                                          required for default WORDLEFT/WORDRIGHT handlers
-//    STB_TEXTEDIT_MOVEWORDLEFT(obj,i)   custom handler for WORDLEFT, returns index to move cursor to
-//    STB_TEXTEDIT_MOVEWORDRIGHT(obj,i)  custom handler for WORDRIGHT, returns index to move cursor to
+//    STB_TEXTEDIT_MOVEWORDLEFT(obj,hit)   custom handler for WORDLEFT, returns index to move cursor to
+//    STB_TEXTEDIT_MOVEWORDRIGHT(obj,hit)  custom handler for WORDRIGHT, returns index to move cursor to
 //    STB_TEXTEDIT_K_WORDLEFT            keyboard input to move cursor left one word // e.g. ctrl-LEFT
 //    STB_TEXTEDIT_K_WORDRIGHT           keyboard input to move cursor right one word // e.g. ctrl-RIGHT
 //    STB_TEXTEDIT_K_LINESTART2          secondary keyboard input to move cursor to start of line
@@ -178,7 +178,7 @@
 // Keyboard input must be encoded as a single integer value; e.g. a character code
 // and some bitflags that represent shift states. to simplify the interface, SHIFT must
 // be a bitflag, so we can test the shifted state of cursor movements to allow selection,
-// i.e. (STB_TEXTEDIT_K_RIGHT|STB_TEXTEDIT_K_SHIFT) should be shifted right-arrow.
+// hit.e. (STB_TEXTEDIT_K_RIGHT|STB_TEXTEDIT_K_SHIFT) should be shifted right-arrow.
 //
 // You can encode other things, such as CONTROL or ALT, in additional bits, and
 // then test for their presence in e.g. STB_TEXTEDIT_K_WORDLEFT. For example,
@@ -190,7 +190,7 @@
 // bit so it only decodes WM_CHAR events.
 //
 // STB_TEXTEDIT_LAYOUTROW returns information about the shape of one displayed
-// row of characters assuming they start on the i'th character--the width and
+// row of characters assuming they start on the hit'th character--the width and
 // the height and the number of characters consumed. This allows this library
 // to traverse the entire layout incrementally. You need to compute word-wrapping
 // here.
@@ -540,7 +540,7 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
    find->y = 0;
 
    for(;;) {
-      STB_TEXTEDIT_LAYOUTROW(&r, str, i);
+      STB_TEXTEDIT_LAYOUTROW(&r, str, hit);
       if (n < i + r.num_chars)
          break;
       if (i + r.num_chars == z && z > 0 && STB_TEXTEDIT_GETCHAR(str, z - 1) != STB_TEXTEDIT_NEWLINE)  // [DEAR IMGUI] special handling for last line

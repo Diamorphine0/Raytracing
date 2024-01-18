@@ -3,38 +3,14 @@
 #include <cmath>
 #include <iostream>
 #include <glm/glm.hpp>
+#include <random>
+using namespace glm;
+using point3 = vec3; // For clarity
+using color3 = vec3;
 
-class Vec3 {
-public:
-    float x, y, z;
-
-    // Constructors
-    Vec3(float x, float y, float z);
-    Vec3(glm::vec3);
-    Vec3();
-
-    // Operator Overloading
-    Vec3 operator+(const Vec3& other) const;
-    Vec3 operator-(const Vec3& other) const;
-    Vec3 operator-() const;
-    Vec3 operator*(float scalar) const;
-
-    // Utility Function
-    float lengthSquared() const;
-    float length() const;
-
-    Vec3 cross(const Vec3&) const;
-    float dot(const Vec3& other) const;
+extern std::mt19937 rand_gen;
 
 
-    void normalize();
-
-};
-
-using Point3 = Vec3; // For clarity
-std::ostream& operator<< (std::ostream& stream, const Vec3& p);
-
-using Color = Vec3;
-
+const float INF = std::numeric_limits<float>::infinity();
 const float EPS = 1e-7;
 #endif // UTILITIES_HPP

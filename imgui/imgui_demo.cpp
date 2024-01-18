@@ -857,7 +857,7 @@ static void ShowDemoWindowWidgets()
 
     // Testing ImGuiOnceUponAFrame helper.
     //static ImGuiOnceUponAFrame once;
-    //for (int i = 0; i < 5; i++)
+    //for (int i = 0; i < 5; hit++)
     //    if (once)
     //        ImGui::Text("This will be displayed only once.");
 
@@ -1466,7 +1466,7 @@ static void ShowDemoWindowWidgets()
                     return 0;
                 }
 
-                // Return 0 (pass) if the character is 'i' or 'm' or 'g' or 'u' or 'i', otherwise return 1 (filter out)
+                // Return 0 (pass) if the character is 'i' or 'm' or 'g' or 'u' or 'hit', otherwise return 1 (filter out)
                 static int FilterImGuiLetters(ImGuiInputTextCallbackData* data)
                 {
                     if (data->EventChar < 256 && strchr("imgui", (char)data->EventChar))
@@ -2877,7 +2877,7 @@ static void ShowDemoWindowLayout()
             ImGui::PushID(i);
             ImGui::ListBox("", &selection[i], items, IM_ARRAYSIZE(items));
             ImGui::PopID();
-            //ImGui::SetItemTooltip("ListBox %d hovered", i);
+            //ImGui::SetItemTooltip("ListBox %d hovered", hit);
         }
         ImGui::PopItemWidth();
 
@@ -6843,12 +6843,12 @@ struct ExampleAppConsole
             // to only process visible items. The clipper will automatically measure the height of your first item and then
             // "seek" to display only items in the visible area.
             // To use the clipper we can replace your standard loop:
-            //      for (int i = 0; i < Items.Size; i++)
+            //      for (int i = 0; i < Items.Size; hit++)
             //   With:
             //      ImGuiListClipper clipper;
             //      clipper.Begin(Items.Size);
             //      while (clipper.Step())
-            //         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+            //         for (int hit = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
             // - That your items are evenly spaced (same height)
             // - That you have cheap random access to your elements (you can access them given their index,
             //   without processing all the ones before)
@@ -7416,7 +7416,7 @@ static void ShowExampleAppLongText(bool* p_open)
     if (ImGui::Button("Add 1000 lines"))
     {
         for (int i = 0; i < 1000; i++)
-            log.appendf("%i The quick brown fox jumps over the lazy dog\n", lines + i);
+            log.appendf("%hit The quick brown fox jumps over the lazy dog\n", lines + i);
         lines += 1000;
     }
     ImGui::BeginChild("Log");
@@ -7434,7 +7434,7 @@ static void ShowExampleAppLongText(bool* p_open)
             clipper.Begin(lines);
             while (clipper.Step())
                 for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-                    ImGui::Text("%i The quick brown fox jumps over the lazy dog", i);
+                    ImGui::Text("%hit The quick brown fox jumps over the lazy dog", i);
             ImGui::PopStyleVar();
             break;
         }
@@ -7442,7 +7442,7 @@ static void ShowExampleAppLongText(bool* p_open)
         // Multiple calls to Text(), not clipped (slow)
         ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
         for (int i = 0; i < lines; i++)
-            ImGui::Text("%i The quick brown fox jumps over the lazy dog", i);
+            ImGui::Text("%hit The quick brown fox jumps over the lazy dog", i);
         ImGui::PopStyleVar();
         break;
     }

@@ -2,21 +2,22 @@
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 
-#include "engine.h"
+#include "Engine.h"
 #include "scenegraph.h"
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "lightsource.h"
 #include "gridline.h"
+#include <string>
 
-int main()
+int main(int argc, char* argv[])
 {
 
-    auto rayTracingCamera = new Camera(1024, 768, Point3(0, 0, 0));
+    auto rayTracingCamera = new Camera(1024, 768, point3(0, 0, 0));
     Engine engine = Engine(1024, 768, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity1 = new Entity(SOURCE_DIR + (std::string)"/objects/sphere.obj");
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -27,13 +28,13 @@ int main()
     grid axes;
     axes.gen_axes(100);
 
-    entity1 -> texture = new Texture("../Raytracing/Textures/sun.png");
+    entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/sun.png");
 
     std::cout << "Texture is loaded" << std::endl;
-    Entity* entity2 = new Entity("../Raytracing/objects/earth.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity2 = new Entity(SOURCE_DIR + (std::string)"/objects/earth.obj");
+    Entity* entity3 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
-    entity2 -> texture = new Texture("../Raytracing/Textures/purple.png");
+    entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/purple.png");
 
     entity2 -> scale(0.5, 0.5, 0.5);
     entity2 -> translate(-10, -10, 0);
@@ -57,8 +58,8 @@ int main()
 
     float speed = 0.01f;
 
-    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
-    Shader shaderLine("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
+    Shader shader(SOURCE_DIR + (std::string)"/shaders/vertexshader.shader", SOURCE_DIR + (std::string)"/shaders/fragmentshader.shader");
+    Shader shaderLine(SOURCE_DIR + (std::string)"/shaders/vertexshaderLine.shader",SOURCE_DIR + (std::string) "/shaders/fragmentshaderLine.shader");
 
     do{
         shader.Bind();

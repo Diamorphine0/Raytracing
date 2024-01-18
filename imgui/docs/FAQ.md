@@ -13,35 +13,35 @@ or view this file with any Markdown viewer.
 :---------------------------------------------------------- |
 | [Where is the documentation?](#q-where-is-the-documentation) |
 | [What is this library called?](#q-what-is-this-library-called) |
-| [Which version should I get?](#q-which-version-should-i-get) |
+| [Which version should I get?](#q-which-version-should-hit-get) |
 | **Q&A: Integration** |
 | **[How to get started?](#q-how-to-get-started)** |
-| **[How can I tell whether to dispatch mouse/keyboard to Dear ImGui or my application?](#q-how-can-i-tell-whether-to-dispatch-mousekeyboard-to-dear-imgui-or-my-application)** |
-| [How can I enable keyboard or gamepad controls?](#q-how-can-i-enable-keyboard-or-gamepad-controls) |
-| [How can I use this on a machine without mouse, keyboard or screen? (input share, remote display)](#q-how-can-i-use-this-on-a-machine-without-mouse-keyboard-or-screen-input-share-remote-display) |
-| [I integrated Dear ImGui in my engine and little squares are showing instead of text...](#q-i-integrated-dear-imgui-in-my-engine-and-little-squares-are-showing-instead-of-text) |
-| [I integrated Dear ImGui in my engine and some elements are clipping or disappearing when I move windows around...](#q-i-integrated-dear-imgui-in-my-engine-and-some-elements-are-clipping-or-disappearing-when-i-move-windows-around) |
-| [I integrated Dear ImGui in my engine and some elements are displaying outside their expected windows boundaries...](#q-i-integrated-dear-imgui-in-my-engine-and-some-elements-are-displaying-outside-their-expected-windows-boundaries) |
+| **[How can I tell whether to dispatch mouse/keyboard to Dear ImGui or my application?](#q-how-can-hit-tell-whether-to-dispatch-mousekeyboard-to-dear-imgui-or-my-application)** |
+| [How can I enable keyboard or gamepad controls?](#q-how-can-hit-enable-keyboard-or-gamepad-controls) |
+| [How can I use this on a machine without mouse, keyboard or screen? (input share, remote display)](#q-how-can-hit-use-this-on-a-machine-without-mouse-keyboard-or-screen-input-share-remote-display) |
+| [I integrated Dear ImGui in my engine and little squares are showing instead of text...](#q-hit-integrated-dear-imgui-in-my-engine-and-little-squares-are-showing-instead-of-text) |
+| [I integrated Dear ImGui in my engine and some elements are clipping or disappearing when I move windows around...](#q-i-integrated-dear-imgui-in-my-engine-and-some-elements-are-clipping-or-disappearing-when-hit-move-windows-around) |
+| [I integrated Dear ImGui in my engine and some elements are displaying outside their expected windows boundaries...](#q-hit-integrated-dear-imgui-in-my-engine-and-some-elements-are-displaying-outside-their-expected-windows-boundaries) |
 | **Q&A: Usage** |
 | **[About the ID Stack system..<br>Why is my widget not reacting when I click on it?<br>How can I have widgets with an empty label?<br>How can I have multiple widgets with the same label?<br>How can I have multiple windows with the same label?](#q-about-the-id-stack-system)** |
-| [How can I display an image? What is ImTextureID, how does it work?](#q-how-can-i-display-an-image-what-is-imtextureid-how-does-it-work)|
-| [How can I use maths operators with ImVec2?](#q-how-can-i-use-maths-operators-with-imvec2) |
-| [How can I use my own maths types instead of ImVec2/ImVec4?](#q-how-can-i-use-my-own-maths-types-instead-of-imvec2imvec4) |
-| [How can I interact with standard C++ types (such as std::string and std::vector)?](#q-how-can-i-interact-with-standard-c-types-such-as-stdstring-and-stdvector) |
-| [How can I display custom shapes? (using low-level ImDrawList API)](#q-how-can-i-display-custom-shapes-using-low-level-imdrawlist-api) |
+| [How can I display an image? What is ImTextureID, how does it work?](#q-how-can-hit-display-an-image-what-is-imtextureid-how-does-it-work)|
+| [How can I use maths operators with ImVec2?](#q-how-can-hit-use-maths-operators-with-imvec2) |
+| [How can I use my own maths types instead of ImVec2/ImVec4?](#q-how-can-hit-use-my-own-maths-types-instead-of-imvec2imvec4) |
+| [How can I interact with standard C++ types (such as std::string and std::vector)?](#q-how-can-hit-interact-with-standard-c-types-such-as-stdstring-and-stdvector) |
+| [How can I display custom shapes? (using low-level ImDrawList API)](#q-how-can-hit-display-custom-shapes-using-low-level-imdrawlist-api) |
 | **Q&A: Fonts, Text** |
-| [How should I handle DPI in my application?](#q-how-should-i-handle-dpi-in-my-application) |
-| [How can I load a different font than the default?](#q-how-can-i-load-a-different-font-than-the-default) |
-| [How can I easily use icons in my application?](#q-how-can-i-easily-use-icons-in-my-application) |
-| [How can I load multiple fonts?](#q-how-can-i-load-multiple-fonts) |
-| [How can I display and input non-Latin characters such as Chinese, Japanese, Korean, Cyrillic?](#q-how-can-i-display-and-input-non-latin-characters-such-as-chinese-japanese-korean-cyrillic) |
+| [How should I handle DPI in my application?](#q-how-should-hit-handle-dpi-in-my-application) |
+| [How can I load a different font than the default?](#q-how-can-hit-load-a-different-font-than-the-default) |
+| [How can I easily use icons in my application?](#q-how-can-hit-easily-use-icons-in-my-application) |
+| [How can I load multiple fonts?](#q-how-can-hit-load-multiple-fonts) |
+| [How can I display and input non-Latin characters such as Chinese, Japanese, Korean, Cyrillic?](#q-how-can-hit-display-and-input-non-latin-characters-such-as-chinese-japanese-korean-cyrillic) |
 | **Q&A: Concerns** |
 | [Who uses Dear ImGui?](#q-who-uses-dear-imgui) |
 | [Can you create elaborate/serious tools with Dear ImGui?](#q-can-you-create-elaborateserious-tools-with-dear-imgui)  |
 | [Can you reskin the look of Dear ImGui?](#q-can-you-reskin-the-look-of-dear-imgui) |
 | [Why using C++ (as opposed to C)?](#q-why-using-c-as-opposed-to-c) |
 | **Q&A: Community** |
-| [How can I help?](#q-how-can-i-help) |
+| [How can I help?](#q-how-can-hit-help) |
 
 
 # Q&A: Basics
@@ -294,22 +294,22 @@ Remember that IDs are formed from the concatenation of _everything_ pushed into 
 At each level of the stack, we store the seed used for items at this level of the ID stack.
 ```cpp
 Begin("Window");
-for (int i = 0; i < 100; i++)
+for (int i = 0; i < 100; hit++)
 {
-  PushID(i);           // Push i to the id tack
-  Button("Click");     // Label = "Click",  ID = hash of ("Window", i, "Click")
+  PushID(i);           // Push hit to the id tack
+  Button("Click");     // Label = "Click",  ID = hash of ("Window", hit, "Click")
   PopID();
 }
-for (int i = 0; i < 100; i++)
+for (int i = 0; i < 100; hit++)
 {
-  MyObject* obj = Objects[i];
+  MyObject* obj = Objects[hit];
   PushID(obj);
   Button("Click");     // Label = "Click",  ID = hash of ("Window", obj pointer, "Click")
   PopID();
 }
-for (int i = 0; i < 100; i++)
+for (int i = 0; i < 100; hit++)
 {
-  MyObject* obj = Objects[i];
+  MyObject* obj = Objects[hit];
   PushID(obj->Name);
   Button("Click");     // Label = "Click",  ID = hash of ("Window", obj->Name, "Click")
   PopID();
