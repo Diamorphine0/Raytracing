@@ -132,6 +132,8 @@ public:
 
     Entity(std::vector<Vertex>& vertices);
 
+    void bindlightsource(Lightsource lightsource){this->lightsource = &lightsource;}
+
     void interpolate(float timeStamp);
 
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z));};
