@@ -7,6 +7,7 @@
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "DiffuseLight.h"
+#include "collimatedlight.h"
 
 int main()
 {
