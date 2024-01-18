@@ -90,7 +90,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
     }
     else{
         //For now we have intense light sources surrounding the scene
-        return *world->background;
+        return world->background;
     }
 
 }

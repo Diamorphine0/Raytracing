@@ -13,6 +13,8 @@ public:
 
     double smoothness = 0;
 
+    virtual Color getEmitted() {return Color(0,0,0);}
+
 protected:
 
 };
