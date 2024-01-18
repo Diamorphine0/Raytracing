@@ -23,7 +23,7 @@ int main()
     // Entity instantiation
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../objects/cube.obj");
+    Entity* entity1 = new Entity("../../../../Raytracing/objects/cube.obj");
 //    Entity* entity2 = new Entity("../objects/sphere.obj");
 //    Entity* entity3 = new Entity("../objects/sphere.obj");
 
@@ -50,7 +50,7 @@ int main()
 
     float speed = 0.001f;
 
-    Shader shader("../vertexshader.shader", "../fragmentshader.shader");
+    Shader shader("../../../../Raytracing/vertexshader.shader", "../../../../Raytracing/fragmentshader.shader");
 
     do{
         shader.Bind();
