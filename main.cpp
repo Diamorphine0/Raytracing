@@ -91,8 +91,8 @@ int main()
         engine.camera.renderScene(engine.engineWorld, shader);
         shader.Unbind();
 
-        big_grid.draw(shaderLine, engine);
-        axes.draw(shaderAx, engine);
+        big_grid.draw(shaderLine, engine.camera);
+        axes.draw(shaderAx, engine.camera);
 
         engine.update();
     }
