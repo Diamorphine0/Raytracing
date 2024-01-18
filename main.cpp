@@ -24,8 +24,11 @@ int main()
     lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
+    grid big_grid;
+    big_grid.gen_big_grid(1000, 501);
+
     grid axes;
-    axes.gen_axes(100);
+    axes.gen_axes(1000);
 
     entity1 -> texture = new Texture("../Raytracing/Textures/sun.png");
 
@@ -59,6 +62,8 @@ int main()
 
     Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
     Shader shaderLine("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
+    Shader shaderAx("../Raytracing/vertexshaderAx.shader", "../Raytracing/fragmentshaderAx.shader");
+
 
     do{
         shader.Bind();
@@ -86,10 +91,9 @@ int main()
         engine.camera.renderScene(engine.engineWorld, shader);
         shader.Unbind();
 
-        /*shaderLine.Bind();
-        axes.draw(shaderLine, engine);
-        shaderLine.Unbind();
-        */
+        big_grid.draw(shaderLine, engine);
+        axes.draw(shaderAx, engine);
+
         engine.update();
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
