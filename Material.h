@@ -21,7 +21,7 @@ public:
 
     bool isLight = false;
 
-    virtual Color getEmitted() {return Color(0,0,0);}
+    virtual Color getEmitted(Vec3 dir) {return Color(0,0,0);}
 
 
 protected:

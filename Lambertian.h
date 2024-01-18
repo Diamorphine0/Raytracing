@@ -11,7 +11,7 @@ public:
 
     virtual Ray scatter(const Ray&, Vec3, Vec3);
 
-    virtual Color getEmitted() {return Color(0,0,0);}
+    virtual Color getEmitted(Vec3 dir) {return Color(0,0,0);}
 
 protected:
 

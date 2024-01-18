@@ -6,7 +6,7 @@
 class DiffuseLight : public Material {
 public:
     DiffuseLight(Color c) {emitted = c; isLight = true;}
-    Color getEmitted() {return emitted;}
+    virtual Color getEmitted(Vec3 dir) {return emitted;}
 
 
 

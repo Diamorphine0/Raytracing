@@ -72,7 +72,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
         Material* objectMaterial = objectHit.mat;
 
         if (objectMaterial->isLight) {
-            return objectMaterial->getEmitted();
+            return objectMaterial->getEmitted(r.get_direction());
         }
 
         Vec3 intersection = r.get_origin() + r.get_direction() * t;
