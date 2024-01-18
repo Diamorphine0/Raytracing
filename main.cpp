@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
-    lightarray lights;
-    lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
+    Lightarray lights;
+    Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
     grid axes;
