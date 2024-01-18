@@ -19,6 +19,10 @@ public:
         color.z = attenuation.z * color.z;
     }
 
+    bool isLight = false;
+
+    virtual Color getEmitted() {Color(0,0,0);}
+
 
 protected:
 

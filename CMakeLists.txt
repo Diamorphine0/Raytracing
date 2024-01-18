@@ -43,6 +43,8 @@ set(PROJECT_SOURCES
         enginecamera.cpp
         primitives.h
         primitives.cpp
+        DiffuseLight.h
+        DiffuseLight.cpp
 
 
 

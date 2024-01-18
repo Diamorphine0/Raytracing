@@ -71,6 +71,10 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
 
         Material* objectMaterial = objectHit.mat;
 
+        if (objectMaterial->isLight) {
+            return objectMaterial->getEmitted();
+        }
+
         Vec3 intersection = r.get_origin() + r.get_direction() * t;
         //std::cerr<<"intersection point is: "<<intersection<<"\n";
         //We can now scatter the ray according to material MAKE SURE THAT SCATTER INCREMENTS REFLECTION DEPTH
@@ -86,7 +90,7 @@ Color Camera::ray_color(const Ray& r, Hittable *world) const {
     }
     else{
         //For now we have intense light sources surrounding the scene
-        return Color(215, 215, 255);
+        return *world->background;
     }
 
 }

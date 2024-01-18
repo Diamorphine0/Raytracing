@@ -28,6 +28,8 @@ public:
     Vec3 normal;
     Material *mat;
     float planeEquationCoeff;
+    //Light only from light-emitting objects
+    Color background = Color(0,0,0);
 protected:
     Hittable() {};
 
