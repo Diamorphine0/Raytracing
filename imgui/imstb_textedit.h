@@ -540,7 +540,7 @@ static void stb_textedit_find_charpos(StbFindState *find, STB_TEXTEDIT_STRING *s
    find->y = 0;
 
    for(;;) {
-      STB_TEXTEDIT_LAYOUTROW(&r, str, hit);
+      STB_TEXTEDIT_LAYOUTROW(&r, str, i);
       if (n < i + r.num_chars)
          break;
       if (i + r.num_chars == z && z > 0 && STB_TEXTEDIT_GETCHAR(str, z - 1) != STB_TEXTEDIT_NEWLINE)  // [DEAR IMGUI] special handling for last line

@@ -1,6 +1,6 @@
 // Here we will implement the ECS class.
 #include "Engine.h"
-
+#include <memory>
 Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
     glewExperimental = true;
@@ -80,7 +80,7 @@ void Engine::RenderUI(){
 
     if(ImGui::Button("Raytrace")){
         counter++;
-        rayTracingCamera = new Camera(height, width, camera.getPosition());
+        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
         rayTracingCamera->render(world, "imageRender.ppm");
     }
 

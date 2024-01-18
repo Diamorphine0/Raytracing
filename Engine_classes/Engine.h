@@ -29,8 +29,7 @@ public:
     GLuint programID;
     engineCamera camera;
     int width, height;
-    Camera *rayTracingCamera;
-    Objects *world;
+    std::shared_ptr<Objects> world;
 };
 
 #endif // ENGINE_H
