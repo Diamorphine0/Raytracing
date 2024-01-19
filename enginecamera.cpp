@@ -29,20 +29,21 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     engineWorld -> Draw(shader, pos);
 };
 
-void engineCamera::AnimateScene(Node* engineWorld, const Shader& shader, float timeStamp){
+void engineCamera::animateScene(Node* engineWorld, const Shader& shader, float& timeStamp, float timeDelta){
     Clear();
 
     auto mvp = construct_mvp();
 
+    // this should technically also time dependent
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
     engineWorld -> Animate(shader, timeStamp, pos);
+    timeStamp += timeDelta;
 };
 
 // we should have an animation function here and set the delta time to basically know how often we should call the function
 // or how precise we want to make the interpolation
-
 
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
 
@@ -50,19 +51,6 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);
-
-   /* auto x_prev = xpos;
-    auto x_prev = xpos;
-    auto y_prev = ypos;
-
-    //     we want to adjust some shit
-    glfwGetCursorPos(window, &xpos, &ypos);
-    //    glfwSetCursorPos(window, 1024/2, 768/2);
-//    glfwSetCursorPos(window, 1024/2, 768/2);
-
-    //    std::cout << "Change" << float(1024/2 - xpos ) << std::endl;
-    //    std::cout << "Change" << float(768/2 - ypos ) << std::endl;
-    */
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
         horizontalAngle += mousespeed * deltaTime;
@@ -78,10 +66,8 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         verticalAngle -= mousespeed * deltaTime;
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
-    //z jakiegoś powodu sie tego nie da zroboc
 
-    //horizontalAngle += mousespeed * deltaTime * float(x_prev - xpos );
-    //verticalAngle   += mousespeed * deltaTime * float(y_prev - ypos );
+    //z jakiegoś powodu sie tego nie da zroboc
 
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
@@ -91,26 +77,19 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     // Move forward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        // we want to simulate movement in a circle
         position -= direction * deltaTime * speed;
-//        verticalAngle+= 0.001f;
-
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
         position += direction * deltaTime * speed;
-//        verticalAngle-= 0.001f;
     }
     glm::vec3 left = cross(glm::vec3(0.0f, 1.0f, 0.0f), direction);
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
         position += left * deltaTime * speed;
-//        horizontalAngle+= 0.001f;
     }
-    // Strafe left
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
         position -= left * deltaTime * speed;
-//        horizontalAngle-= 0.001f;
     }
 }
 

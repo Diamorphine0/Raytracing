@@ -17,7 +17,7 @@ int main()
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/cube.obj");
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -31,27 +31,20 @@ int main()
     grid axes;
     axes.gen_axes(1000);
 
-    entity1 -> texture = new Texture("../Raytracing/Textures/sun.png");
-
-    std::cout << "Texture is loaded" << std::endl;
-    Entity* entity2 = new Entity("../Raytracing/objects/earth.obj");
-    Entity* entity3 = new Entity("../Raytracing/objects/cube.obj");
-
-    entity2 -> texture = new Texture("../Raytracing/Textures/purple.png");
-
-    entity2 -> scale(0.5, 0.5, 0.5);
-    entity2 -> translate(-10, -10, 0);
-
-    entity3 -> scale(0.4, 0.4, 0.4);
-    entity3->translate(-10, -10, 0);
+    entity1 -> texture = new Texture("../Raytracing/Textures/Grey.png");
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
-    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 -> setParent(node1);
-//    node3 -> setParent(node2);*/
+
+    engine.engineWorld->addKeyframe(0);
+
+    entity1 -> scale(0.1, 0.1, 0.1);
+    entity1 -> rotate(1, 1, 1, 1);
+    entity1 -> translate(10, 10, 10);
+
+    engine.engineWorld->addKeyframe(10);
+
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
 //    engine.world = world;
@@ -62,6 +55,8 @@ int main()
     float speed = 0.05f;
 
     Shader* shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
+
+    float animationTime = 0;
 
     do{
        shader -> Bind();
@@ -79,13 +74,12 @@ int main()
 
             glUniform3fv(lightPosi, 1, &lights.arr[i].lightPos[0]);
             glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
-            //cannot initialize a parameter of type const GLfloat with an rvalue of typue glm::vec3
         }
 
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         // the render scene and animate scene functionalities should be disjoint.
-        engine.camera.renderScene(engine.engineWorld, *shader);
+        engine.camera.animateScene(engine.engineWorld, *shader, animationTime, 0.01);
         shader -> Unbind();
 
         engine.update(shader);

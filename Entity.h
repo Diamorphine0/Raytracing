@@ -123,6 +123,8 @@ public:
     // we should store a texture pointer this way we can just load the texture
     Texture* texture;
     Lightsource* lightsource;
+    float keyFrameInitialTime = 1000;
+    float keyFrameFinalTime = 0;
 
 public:
 
