@@ -273,8 +273,8 @@ bool Entity::loadOBJ(std::string path,
 void Entity::interpolate(float timeStamp){
 
     if(timeStamp > keyFrameFinalTime or timeStamp < keyFrameInitialTime){
-        std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
-        std::cout << "Animation complete" << std::endl;
+//        std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
+//        std::cout << "Animation complete" << std::endl;
         return;
     }
 

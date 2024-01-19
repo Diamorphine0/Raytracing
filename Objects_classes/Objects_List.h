@@ -13,6 +13,7 @@
  */
 class Objects_List: public Object {
 public:
+    Objects_List(): objects_list(){}
     Objects_List(const std::unordered_set<std::shared_ptr<Object>> &init_objects);
 
     virtual bool hit(const Ray &r, const Interval &t,  HitRecord &rec) const;

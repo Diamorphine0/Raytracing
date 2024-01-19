@@ -91,6 +91,8 @@ set(PROJECT_SOURCES
         Objects_classes/BVH_Node.cpp
         Objects_classes/BVH_Node.h
         FrameBuffer.cpp
+        Objects_classes/TriangleMesh.cpp
+        Objects_classes/TriangleMesh.h
 )
 
 

@@ -16,6 +16,7 @@ public:
      *
      */
     Triangle(const point3 &a, const point3 &b, const point3 &c, color3 color);
+    Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &normal, color3 color);
 
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const;
 

@@ -17,7 +17,7 @@ public:
      * @param restriction The interval on which to intersect
      * @param rec puts all information related to the hit.
      *
-     * @returns pair of true/false and the pointer to the object which it hit (if it did, otherwise null)
+     * @returns true/false
      */
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const = 0;
 

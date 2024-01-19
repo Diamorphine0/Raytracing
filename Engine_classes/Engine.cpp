@@ -50,7 +50,6 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
-    // shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     // It suffices to load the framebuffer here.
     fb = new frameBuffer(width, height);
@@ -174,10 +173,15 @@ void Engine::RenderStats(){
     static int counter = 0;
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
-
+    ImGui::NewLine();
+    ImGui::Text("Frame to Raytrace: %d ", currentFrame);
     if(ImGui::Button("Raytrace")){
+        //generate world at time t
+        //i go through the scene graph and compute the right matrices for entities at time t
+
+
         counter++;
-        rayTracingCamera = new Camera(height, width, camera.getPosition());
+        // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
@@ -246,19 +250,19 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    static int coarseFrame = 0;
-    ImGui::SliderInt("Coarse Slider", &coarseFrame, 0, 500, "Frame %d");
+    //static int coarseFrame = 0;
+    ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 500, "Frame %d");
 
 
     if (ImGui::Button("Mark Position")) {
-        markedPositions.push_back(coarseFrame);
+        markedPositions.push_back(currentFrame);
     }
 
     if (ImGui::Button("Clear All Marks")) {
         markedPositions.clear();
     }
 
-    ImGui::Text("Coarse Frame: %d", coarseFrame);
+    ImGui::Text("Coarse Frame: %d", currentFrame);
 
     ImVec2 sliderMin = ImGui::GetItemRectMin();
     ImVec2 sliderMax = ImGui::GetItemRectMax();

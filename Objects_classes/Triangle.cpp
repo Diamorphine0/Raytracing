@@ -18,6 +18,12 @@ Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, color3 col
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
 
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, color3 color) : p0(a), p1(b), p2(c), normal(_normal), color(color) {
+    computePlaneEquation();
+    boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
+}
+
+
 bool Triangle::checkInsideTriangle(const point3 &p) const{
     vec3 v0 = p0 - p, v1 = p1 - p, v2 = p2 - p;
     // We check if the triangles formed by p and the p0, p1, p2 points are always in the same order(trigo or anti-trigo)

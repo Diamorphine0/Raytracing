@@ -40,7 +40,6 @@ public:
     GLuint programID;
     engineCamera camera;
     int width, height;
-    Camera *rayTracingCamera;
     frameBuffer* fb;
     Shader* shader;
     Shader* shaderLine;
@@ -50,6 +49,7 @@ public:
 
     grid big_grid;
     grid axes;
+    int currentFrame = 0;
 private:
     std::vector<int> markedPositions;
 };
