@@ -168,7 +168,6 @@ public:
 
         int ret = index(searchTime, mid_idx+1, endIndex);
         return ret == -1 ? mid_idx : ret;
-
     };
 
 private:

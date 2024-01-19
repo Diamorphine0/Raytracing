@@ -102,6 +102,7 @@ void Node::addKeyframe(float time){
 void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
 
     if(entity != nullptr){
+
         const VertexArray& va = *(entity -> getVA());
 
         // The interpolation finds the desired local transformation matrix (relative to the intial verticies stored in the buffer - they remain unchanged).
@@ -136,7 +137,7 @@ void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
     }
 
     for(auto child: children){
-        child -> Draw(shader, pos);
+        child -> Animate(shader, time, pos);
     }
 }
 

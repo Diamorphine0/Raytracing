@@ -31,6 +31,8 @@ public:
     void RenderStats();
     void RenderAnimation();
 
+    inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
+
     // Scene Graph Root Node - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld;
 
@@ -43,6 +45,8 @@ public:
     Shader* shader;
     Shader* shaderLine;
     Shader* shaderAx;
+    float animationTime = 0;
+    int framesPerSecond = 30;
 
     grid big_grid;
     grid axes;

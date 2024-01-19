@@ -111,9 +111,7 @@ void Engine::update(Shader* shader){
 
     fb -> Bind();
 
-    // all the draw things should happen here
-
-    camera.renderScene(engineWorld, *shader);
+    camera.animateScene(engineWorld, *shader, animationTime, 0.01);
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -248,7 +246,6 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-
     static int coarseFrame = 0;
     ImGui::SliderInt("Coarse Slider", &coarseFrame, 0, 500, "Frame %d");
 
@@ -256,7 +253,6 @@ void Engine::RenderAnimation() {
     if (ImGui::Button("Mark Position")) {
         markedPositions.push_back(coarseFrame);
     }
-
 
     if (ImGui::Button("Clear All Marks")) {
         markedPositions.clear();

@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity(SOURCE_DIR + (std::string)"/objects/sphere.obj");
+    Entity* entity1 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -52,13 +52,15 @@ int main(int argc, char* argv[])
 
     node1 -> setParent(engine.engineWorld);
 
-    engine.engineWorld->addKeyframe(0);
+    engine.engineWorld ->addKeyframe(0);
 
-    entity1 -> scale(0.1, 0.1, 0.1);
-    entity1 -> rotate(1, 1, 1, 1);
-    entity1 -> translate(10, 10, 10);
+    entity1 -> rotate(1, 1, 2, 1);
 
-    engine.engineWorld->addKeyframe(10);
+    engine.engineWorld -> addKeyframe(3);
+
+    entity1 -> scale(1, 2, 1);
+
+    engine.engineWorld -> addKeyframe(6);
 
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
@@ -76,7 +78,7 @@ int main(int argc, char* argv[])
     do{
        shader -> Bind();
 
-        //this should handle lighting loading
+        //this should handle light loading
         for(int i = 0; i < 20; i++){
 
             std::string istring = "lights[" + std::to_string(i) + "].lightPos";
@@ -92,10 +94,6 @@ int main(int argc, char* argv[])
         }
 
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
-
-        // the render scene and animate scene functionalities should be disjoint.
-        engine.camera.animateScene(engine.engineWorld, *shader, animationTime, 0.01);
-        shader -> Unbind();
 
         engine.update(shader);
     }

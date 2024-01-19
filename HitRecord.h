@@ -4,7 +4,6 @@
 
 #ifndef RAY_TRACING_HITRECORD_H
 #define RAY_TRACING_HITRECORD_H
-#include "Object.hpp"
 #include "Utilities.hpp"
 #include "Ray.hpp"
 #include <memory>

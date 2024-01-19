@@ -265,7 +265,6 @@ bool Entity::loadOBJ(std::string path,
         out_vertices[i].Norm = norm;
     }
 
-
     return true;
 }
 
