@@ -67,8 +67,6 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
 
-    //z jakiegoś powodu sie tego nie da zroboc
-
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
         sin(verticalAngle),

@@ -1,5 +1,6 @@
 // Here we will implement the ECS class.
 #include "engine.h"
+#include <fstream>
 
 Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
@@ -94,7 +95,7 @@ void Engine::update(Shader* shader){
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,600));
+    ImGui::SetNextWindowSize(ImVec2(300,300));
     ImGui::SetNextWindowPos(ImVec2 (1200,0));
     ImGui::Begin("Settings");
     RenderStats();
@@ -104,6 +105,12 @@ void Engine::update(Shader* shader){
     ImGui::SetNextWindowPos(ImVec2 (0,600));
     ImGui::Begin("Animation");
     RenderAnimation();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(300,300));
+    ImGui::SetNextWindowPos(ImVec2(1200,300));
+    ImGui::Begin("Add Object");
+    RenderAddObject();
     ImGui::End();
 
     // Rendering
@@ -183,6 +190,7 @@ void Engine::RenderStats(){
         rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
+
 struct EntityNode {
     int id;
     std::string name;
@@ -275,4 +283,46 @@ void Engine::RenderAnimation() {
     }
 
     ImGui::End();
+}
+
+void Engine::RenderAddObject(){
+    ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
+    char objectName[256] = "";
+    char objectTexture[256] = "";
+    ImGui::InputText("object", objectName, sizeof(objectName));
+    ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
+    ImGui::InputText("chuj", objectTexture, sizeof(objectTexture));
+
+    if (ImGui::Button("Initialise object")){
+        /*
+        std::string nameString;
+        for (int i = 0; i < 256 && objectName[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectName[i]))) {
+                nameString += objectName[i];
+            }
+        }
+
+        std::string textureString;
+        for (int i = 0; i < 256 && objectTexture[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectTexture[i]))) {
+                textureString += objectTexture[i];
+            }
+        }
+
+        nameString = "../Raytracing/objects/" + nameString;
+        textureString = "../Raytracing/texture/" + textureString;
+
+        //create the new entity!
+        Entity* entity = new Entity(nameString.c_str());
+        entity -> texture = new Texture(textureString.c_str());
+        Node* node = new Node(entity);
+        node -> setParent(this -> engineWorld);
+        //clear the string
+        */
+        /*
+        for(int i=0; i < 256; i++){
+            objectName[i] = '\0';
+            objectTexture[i] = '\0';
+        }*/
+    }
 }

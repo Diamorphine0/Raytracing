@@ -6,12 +6,13 @@
 #include "engineCamera.h"
 #include "scenegraph.h"
 #include "Entity.h"
-#include "frameBuffer.h"
+#include "framebuffer.h"
 #include <vector>
 #include <string>
 #include <iostream>
 #include "shader.h"
 #include "gridline.h"
+#include "texture.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -34,6 +35,7 @@ public:
     void RenderHierarchy();
     void RenderStats();
     void RenderAnimation();
+    void RenderAddObject();
 
     // Scene Graph Root Node - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld;

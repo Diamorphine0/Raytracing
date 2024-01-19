@@ -17,7 +17,7 @@ int main()
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f));
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity("../Raytracing/objects/cube.obj");
+    Entity* entity1 = new Entity("../Raytracing/objects/sphere.obj");
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -31,7 +31,7 @@ int main()
     grid axes;
     axes.gen_axes(1000);
 
-    entity1 -> texture = new Texture("../Raytracing/Textures/Grey.png");
+    entity1 -> texture = new Texture("../Raytracing/Textures/sun.png");
 
     Node* node1 = new Node(entity1);
 
