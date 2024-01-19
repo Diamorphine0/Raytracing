@@ -1,7 +1,7 @@
 #ifndef RAY_TRACING_Objects_LIST_H
 #define RAY_TRACING_Objects_LIST_H
 
-#include "Objects.hpp"
+#include "Object.hpp"
 #include "Utilities.hpp"
 #include<unordered_set>
 
@@ -10,17 +10,18 @@
  * Could be improved for better query performance with k-d trees.
  *
  */
-class Objects_List: public Objects {
+class Objects_List: public Object {
 public:
-    Objects_List(const std::unordered_set<std::shared_ptr<Objects>> &init_objects): objects_list(init_objects) {}
+    Objects_List(const std::unordered_set<std::shared_ptr<Object>> &init_objects);
 
     virtual bool hit(const Ray &r, const Interval &t,  HitRecord &rec) const;
 
-    void add_object(std::shared_ptr<Objects> obj);
-    void remove_object(std::shared_ptr<Objects> obj);
+    void add_object(std::shared_ptr<Object> obj);
+    void remove_object(std::shared_ptr<Object> obj);
 
+    void recompute_boundingBox();
 private:
-    std::unordered_set<std::shared_ptr<Objects>> objects_list;
+    std::unordered_set<std::shared_ptr<Object>> objects_list;
 };
 
 

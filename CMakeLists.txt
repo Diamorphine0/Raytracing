@@ -26,7 +26,7 @@ set(PROJECT_SOURCES
         Objects_classes/Triangle.cpp
         Objects_classes/Objects_List.cpp
         Objects_classes/Objects_List.h
-        Objects_classes/Objects.hpp
+        Objects_classes/Object.hpp
 
         main.cpp
         Utilities.hpp
@@ -86,6 +86,10 @@ set(PROJECT_SOURCES
         imgui/imstb_truetype.h
         imgui/backends/imgui_impl_glfw.h
         imgui/backends/imgui_impl_opengl3.h
+        Objects_classes/AxisAlignedBoundingBox.cpp
+        Objects_classes/AxisAlignedBoundingBox.h
+        Objects_classes/BVH_Node.cpp
+        Objects_classes/BVH_Node.h
 )
 
 

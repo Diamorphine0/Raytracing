@@ -4,11 +4,12 @@
 #include "Ray.hpp"
 #include "Interval.h"
 #include "HitRecord.h"
+#include "AxisAlignedBoundingBox.h"
 #include<memory>
 
 class HitRecord;
 /// This is the  abstract class for objects (which pretty much means anything).
-class Objects {
+class Object {
 public:
     /** Checks if ray intersects object. If true Puts all required information in rec. If false, doesn't modify rec.
      *
@@ -20,12 +21,12 @@ public:
      */
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const = 0;
 
-    //Will probably be needed
-    // make bvh
+    AxisAlignedBoundingBox get_boundingBox() { return boundingBox; };
 
 protected:
-    //to add materials
-    Objects() {};
+    //dont add materials here
+    Object() {};
+    AxisAlignedBoundingBox boundingBox;
 };
 
 #endif // HITTABLE_HPP

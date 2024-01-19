@@ -10,6 +10,7 @@ class Interval {
 public:
     Interval() : min(INF), max(-INF) {}
     Interval(float _min, float _max) : min(_min), max(_max) {}
+    Interval(const Interval &a, const Interval &b) : min(std::min(a.min, b.min)), max(std::max(a.max, b.max)) {}
 
     bool contains(float x) const{
         return min <= x && x <= max;
@@ -19,10 +20,15 @@ public:
         return min < x && x < max;
     }
 
-    float get_min() const { return min; }
-    float get_max() const { return max;}
 
-private:
+
+    Interval expand(float delta) const {
+        auto padding = delta/2;
+        return {min - padding, max + padding};
+    }
+
+
+
     float min, max;
 };
 

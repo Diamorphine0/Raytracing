@@ -1,14 +1,14 @@
 #ifndef RAY_TRACING_TRIANGLE_H
 #define RAY_TRACING_TRIANGLE_H
 
-#include "Objects.hpp"
+#include "Object.hpp"
 #include "Ray.hpp"
 #include "Utilities.hpp"
 /**  Class to holds triangles. Holds the 3 points, the normal (normalized) and
  *      equationCoefficient (to compute intersection faster)
  *
  */
-class Triangle: public Objects {
+class Triangle: public Object {
 public:
     /**
      * Takes the 3 points defining a triangle.

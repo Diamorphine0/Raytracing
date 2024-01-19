@@ -15,6 +15,7 @@ void Triangle::computePlaneEquation() {
 Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, color3 color = {0.7, 0.7, 0.7}) : p0(a), p1(b), p2(c), color(color) {
     computeNormal();
     computePlaneEquation();
+    boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
 
 bool Triangle::checkInsideTriangle(const point3 &p) const{

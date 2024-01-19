@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::render(std::shared_ptr<Objects> world, const std::string &imagePath) {
+void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath) {
     initialize();
     imageRenderer.reset_pixels();
 
@@ -38,7 +38,7 @@ void Camera::initialize() {
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5f;
 }
 
-color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Objects> &world) const {
+color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object> &world) const {
     HitRecord rec;
     if(world->hit(r, Interval(0, INF), rec)){
         return rec.color;

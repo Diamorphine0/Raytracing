@@ -1,7 +1,7 @@
 #ifndef CAMERA_Hpp
 #define CAMERA_Hpp
 
-#include "Objects.hpp"
+#include "Object.hpp"
 #include "Ray.hpp"
 #include "Utilities.hpp"
 #include "ImageRenderer.h"
@@ -11,7 +11,7 @@ class Camera {
 public:
     Camera(int height, int width, const point3 &position) : imageRenderer(height, width), center(position) {  }
 
-    void render(std::shared_ptr<Objects> world, const std::string &imagepath);
+    void render(std::shared_ptr<Object> world, const std::string &imagepath);
 private:
     ImageRenderer imageRenderer;
 
@@ -23,7 +23,7 @@ private:
 
     void initialize();
 
-    color3 ray_color(const Ray& r, const std::shared_ptr<Objects> &world) const;
+    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world) const;
 };
 
 #endif // CAMERA_Hpp
