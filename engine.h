@@ -11,6 +11,7 @@
 #include <string>
 #include <iostream>
 #include "shader.h"
+#include "gridline.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -25,7 +26,7 @@ public:
 
     Engine(float width, float height, engineCamera camera);
 
-    void update();
+    void update(Shader* shader);
 
     // ImGUI rendering functions
     void LoadEngine();
@@ -45,6 +46,11 @@ public:
     Hittable *world;
     frameBuffer* fb;
     Shader* shader;
+    Shader* shaderLine;
+    Shader* shaderAx;
+
+    grid big_grid;
+    grid axes;
 private:
     std::vector<int> markedPositions;
 };

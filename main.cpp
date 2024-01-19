@@ -61,40 +61,34 @@ int main()
 
     float speed = 0.05f;
 
-    Shader shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
-    Shader shaderLine("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
-    Shader shaderAx("../Raytracing/vertexshaderAx.shader", "../Raytracing/fragmentshaderAx.shader");
+    Shader* shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
     do{
-        engine.shader -> Bind();
+       shader -> Bind();
 
         //this should handle lighting loading
         for(int i = 0; i < 20; i++){
 
             std::string istring = "lights[" + std::to_string(i) + "].lightPos";
             const char* annoying = istring.c_str();
-            GLuint lightPosi = glGetUniformLocation(shader.getID(), annoying);
+            GLuint lightPosi = glGetUniformLocation(shader -> getID(), annoying);
 
             istring = "lights[" + std::to_string(i) + "].lightColor";
             annoying = istring.c_str();
-            GLuint lightColori = glGetUniformLocation(shader.getID(), annoying);
+            GLuint lightColori = glGetUniformLocation(shader -> getID(), annoying);
 
             glUniform3fv(lightPosi, 1, &lights.arr[i].lightPos[0]);
             glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
             //cannot initialize a parameter of type const GLfloat with an rvalue of typue glm::vec3
-
         }
 
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         // the render scene and animate scene functionalities should be disjoint.
-        engine.camera.renderScene(engine.engineWorld, shader);
-        shader.Unbind();
+        engine.camera.renderScene(engine.engineWorld, *shader);
+        shader -> Unbind();
 
-        big_grid.draw(shaderLine, engine.camera);
-        axes.draw(shaderAx, engine.camera);
-
-        engine.update();
+        engine.update(shader);
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
            glfwWindowShouldClose(engine.window) == 0 );

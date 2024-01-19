@@ -57,9 +57,15 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
 
     Entity* cameraentity = new Entity();
     engineWorld = new Node(cameraentity);
+
+    shaderLine = new Shader("../Raytracing/vertexshaderLine.shader", "../Raytracing/fragmentshaderLine.shader");
+    shaderAx = new Shader("../Raytracing/vertexshaderAx.shader", "../Raytracing/fragmentshaderAx.shader");
+
+    big_grid.gen_big_grid(1000, 501);
+    axes.gen_axes(1000);
 }
 
-void Engine::update(){
+void Engine::update(Shader* shader){
 
     glfwPollEvents();
 
@@ -108,6 +114,9 @@ void Engine::update(){
     // all the draw things should happen here
 
     camera.renderScene(engineWorld, *shader);
+
+    big_grid.draw(*shaderLine, camera);
+    axes.draw(*shaderAx, camera);
 
     fb -> Unbind();
 
