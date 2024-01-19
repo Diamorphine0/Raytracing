@@ -15,7 +15,7 @@ public:
     AxisAlignedBoundingBox(point3 a, point3 b);
     AxisAlignedBoundingBox (const AxisAlignedBoundingBox &a,const AxisAlignedBoundingBox &b);
 
-    bool hit(const Ray &r, Interval restriction);
+    bool hit(const Ray &r, Interval restriction) const;
 
     const Interval& get_ax(int i) const {return ax[i]; }
 

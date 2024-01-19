@@ -4,6 +4,7 @@
 #include "Object.hpp"
 #include "Utilities.hpp"
 #include<unordered_set>
+#include <vector>
 
 /*
  * For now very basic class, stores as a list.
@@ -18,6 +19,8 @@ public:
 
     void add_object(std::shared_ptr<Object> obj);
     void remove_object(std::shared_ptr<Object> obj);
+
+    std::vector<std::shared_ptr<Object>> get_list() const {return std::vector<std::shared_ptr<Object>>(objects_list.begin(), objects_list.end()); }
 
     void recompute_boundingBox();
 private:

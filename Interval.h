@@ -20,14 +20,20 @@ public:
         return min < x && x < max;
     }
 
-
-
     Interval expand(float delta) const {
         auto padding = delta/2;
         return {min - padding, max + padding};
     }
 
 
+    bool min_compare( const Interval &b) const{
+        return min < b.min;
+    }
+
+
+    bool max_compare( const Interval &b) const{
+        return max < b.max;
+    }
 
     float min, max;
 };

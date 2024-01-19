@@ -21,7 +21,7 @@ public:
      */
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const = 0;
 
-    AxisAlignedBoundingBox get_boundingBox() { return boundingBox; };
+    AxisAlignedBoundingBox get_boundingBox() const { return boundingBox; };
 
 protected:
     //dont add materials here

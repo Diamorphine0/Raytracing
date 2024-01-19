@@ -4,7 +4,7 @@
 
 #include "AxisAlignedBoundingBox.h"
 
-bool AxisAlignedBoundingBox::hit(const Ray &r, Interval restriction) {
+bool AxisAlignedBoundingBox::hit(const Ray &r, Interval restriction) const {
     for(int i = 0; i < 3; i++){
         auto inv_dir (r.get_inv_direction()[i]);
         auto &itv = ax[i];
