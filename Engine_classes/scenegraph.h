@@ -35,6 +35,11 @@ public:
 
     glm::mat4 getModelMatrix();
 
+    bool hasChildren();
+    std::vector<Node*> getChildren();
+    Node* getParent();
+
+
 private:
     Node* parent;
     std::vector<Node*> children;

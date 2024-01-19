@@ -6,7 +6,8 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "shader.h"
-#include "Engine.h"
+#include "engineCamera.h"
+#include "Utilities.hpp"
 
 class line{
 public:
@@ -44,9 +45,9 @@ public:
         std::cout<< "a line was successfully setup" << std::endl;
     }
 
-    void draw(const Shader& shader,const Engine& engine){
+    void draw(const Shader& shader,const engineCamera& camera){
         shader.Bind();
-        glm::mat4 transform = engine.camera.construct_mvp() * model;
+        glm::mat4 transform = camera.construct_mvp() * model;
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &transform[0][0]);
 
@@ -87,9 +88,9 @@ public:
 
     }
 
-    void draw(const Shader& shader,const Engine& engine){
+    void draw(const Shader& shader,const engineCamera& camera){
         for(auto l : lines)
-            l.draw(shader, engine);
+            l.draw(shader, camera);
     }
 };
 

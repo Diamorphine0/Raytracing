@@ -1,7 +1,7 @@
 // Here we will implement the ECS class.
 #include "Engine.h"
 #include <memory>
-Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
+Engine::Engine(float width, float height, engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
 
@@ -50,12 +50,22 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
+    // shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
+
+    // It suffices to load the framebuffer here.
+    fb = new frameBuffer(width, height);
+
     Entity* cameraentity = new Entity();
-//    cameraentity -> translate(0, 0, 8);
     engineWorld = new Node(cameraentity);
+
+    shaderLine = new Shader(shader_path + "/vertexshaderLine.shader", shader_path + "/fragmentshaderLine.shader");
+    shaderAx = new Shader(shader_path + "/vertexshaderAx.shader", shader_path + "/fragmentshaderAx.shader");
+
+    big_grid.gen_big_grid(1000, 501);
+    axes.gen_axes(1000);
 }
 
-void Engine::update(){
+void Engine::update(Shader* shader){
 
     glfwPollEvents();
 
@@ -65,27 +75,79 @@ void Engine::update(){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    RenderUI();
+    ImGui::SetNextWindowSize(ImVec2(400,400));
+    ImGui::SetNextWindowPos(ImVec2 (0,0));
+    ImGui::Begin("Hierarchy");
+
+    RenderHierarchy();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(800, 600));
+    ImGui::SetNextWindowPos(ImVec2 (400, 0));
+    ImGui::Begin("Engine Visualization");
+    LoadEngine();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(400,200));
+    ImGui::SetNextWindowPos(ImVec2 (0,400));
+    ImGui::Begin("Properties");
+    RenderProperties();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(300,600));
+    ImGui::SetNextWindowPos(ImVec2 (1200,0));
+    ImGui::Begin("Settings");
+    RenderStats();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(1500,200));
+    ImGui::SetNextWindowPos(ImVec2 (0,600));
+    ImGui::Begin("Animation");
+    RenderAnimation();
+    ImGui::End();
 
     // Rendering
     ImGui::Render();
+
+    fb -> Bind();
+
+    // all the draw things should happen here
+
+    camera.renderScene(engineWorld, *shader);
+
+    big_grid.draw(*shaderLine, camera);
+    axes.draw(*shaderAx, camera);
+
+    fb -> Unbind();
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     glfwSwapBuffers(window);
 }
 
-void Engine::RenderUI(){
+void Engine::LoadEngine(){
+    // we access the ImGui window size
+    const float window_width = ImGui::GetContentRegionAvail().x;
+    const float window_height = ImGui::GetContentRegionAvail().y;
 
-    static int counter = 0;
-    ImGui::Text("Engine");
+    // we rescale the framebuffer to the actual window size here and reset the glViewport
+    fb -> Rescale(window_width, window_height);
+    glViewport(0, 0, window_width, window_height);
 
-    if(ImGui::Button("Raytrace")){
-        counter++;
-        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
-        rayTracingCamera->render(world, "imageRender.ppm");
-    }
+    // we get the screen position of the window
+    ImVec2 pos = ImGui::GetCursorScreenPos();
 
-    ImGui::Text("Transform Controls");
+    // and here we can add our created texture as image to ImGui
+    // unfortunately we need to use the cast to void* or I didn't find another way tbh
+    ImGui::GetWindowDrawList()->AddImage(
+        (void *) fb -> texture_id,
+        ImVec2(pos.x, pos.y),
+        ImVec2(pos.x + window_width, pos.y + window_height),
+        ImVec2(0, 1),
+        ImVec2(1, 0)
+    );
+}
 
+void Engine::RenderProperties(){
     // Translation sliders for X, Y, Z direction
     // we want to store the previous values
     static float translationX = 0.0f, translationY = 0.0f, translationZ = 0.0f;
@@ -99,8 +161,118 @@ void Engine::RenderUI(){
 
     // Rotation slider
     static float rotation = 0.0f;
-    ImGui::SliderFloat("Rotation", &rotation, 0.0f, 360.0f);
-    ImGui::Text("Raytracings done = %d", counter);
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
+
+    //Color selection
+    ImVec4 color;
+    ImGui::ColorEdit4("Color", &color.x);
 };
+
+void Engine::RenderStats(){
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::Text("Framerate:");
+    ImGui::Text("Application average %.1f FPS", io.Framerate);
+
+    static int counter = 0;
+    ImGui::NewLine();
+    ImGui::Text("Raytracings done = %d", counter);
+
+    if(ImGui::Button("Raytrace")){
+        counter++;
+        rayTracingCamera = new Camera(height, width, camera.getPosition());
+       // rayTracingCamera->render(world, "imageRender.ppm");
+    }
+}
+struct EntityNode {
+    int id;
+    std::string name;
+    std::vector<EntityNode> children;
+};
+
+void RenderEntityHierarchy(EntityNode& entity) {
+    // Display each entity as a tree node
+    if (ImGui::TreeNodeEx(entity.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
+
+        // Add drag-and-drop source
+        if (ImGui::BeginDragDropSource()) {
+            // Set payload to the entity's id
+            ImGui::SetDragDropPayload("ENTITY_ID", &entity.id, sizeof(entity.id));
+            ImGui::Text("Dragging %s", entity.name.c_str());
+            ImGui::EndDragDropSource();
+        }
+
+        // Context menu when right-clicking an entity
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem("Delete Entity")) {
+            }
+            if (ImGui::MenuItem("Create Child")) {
+            }
+            ImGui::EndPopup();
+        }
+        if (ImGui::BeginDragDropTarget()) {
+            // Accept the payload
+            const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_ID");
+            if (payload) {
+                // Process the payload (in this example, rearrange the hierarchy)
+                int draggedEntityId = *static_cast<const int*>(payload->Data);
+                std::cout << "Dropped entity with ID " << draggedEntityId << " onto " << entity.name << std::endl;
+                // Implement logic to rearrange the hierarchy based on the dropped entity ID
+            }
+
+            // End the drag-and-drop target
+            ImGui::EndDragDropTarget();
+        }
+
+        // Render child entities recursively
+        for (auto& child : entity.children) {
+            RenderEntityHierarchy(child);
+        }
+
+        // End the tree node
+        ImGui::TreePop();
+
+
+    }
+}
+
+void Engine::RenderHierarchy() {
+    ImGui::Text("Entity Hierarchy View");
+
+    // Sample hierarchy with parent-child relationships
+    static EntityNode rootNode = {1, "Root", {{2, "Child1"}, {3, "Child2", {{4, "Grandchild1"}, {5, "Grandchild2"}}}}};
+
+    // Render the hierarchy
+    RenderEntityHierarchy(rootNode);
+}
+
+void Engine::RenderAnimation() {
+    ImGui::Begin("Animation");
+
+
+    static int coarseFrame = 0;
+    ImGui::SliderInt("Coarse Slider", &coarseFrame, 0, 500, "Frame %d");
+
+
+    if (ImGui::Button("Mark Position")) {
+        markedPositions.push_back(coarseFrame);
+    }
+
+
+    if (ImGui::Button("Clear All Marks")) {
+        markedPositions.clear();
+    }
+
+    ImGui::Text("Coarse Frame: %d", coarseFrame);
+
+    ImVec2 sliderMin = ImGui::GetItemRectMin();
+    ImVec2 sliderMax = ImGui::GetItemRectMax();
+    float sliderRange = sliderMax.x - sliderMin.x;
+
+    for (int markedPosition : markedPositions) {
+        float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
+        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
+        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
+    }
+
+    ImGui::End();
+}

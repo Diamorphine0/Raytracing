@@ -90,6 +90,7 @@ set(PROJECT_SOURCES
         Objects_classes/AxisAlignedBoundingBox.h
         Objects_classes/BVH_Node.cpp
         Objects_classes/BVH_Node.h
+        FrameBuffer.cpp
 )
 
 

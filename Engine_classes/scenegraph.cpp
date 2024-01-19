@@ -83,11 +83,18 @@ void Node::addKeyframe(float time){
         // In the UI don't forget to set the local matrix when adjusting thre
         // We know what the localmatrix of the function looks like so we just set it.
         std::pair entityKeyframe(time, (entity -> localMatrix));
+
         entity -> keyFrames.push_back(entityKeyframe);
+        if(time >= entity -> keyFrameFinalTime){
+            entity -> keyFrameFinalTime = time;
+        }
+        if(time <= entity -> keyFrameInitialTime){
+            entity -> keyFrameInitialTime = time;
+        }
     }
 
     for(auto child: children){
-        child->addKeyframe(time);
+        child -> addKeyframe(time);
     }
 
 }
