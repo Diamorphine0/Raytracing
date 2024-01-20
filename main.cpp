@@ -58,7 +58,11 @@ int main(int argc, char* argv[])
 
     engine.engineWorld -> addKeyframe(300);
 
-    entity1 -> scale(1, 2, 1);
+    entity1 -> translate(5, 5, 1);
+
+    engine.engineWorld -> addKeyframe(600);
+
+    entity1 -> scale(10, 2, 1);
 
     engine.engineWorld -> addKeyframe(600);
 

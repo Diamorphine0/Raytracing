@@ -282,9 +282,7 @@ void Entity::interpolate(int currentFrame){
     auto& finalTime = keyFrames[idx+1].first;
     auto& finalFrame = keyFrames[idx+1].second;
 
-    float t = (currentFrame - startTime)/(finalTime - startTime);
-
-    std::cout << "t: " << t << std::endl;
+    float t = (float)(currentFrame - startTime)/(finalTime - startTime);
 
     //quaternions
     glm::quat startRot = glm::quat_cast(startFrame);

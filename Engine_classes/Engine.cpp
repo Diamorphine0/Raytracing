@@ -110,7 +110,8 @@ void Engine::update(Shader* shader){
 
     fb -> Bind();
 
-    camera.animateScene(engineWorld, *shader, currentFrame);
+    if(animate)
+        camera.animateScene(engineWorld, *shader, currentFrame);
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -178,8 +179,6 @@ void Engine::RenderStats(){
     if(ImGui::Button("Raytrace")){
         //generate world at time t
         //i go through the scene graph and compute the right matrices for entities at time t
-
-
         counter++;
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
@@ -250,9 +249,19 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    //static int coarseFrame = 0;
-    ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 500, "Frame %d");
+    // we should have buttons to stop and play the animation
 
+    //static int coarseFrame = 0;
+    ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 2000, "Frame %d");
+
+    // we want to have an animate condition
+    if(ImGui::Button("Play")){
+        animate = true;
+    }
+
+    if(ImGui::Button("Pause")){
+        animate = false;
+    }
 
     if (ImGui::Button("Mark Position")) {
         // Add the keyframe

@@ -48,6 +48,8 @@ public:
     int currentFrame = 0;
     int framesPerSecond = 30;
 
+    bool animate = false;
+
     grid big_grid;
     grid axes;
 private:
