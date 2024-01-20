@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
     entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
     std::cout << "Texture is loaded" << std::endl;
-    Entity* entity2 = new Entity(SOURCE_DIR + (std::string)"/objects/earth.obj");
+    Entity* entity2 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
     Entity* entity3 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
     entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
@@ -51,6 +51,7 @@ int main(int argc, char* argv[])
     Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
+    node2 -> setParent(node1);
 
     engine.engineWorld ->addKeyframe(0);
 

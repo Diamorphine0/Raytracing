@@ -112,6 +112,8 @@ void Engine::update(Shader* shader){
 
     if(animate)
         camera.animateScene(engineWorld, *shader, currentFrame);
+    else
+        camera.Clear();
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -184,6 +186,7 @@ void Engine::RenderStats(){
        // rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
+
 struct EntityNode {
     int id;
     std::string name;
