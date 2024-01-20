@@ -113,8 +113,7 @@ void Engine::update(Shader* shader){
 
     if(animate)
         camera.animateScene(engineWorld, *shader, currentFrame);
-    else
-        camera.Clear();
+
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -201,7 +200,7 @@ void Engine::RenderStats(){
 
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
 
-        rayTracingCamera->render(worldRaytracer, "imageRender-frame" + std::to_string(currentFrame) + ".ppm");
+        rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm");
 
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");

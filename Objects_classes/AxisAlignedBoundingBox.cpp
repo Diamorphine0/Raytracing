@@ -19,7 +19,7 @@ bool AxisAlignedBoundingBox::hit(const Ray &r, Interval restriction) const {
             restriction.min = t0;
         if(t1 < restriction.max)
             restriction.max = t1;
-        if(restriction.max <= restriction.min)
+        if(restriction.max < restriction.min)
             return false;
     }
     return true;
