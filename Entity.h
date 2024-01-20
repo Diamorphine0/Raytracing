@@ -123,7 +123,7 @@ public:
 
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
-    Texture* texture;
+    Texture* texture = nullptr;
     Lightsource* lightsource;
 
     int keyFrameInitialTime = INT_MAX;

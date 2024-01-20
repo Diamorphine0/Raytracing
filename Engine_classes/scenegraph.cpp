@@ -2,9 +2,9 @@
 #include "texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
-Node::Node(Entity* entity): entity(entity), parent(nullptr), children({}){}
-Node::Node(Entity* entity, Node* parent): entity(entity), parent(parent), children({}){}
-Node::Node(Entity* entity, Node* parent, std::vector<Node*> children): entity(entity), parent(parent), children(children){}
+Node::Node(const std::shared_ptr<Entity> &entity): entity(entity), parent(nullptr), children({}){}
+Node::Node(const std::shared_ptr<Entity> &entity, Node* parent): entity(entity), parent(parent), children({}){}
+Node::Node(const std::shared_ptr<Entity> &entity, Node* parent, const std::vector<Node*> &children): entity(entity), parent(parent), children(children){}
 
 void Node::setParent(Node* newParent){
     //Reassigning parents doesnt work
@@ -146,4 +146,38 @@ glm::mat4 Node::getModelMatrix(){
         return entity -> worldMatrix;
     }
     return parent -> getModelMatrix();
+}
+
+
+/**
+ * Remember to remove nodes
+ */
+Node::~Node() {
+    for(auto &x:children)
+        delete x;
+}
+/**
+ * Adds only entities WHICH HAVE AT LEAST ONE VERTICE
+ */
+void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities) {
+    if(entity != nullptr) {
+
+        entity->interpolate(currentFrame);
+
+        if (parent != nullptr) {
+            if (parent->entity != nullptr) {
+                if ((parent->entity->worldMatrix) != glm::mat4())
+                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
+                else
+                    (entity->worldMatrix) = (entity->localMatrix);
+            } else {
+                (entity->worldMatrix) = (entity->localMatrix);
+            }
+        }
+        if(!entity->vertices.empty())
+            entities.push_back(entity);
+    }
+    for(auto child: children){
+        child -> dfs_entitity_setup(currentFrame, entities);
+    }
 }

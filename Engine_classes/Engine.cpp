@@ -1,6 +1,8 @@
 // Here we will implement the ECS class.
 #include "Engine.h"
+#include "Utilities.hpp"
 #include <memory>
+#include "TriangleMesh.h"
 Engine::Engine(float width, float height, engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
@@ -54,8 +56,7 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     // It suffices to load the framebuffer here.
     fb = new frameBuffer(width, height);
 
-    Entity* cameraentity = new Entity();
-    engineWorld = new Node(cameraentity);
+    engineWorld = new Node(std::make_shared<Entity>());
 
     shaderLine = new Shader(shader_path + "/vertexshaderLine.shader", shader_path + "/fragmentshaderLine.shader");
     shaderAx = new Shader(shader_path + "/vertexshaderAx.shader", shader_path + "/fragmentshaderAx.shader");
@@ -181,7 +182,27 @@ void Engine::RenderStats(){
     if(ImGui::Button("Raytrace")){
         //generate world at time t
         //i go through the scene graph and compute the right matrices for entities at time t
+        std::vector<std::shared_ptr<Entity>> all_entities;
+        engineWorld->dfs_entitity_setup(currentFrame, all_entities);
+
+        std::vector<std::shared_ptr<Object>> all_objects;
+        all_objects.reserve(all_entities.size());
+        for(const auto &e:all_entities){
+            all_objects.emplace_back(std::make_shared<TriangleMesh>(e));
+        }
+
+        auto worldRaytracer = std::make_shared<BVH_Node>(all_objects, 0, all_objects.size());
         counter++;
+        /**
+         * Set up camera
+         */
+        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
+        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
+
+        std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
+
+        rayTracingCamera->render(worldRaytracer, "imageRender-frame" + std::to_string(currentFrame) + ".ppm");
+
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
     }

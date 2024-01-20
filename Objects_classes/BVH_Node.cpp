@@ -30,7 +30,7 @@ BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>> &obj, int left, int righ
     else if(right - left == 2){
         leftSon = obj[left];
         rightSon = obj[left + 1];
-        boundingBox = AxisAlignedBoundingBox(obj[left]->get_boundingBox(), obj[right]->get_boundingBox());
+        boundingBox = AxisAlignedBoundingBox(obj[left]->get_boundingBox(), obj[left + 1]->get_boundingBox());
     }
     else {
         //make sure that the partitionScheme actually does split and doesnt produce half edges
@@ -38,6 +38,8 @@ BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>> &obj, int left, int righ
 
         leftSon = std::make_shared<BVH_Node>(obj, left, partition_pos);
         rightSon = std::make_shared<BVH_Node>(obj, partition_pos, right);
+
+        boundingBox = AxisAlignedBoundingBox(leftSon->get_boundingBox(), rightSon->get_boundingBox());
     }
 }
 
@@ -63,6 +65,6 @@ int BVH_Node::partitionScheme(std::vector<std::shared_ptr<Object>> &obj, int lef
     int axis = distrib02(rand_gen);
     bool sort_min = distrib01(rand_gen);
     int median = (right - left) / 2;
-    std::nth_element( (obj.begin() + left), (obj.begin() + median),(obj.begin() + right), BVH_Node_compare(axis, sort_min));
-    return median;
+    std::nth_element( (obj.begin() + left), (obj.begin() + left + median),(obj.begin() + right), BVH_Node_compare(axis, sort_min));
+    return left + median;
 }

@@ -6,7 +6,6 @@
 #include "Utilities.hpp"
 /**  Class to holds triangles. Holds the 3 points, the normal (normalized) and
  *      equationCoefficient (to compute intersection faster)
- *
  */
 class Triangle: public Object {
 public:

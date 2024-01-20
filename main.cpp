@@ -14,11 +14,10 @@
 int main(int argc, char* argv[])
 {
 
-    auto rayTracingCamera = new Camera(1800, 800, point3(0, 0, 0));
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    Entity* entity1 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -35,8 +34,8 @@ int main(int argc, char* argv[])
     entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
     std::cout << "Texture is loaded" << std::endl;
-    Entity* entity2 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
-    Entity* entity3 = new Entity(SOURCE_DIR + (std::string)"/objects/cube.obj");
+    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
+    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
     entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
@@ -51,7 +50,6 @@ int main(int argc, char* argv[])
     Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 -> setParent(node1);
 
     engine.engineWorld ->addKeyframe(0);
 
