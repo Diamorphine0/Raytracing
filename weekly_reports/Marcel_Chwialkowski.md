@@ -11,3 +11,5 @@ Weekly report:
 14-15/01/2024 - added ambient, diffuse, and specular lighting according to phong model. The user can add up to 20 lightsources. some minor bugs related to specular lighting remain, ambient and diffuse work perfectly well.
 
 18/01/2024 - Added a grid to the engine which makes the layout in space more clear. The grid is customizable, the amount of lines and their setup can be changed, in the future one will be able to toggle it on and off and change its colours more easily.
+
+19-20/01/2024 - Added a window in the engine which allows one to add an object with a texture into the world. Connected the back end to the properties window in the UI - now one can apply translations and scaling to objects (for now just the root object, but with object picking implemented this can be applied to the object currently in focus). Minor quality of life changes - changed the camera movement system, and added an optional zoom mode (not connected to the UI) which would enable slower zoom-like movement if needed.
