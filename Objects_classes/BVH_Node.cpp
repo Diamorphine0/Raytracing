@@ -11,11 +11,8 @@ bool BVH_Node::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
         return false;
     bool hitLeft = false, hitRight = false;
     //We can remove checks if we make sure always two sons
-    if(leftSon != nullptr)
-        hitLeft = leftSon->hit(r, restriction, rec);
-
-    if(rightSon != nullptr)
-        hitRight = rightSon->hit(r, Interval(restriction.min, hitLeft ? rec.tHit : restriction.max), rec);
+    hitLeft = leftSon->hit(r, restriction, rec);
+    hitRight = rightSon->hit(r, Interval(restriction.min, hitLeft ? rec.tHit : restriction.max), rec);
 
     return hitLeft || hitRight;
 }
@@ -24,7 +21,7 @@ BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>> &obj, int left, int righ
     if(right - left == 1){
         // To check which is faster
         leftSon =  obj[left];
-        rightSon = nullptr;
+        rightSon = obj[left];
         boundingBox = leftSon->get_boundingBox();
     }
     else if(right - left == 2){

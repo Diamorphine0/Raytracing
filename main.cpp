@@ -49,8 +49,10 @@ int main(int argc, char* argv[])
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
+    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
+    entity2->translate(-5, -5, 5);
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
     Lightarray lights;
@@ -78,14 +80,16 @@ int main(int argc, char* argv[])
 //    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
+    Node* node2 = new Node(entity2);
 //    Node* node2 = new Node(entity2);
 //    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-
+    node2 ->setParent(engine.engineWorld);
     engine.engineWorld ->addKeyframe(0);
 
     entity1 -> translate(10, 10, 10);
+    entity2 ->translate(5, 5, 0);
 
     engine.engineWorld ->addKeyframe(2000);
 
