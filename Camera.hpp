@@ -1,29 +1,30 @@
-#ifndef CAMERA_HPP
-#define CAMERA_HPP
+#ifndef CAMERA_Hpp
+#define CAMERA_Hpp
 
-#include "Hittable.hpp"
+#include "Object.hpp"
 #include "Ray.hpp"
 #include "Utilities.hpp"
 #include "ImageRenderer.h"
+#include <memory>
 
 class Camera {
 public:
-    Camera(int height, int width, const Point3 &position) : imageRenderer(height, width), center(position) {  }
+    Camera(int height, int width, const point3 &position) : imageRenderer(height, width), center(position) {  }
 
-    void render(Hittable* world, const std::string &imagePath);
+    void render(std::shared_ptr<Object> world, const std::string &imagepath);
 private:
     ImageRenderer imageRenderer;
 
-    Point3 center;         // Camera center
-    Point3 pixel00_loc;    // Location of pixel 0, 0
+    point3 center;         // Camera center
+    point3 pixel00_loc;    // Location of pixel 0, 0
 
-    Vec3 pixel_delta_u;  // Offset to pixel to the right
-    Vec3 pixel_delta_v;  // Offset to pixel below
+    vec3 pixel_delta_u;  // Offset to pixel to the right
+    vec3 pixel_delta_v;  // Offset to pixel below
 
     void initialize();
 
-    Color ray_color(const Ray& r, Hittable* world) const;
+    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world) const;
 };
 
-#endif // CAMERA_HPP
+#endif // CAMERA_Hpp
 

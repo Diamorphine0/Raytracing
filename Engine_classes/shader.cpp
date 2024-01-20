@@ -1,6 +1,6 @@
 #include "shader.h"
 
-Shader::Shader(const char * vertex_file_path,const char * fragment_file_path)
+Shader::Shader(const std::string &vertex_file_path, const std::string &fragment_file_path)
     :m_RendererID(0)
 {
     m_RendererID = compileShader( vertex_file_path, fragment_file_path);
@@ -35,7 +35,7 @@ void Shader::SetUniform1i(const std::string& name, int value) const{
     glUniform1i(this -> getUniformStringLocation(name), value);
 }
 
-GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment_file_path){
+GLuint Shader::compileShader(const std::string &vertex_file_path, const std::string &fragment_file_path){
     // Create the shaders
     GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -49,7 +49,7 @@ GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment
         VertexShaderCode = sstr.str();
         VertexShaderStream.close();
     }else{
-        printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
+        printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path.c_str());
         getchar();
     }
 
@@ -67,7 +67,7 @@ GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment
     int InfoLogLength;
 
     // Compile Vertex Shader
-    printf("Compiling shader : %s\n", vertex_file_path);
+    printf("Compiling shader : %s\n", vertex_file_path.c_str());
     char const * VertexSourcePointer = VertexShaderCode.c_str();
     glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
     glCompileShader(VertexShaderID);
@@ -82,7 +82,7 @@ GLuint Shader::compileShader(const char * vertex_file_path,const char * fragment
     }
 
     // Compile Fragment Shader
-    printf("Compiling shader : %s\n", fragment_file_path);
+    printf("Compiling shader : %s\n", fragment_file_path.c_str());
     char const * FragmentSourcePointer = FragmentShaderCode.c_str();
     glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
     glCompileShader(FragmentShaderID);

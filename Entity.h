@@ -8,11 +8,14 @@
 #include <vector>
 #include <map>
 #include "texture.h"
+#include "lightsource.h"
+#include <limits.h>
 
 //for debugging
 #include <iostream>
 // for .obj model reading
 #include <fstream>
+#include <string>
 
 #ifndef ECS_H
 #define ECS_H
@@ -116,23 +119,29 @@ public:
     glm::mat4 localMatrix = glm::mat4(1.0f);
 
     // this might lead to certain problems
-    std::vector<std::pair<float, glm::mat4>> keyFrames;
+    std::vector<std::pair<int, glm::mat4>> keyFrames;
 
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
-    Texture* texture;
+    Texture* texture = nullptr;
+    Lightsource* lightsource;
+
+    int keyFrameInitialTime = INT_MAX;
+    float keyFrameFinalTime = 0;
 
 public:
 
     Entity();
 
-    Entity(const char* path);
+    Entity(std::string path);
 
     Entity(std::vector<Vertex>& vertices);
 
-    void interpolate(float timeStamp);
+    void bindlightsource(Lightsource lightsource){this->lightsource = &lightsource;}
 
-    inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z));};
+    void interpolate(int currentFrame);
+
+    inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z)); };
 
     inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));};
 
@@ -143,13 +152,13 @@ public:
     inline auto getVA(){ return va;};
 
     bool loadOBJ(
-        const char* path,
+        std::string path,
         std::vector < Vertex >& out_vertices,
         std::vector < glm::vec2 >& out_uvs,
         std::vector < glm::vec3 >& out_normals
     );
 
-    int index(float searchTime, int startIndex, int endIndex){
+    int index(int searchTime, int startIndex, int endIndex){
 
         if( startIndex == endIndex )
             return keyFrames[startIndex].first <= searchTime ? startIndex : -1;
@@ -161,7 +170,6 @@ public:
 
         int ret = index(searchTime, mid_idx+1, endIndex);
         return ret == -1 ? mid_idx : ret;
-
     };
 
 private:

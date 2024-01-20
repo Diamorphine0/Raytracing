@@ -1,19 +1,20 @@
 #ifndef LIGHTSOURCE_H
 #define LIGHTSOURCE_H
 
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
-#include<vector>
+#include <vector>
 
-class lightsource
+class Lightsource
 {
 public:
-    lightsource(glm::vec3 lightPos, glm::vec3 lightColor){
+    Lightsource(glm::vec3 lightPos, glm::vec3 lightColor){
         this->lightPos = lightPos;
         this->lightColor = lightColor;
     }
-    lightsource(){
+    Lightsource(){
         this->lightPos = glm::vec3(0.0f);
         this->lightColor = glm::vec3(0.0f);
     }
@@ -22,30 +23,30 @@ public:
     glm::vec3 lightColor;
 };
 
-class lightarray{
+class Lightarray{
 public:
     int counter;
-    lightsource* arr;
+    Lightsource* arr;
 
-    lightarray(){
+    Lightarray(){
         counter = 0;
-        arr = new lightsource[20];
+        arr = new Lightsource[20];
         for(int i = 0; i < 20; i++)
-            arr[i] = lightsource(glm::vec3(0.0f), glm::vec3(0.0f));
+            arr[i] = Lightsource(glm::vec3(0.0f), glm::vec3(0.0f));
     };
 
-    lightarray(lightsource light){
+    Lightarray(Lightsource light){
         counter = 1;
-        arr = new lightsource[20];
+        arr = new Lightsource[20];
         for(int i = 1; i < 20; i++)
-            arr[i] = lightsource(glm::vec3(0.0f), glm::vec3(0.0f));
+            arr[i] = Lightsource(glm::vec3(0.0f), glm::vec3(0.0f));
     };
 
-    ~lightarray(){
+    ~Lightarray(){
         delete arr;
     }
 
-    void addSource(lightsource light){
+    void addSource(Lightsource light){
         if(counter < 20){
             arr[counter] = light;
             counter++;

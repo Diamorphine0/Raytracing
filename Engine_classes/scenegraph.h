@@ -13,16 +13,17 @@
 #include <vector>
 #include "Entity.h"
 #include "shader.h"
+#include <memory>
 using namespace glm;
 
 class Node{
 public:
-    Entity* entity;
+    std::shared_ptr<Entity> entity;
 public:
     Node();
-    Node(Entity* entity);
-    Node(Entity* entity, Node* parent);
-    Node(Entity* entity, Node* parent, std::vector<Node*> children);
+    Node(const std::shared_ptr<Entity> &entity);
+    Node(const std::shared_ptr<Entity> &entity, Node* parent);
+    Node(const std::shared_ptr<Entity> &entity, Node* parent, const std::vector<Node*> &children);
     ~Node();
 
     void setParent(Node* parent);
@@ -33,7 +34,14 @@ public:
     void updateWorldMatrix();
     void Draw(const Shader& shader, glm::vec3 pos); //camera position - somewhere we do need to pass it
 
+    void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities);
+
     glm::mat4 getModelMatrix();
+
+    bool hasChildren();
+    std::vector<Node*> getChildren();
+    Node* getParent();
+
 
 private:
     Node* parent;

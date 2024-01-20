@@ -17,18 +17,18 @@ public:
     int get_width() const { return image_width; }
 
     //Returns if operation was succesful
-    bool set_pixel(int pixel_row, int pixel_column, const Color &color);
-    bool set_all_pixels(const std::vector<std::vector<Color>> &colors);
+    bool set_pixel(int pixel_row, int pixel_column, const color3 &color3);
+    bool set_all_pixels(const std::vector<std::vector<color3>> &colors);
 
     void reset_pixels();
 
-    void render_image(const std::string &file_image);
+    void render_image(const std::string &image_path);
 
 private:
     int image_height;   // Rendered image height
     int image_width; // width
 
-    std::vector< std::vector<Color>> pixel_colors;
+    std::vector< std::vector<color3>> pixel_colors;
 };
 
 

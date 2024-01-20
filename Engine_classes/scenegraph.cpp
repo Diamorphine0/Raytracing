@@ -2,9 +2,9 @@
 #include "texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
-Node::Node(Entity* entity): entity(entity), parent(nullptr), children({}){}
-Node::Node(Entity* entity, Node* parent): entity(entity), parent(parent), children({}){}
-Node::Node(Entity* entity, Node* parent, std::vector<Node*> children): entity(entity), parent(parent), children(children){}
+Node::Node(const std::shared_ptr<Entity> &entity): entity(entity), parent(nullptr), children({}){}
+Node::Node(const std::shared_ptr<Entity> &entity, Node* parent): entity(entity), parent(parent), children({}){}
+Node::Node(const std::shared_ptr<Entity> &entity, Node* parent, const std::vector<Node*> &children): entity(entity), parent(parent), children(children){}
 
 void Node::setParent(Node* newParent){
     //Reassigning parents doesnt work
@@ -36,7 +36,7 @@ void Node::Draw(const Shader& shader, glm::vec3 pos){
     if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
-        //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
+       //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
 
         shader.Bind();
 
@@ -83,22 +83,30 @@ void Node::addKeyframe(float time){
         // In the UI don't forget to set the local matrix when adjusting thre
         // We know what the localmatrix of the function looks like so we just set it.
         std::pair entityKeyframe(time, (entity -> localMatrix));
+
         entity -> keyFrames.push_back(entityKeyframe);
+        if(time >= entity -> keyFrameFinalTime){
+            entity -> keyFrameFinalTime = time;
+        }
+        if(time <= entity -> keyFrameInitialTime){
+            entity -> keyFrameInitialTime = time;
+        }
     }
 
     for(auto child: children){
-        child->addKeyframe(time);
+        child -> addKeyframe(time);
     }
 
 }
 
-void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
+void Node::Animate(const Shader& shader, float currentFrame, glm::vec3 pos){
 
     if(entity != nullptr){
+
         const VertexArray& va = *(entity -> getVA());
 
         // The interpolation finds the desired local transformation matrix (relative to the intial verticies stored in the buffer - they remain unchanged).
-        entity -> interpolate(time);
+        entity -> interpolate(currentFrame);
 
         shader.Bind();
 
@@ -129,7 +137,7 @@ void Node::Animate(const Shader& shader, float time, glm::vec3 pos){
     }
 
     for(auto child: children){
-        child -> Draw(shader, pos);
+        child -> Animate(shader, currentFrame, pos);
     }
 }
 
@@ -138,4 +146,38 @@ glm::mat4 Node::getModelMatrix(){
         return entity -> worldMatrix;
     }
     return parent -> getModelMatrix();
+}
+
+
+/**
+ * Remember to remove nodes
+ */
+Node::~Node() {
+    for(auto &x:children)
+        delete x;
+}
+/**
+ * Adds only entities WHICH HAVE AT LEAST ONE VERTICE
+ */
+void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities) {
+    if(entity != nullptr) {
+
+        entity->interpolate(currentFrame);
+
+        if (parent != nullptr) {
+            if (parent->entity != nullptr) {
+                if ((parent->entity->worldMatrix) != glm::mat4())
+                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
+                else
+                    (entity->worldMatrix) = (entity->localMatrix);
+            } else {
+                (entity->worldMatrix) = (entity->localMatrix);
+            }
+        }
+        if(!entity->vertices.empty())
+            entities.push_back(entity);
+    }
+    for(auto child: children){
+        child -> dfs_entitity_setup(currentFrame, entities);
+    }
 }

@@ -50,9 +50,9 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 
     unsigned int offset = 0;
 
-//    for(unsigned int i = 0; i < elements.size(); i++){
+//    for(unsigned int i = 0; i < elements.size(); hit++){
 
-//        const auto& element = elements[i];
+//        const auto& element = elements[hit];
 
         // the first attribute is the position
         glEnableVertexAttribArray(POS);
@@ -126,7 +126,7 @@ Entity::Entity(std::vector<Vertex>& vertices){
     // we furthermore want to allocate a unique id to it that we will use for coloring (we need to maintain a dictionary associating its pointer and id).
 }
 
-Entity::Entity(const char* path){
+Entity::Entity(std::string path){
 
     std::vector<Vertex> vertices = {};
     std::vector< glm::vec2 > uvs;
@@ -152,7 +152,7 @@ Entity::Entity(const char* path){
     va -> AddBuffer(vb, layout);
 };
 
-bool Entity::loadOBJ(const char * path,
+bool Entity::loadOBJ(std::string path,
                      std::vector < Vertex > & out_vertices,
                      // we want to store the uvs;
                      // they have to also somehow be passed to opengl;
@@ -165,7 +165,7 @@ bool Entity::loadOBJ(const char * path,
     std::vector< glm::vec2 > temp_uvs;
     std::vector< glm::vec3 > temp_normals;
 
-    FILE* file = fopen(path, "r");
+    FILE* file = fopen(path.c_str(), "r");
     std::cout << file << std::endl;
     if( file == NULL ){
         printf("Impossible to open the file !\n");
@@ -265,36 +265,24 @@ bool Entity::loadOBJ(const char * path,
         out_vertices[i].Norm = norm;
     }
 
-
     return true;
-}
-
-int search(int *array, int start_idx, int end_idx, int search_val) {
-
-    if( start_idx == end_idx )
-        return array[start_idx] <= search_val ? start_idx : -1;
-
-    int mid_idx = start_idx + (end_idx - start_idx) / 2;
-
-    if( search_val < array[mid_idx] )
-        return search( array, start_idx, mid_idx, search_val );
-
-    int ret = search( array, mid_idx+1, end_idx, search_val );
-    return ret == -1 ? mid_idx : ret;
 }
 
 // Make sure there is no projective component.
 
-void Entity::interpolate(float timeStamp){
+void Entity::interpolate(int currentFrame){
 
-    auto idx = index(timeStamp, 0, keyFrames.size() - 1);
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime)
+        return;
+
+    auto idx = index(currentFrame, 0, keyFrames.size() - 1);
 
     auto& startTime = keyFrames[idx].first;
     auto& startFrame = keyFrames[idx].second;
     auto& finalTime = keyFrames[idx+1].first;
     auto& finalFrame = keyFrames[idx+1].second;
 
-    auto t = (timeStamp - startTime)/(finalTime - startTime);
+    float t = (float)(currentFrame - startTime)/(finalTime - startTime);
 
     //quaternions
     glm::quat startRot = glm::quat_cast(startFrame);
