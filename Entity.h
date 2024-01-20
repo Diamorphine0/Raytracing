@@ -9,6 +9,7 @@
 #include <map>
 #include "texture.h"
 #include "lightsource.h"
+#include <limits.h>
 
 //for debugging
 #include <iostream>
@@ -118,13 +119,14 @@ public:
     glm::mat4 localMatrix = glm::mat4(1.0f);
 
     // this might lead to certain problems
-    std::vector<std::pair<float, glm::mat4>> keyFrames;
+    std::vector<std::pair<int, glm::mat4>> keyFrames;
 
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
     Texture* texture;
     Lightsource* lightsource;
-    float keyFrameInitialTime = 1000;
+
+    int keyFrameInitialTime = INT_MAX;
     float keyFrameFinalTime = 0;
 
 public:
@@ -137,7 +139,7 @@ public:
 
     void bindlightsource(Lightsource lightsource){this->lightsource = &lightsource;}
 
-    void interpolate(float timeStamp);
+    void interpolate(int currentFrame);
 
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z)); };
 
@@ -156,7 +158,7 @@ public:
         std::vector < glm::vec3 >& out_normals
     );
 
-    int index(float searchTime, int startIndex, int endIndex){
+    int index(int searchTime, int startIndex, int endIndex){
 
         if( startIndex == endIndex )
             return keyFrames[startIndex].first <= searchTime ? startIndex : -1;

@@ -110,7 +110,7 @@ void Engine::update(Shader* shader){
 
     fb -> Bind();
 
-    camera.animateScene(engineWorld, *shader, animationTime, 0.01);
+    camera.animateScene(engineWorld, *shader, currentFrame);
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -255,6 +255,9 @@ void Engine::RenderAnimation() {
 
 
     if (ImGui::Button("Mark Position")) {
+        // Add the keyframe
+        engineWorld ->addKeyframe(currentFrame);
+
         markedPositions.push_back(currentFrame);
     }
 

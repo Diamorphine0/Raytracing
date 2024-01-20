@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
     grid axes;
     axes.gen_axes(1000);
 
-    entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/sun.png");
+    entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
     std::cout << "Texture is loaded" << std::endl;
     Entity* entity2 = new Entity(SOURCE_DIR + (std::string)"/objects/earth.obj");
@@ -56,11 +56,11 @@ int main(int argc, char* argv[])
 
     entity1 -> rotate(1, 1, 2, 1);
 
-    engine.engineWorld -> addKeyframe(3);
+    engine.engineWorld -> addKeyframe(300);
 
     entity1 -> scale(1, 2, 1);
 
-    engine.engineWorld -> addKeyframe(6);
+    engine.engineWorld -> addKeyframe(600);
 
 
 //    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);

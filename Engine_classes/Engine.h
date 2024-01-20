@@ -44,12 +44,12 @@ public:
     Shader* shader;
     Shader* shaderLine;
     Shader* shaderAx;
-    float animationTime = 0;
+
+    int currentFrame = 0;
     int framesPerSecond = 30;
 
     grid big_grid;
     grid axes;
-    int currentFrame = 0;
 private:
     std::vector<int> markedPositions;
 };

@@ -15,7 +15,6 @@ TriangleMesh::TriangleMesh(const Entity &e) {
             auto &vertex = e.vertices[j];
             auto position = e.worldMatrix * glm::vec4(vertex.Coordinates, 0);
             auto normal = vertex.Norm;
-            auto color vertex
         }
     }
 

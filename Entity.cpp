@@ -270,22 +270,21 @@ bool Entity::loadOBJ(std::string path,
 
 // Make sure there is no projective component.
 
-void Entity::interpolate(float timeStamp){
+void Entity::interpolate(int currentFrame){
 
-    if(timeStamp > keyFrameFinalTime or timeStamp < keyFrameInitialTime){
-//        std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
-//        std::cout << "Animation complete" << std::endl;
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime)
         return;
-    }
 
-    auto idx = index(timeStamp, 0, keyFrames.size() - 1);
+    auto idx = index(currentFrame, 0, keyFrames.size() - 1);
 
     auto& startTime = keyFrames[idx].first;
     auto& startFrame = keyFrames[idx].second;
     auto& finalTime = keyFrames[idx+1].first;
     auto& finalFrame = keyFrames[idx+1].second;
 
-    auto t = (timeStamp - startTime)/(finalTime - startTime);
+    float t = (currentFrame - startTime)/(finalTime - startTime);
+
+    std::cout << "t: " << t << std::endl;
 
     //quaternions
     glm::quat startRot = glm::quat_cast(startFrame);

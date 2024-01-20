@@ -29,7 +29,7 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     engineWorld -> Draw(shader, pos);
 };
 
-void engineCamera::animateScene(Node* engineWorld, const Shader& shader, float& timeStamp, float timeDelta){
+void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
     Clear();
 
     auto mvp = construct_mvp();
@@ -38,8 +38,8 @@ void engineCamera::animateScene(Node* engineWorld, const Shader& shader, float& 
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
-    engineWorld -> Animate(shader, timeStamp, pos);
-    timeStamp += timeDelta;
+    engineWorld -> Animate(shader, currentFrame, pos);
+    currentFrame += 1;
 };
 
 // we should have an animation function here and set the delta time to basically know how often we should call the function
@@ -67,7 +67,7 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
 
-    //z jakiegoś powodu sie tego nie da zroboc
+    // z jakiegoś powodu sie tego nie da zroboc
 
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
