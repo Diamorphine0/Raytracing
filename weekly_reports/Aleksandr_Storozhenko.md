@@ -33,3 +33,7 @@ Week 6:
 Week 7:
 - 
 - Connecting engine and raytracing functionality to the UI
+- Implemented the animation functionality in the UI (Ability to create, modify, and edit keyframes; Run the engine animation with an animation bar; etc)
+- Assisted in the final merge with the raytracing part (Task completed with Tudor Ivan - Leader of the raytracing team).
+- Merged across multiple engine side branches, connecting the implemented functionality (i.e object loading and transforms) ( Task completed with Marcel Chwialkowski ).
+- Fixed multiple bugs found in the code (hanging nullptrs, inconsistent naming, circular library loading) 
