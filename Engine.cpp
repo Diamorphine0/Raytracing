@@ -167,8 +167,17 @@ void Engine::RenderProperties(){
     ImGui::SliderFloat("Scale", &scale, 0.1f, 3.0f);
 
     // Rotation slider
-    static float rotation = 0.0f;
-    ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
+    //static float rotation = 0.0f;
+    //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
+
+    if(ImGui::Button("Apply Transformations")){
+        this->engineWorld->entity->translate(translationX, translationY, translationZ);
+        this->engineWorld->entity->scale(scale, scale, scale);
+        translationX = 0.0f;
+        translationY = 0.0f;
+        translationZ = 0.0f;
+        scale = 1.0f;
+    }
 
     //Color selection
     ImVec4 color;
@@ -287,42 +296,41 @@ void Engine::RenderAnimation() {
 
 void Engine::RenderAddObject(){
     ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
-    char objectName[256] = "";
-    char objectTexture[256] = "";
-    ImGui::InputText("object", objectName, sizeof(objectName));
+    ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
     ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
-    ImGui::InputText("chuj", objectTexture, sizeof(objectTexture));
+    ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
 
     if (ImGui::Button("Initialise object")){
-        /*
         std::string nameString;
-        for (int i = 0; i < 256 && objectName[i] != '\0'; ++i) {
-            if (!std::isspace(static_cast<unsigned char>(objectName[i]))) {
-                nameString += objectName[i];
+        for (int i = 0; i < 256 && objectName.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectName.buffer[i]))) {
+                nameString += objectName.buffer[i];
             }
         }
 
         std::string textureString;
-        for (int i = 0; i < 256 && objectTexture[i] != '\0'; ++i) {
-            if (!std::isspace(static_cast<unsigned char>(objectTexture[i]))) {
-                textureString += objectTexture[i];
+        for (int i = 0; i < 256 && objectTexture.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectTexture.buffer[i]))) {
+                textureString += objectTexture.buffer[i];
             }
         }
 
         nameString = "../Raytracing/objects/" + nameString;
-        textureString = "../Raytracing/texture/" + textureString;
+        textureString = "../Raytracing/Textures/" + textureString;
 
         //create the new entity!
-        Entity* entity = new Entity(nameString.c_str());
-        entity -> texture = new Texture(textureString.c_str());
-        Node* node = new Node(entity);
-        node -> setParent(this -> engineWorld);
-        //clear the string
-        */
-        /*
+        try {
+            Entity* entity = new Entity(nameString.c_str());
+            entity -> texture = new Texture(textureString.c_str());
+            Node* node = new Node(entity);
+            node -> setParent(this -> engineWorld);
+        } catch (const std::runtime_error& e) {
+            std::cout << "Error: " << e.what() << std::endl;
+        }
+
         for(int i=0; i < 256; i++){
-            objectName[i] = '\0';
-            objectTexture[i] = '\0';
-        }*/
+            objectName.buffer[i] = '\0';
+            objectTexture.buffer[i] = '\0';
+        }
     }
 }

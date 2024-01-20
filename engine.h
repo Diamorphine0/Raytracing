@@ -20,7 +20,14 @@
 
 
 // We need to figure out what goes into the engine class and what goes into the ECS class as well as how they relate to one another.
+class TextData {
+public:
+    char buffer[256] = {};
 
+    const char* getText() const {
+        return buffer;
+    }
+};
 
 class Engine{
 public:
@@ -53,6 +60,10 @@ public:
 
     grid big_grid;
     grid axes;
+
+    //this is data useful for the UI.
+    TextData objectName;
+    TextData objectTexture;
 private:
     std::vector<int> markedPositions;
 };
