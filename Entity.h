@@ -20,7 +20,6 @@
 #ifndef ECS_H
 #define ECS_H
 
-// more difficult to deal with a struct
 struct Vertex{
 
     glm::vec3 Coordinates;
@@ -31,8 +30,6 @@ struct Vertex{
     Vertex(glm::vec3 Coordinates, glm::vec3 Color): Coordinates(Coordinates), Color(Color){}
     Vertex(glm::vec3 Coordinates, glm::vec3 Color, glm::vec2 UV): Coordinates(Coordinates), Color(Color), UV(UV){}
 };
-
-// we should have a mesh object - what the verticies is doing right now ...
 
 // Stores information about a single instance of the vertex struct
 struct VertexBufferElement{
@@ -141,6 +138,7 @@ public:
 
     void interpolate(int currentFrame);
 
+    // the controls are currently broken.
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z)); };
 
     inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));};

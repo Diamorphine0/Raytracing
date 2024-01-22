@@ -15,7 +15,10 @@ public:
     void renderScene(Node* SG, const Shader& shader);
     void animateScene(Node* engineWorld, const Shader& shader, int& currentFrame);
 
-    inline void Clear() const{ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);};
+    inline void Clear() const{
+        glClearColor(1,1,1,1);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    };
 
     glm::mat4 construct_mvp() const;
 

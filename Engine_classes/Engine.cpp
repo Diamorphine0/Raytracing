@@ -118,10 +118,7 @@ void Engine::update(Shader* shader){
 
     fb -> Bind();
 
-    if(animate)
-        camera.animateScene(engineWorld, *shader, currentFrame);
-    else
-        camera.Clear();
+    camera.renderScene(engineWorld, *shader);
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -354,7 +351,6 @@ void Engine::RenderAddObject(){
         nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString;
         textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString;
 
-        //create the new entity!
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
             entity -> texture = new Texture(textureString.c_str());

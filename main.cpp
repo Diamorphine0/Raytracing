@@ -48,9 +48,9 @@ int main(int argc, char* argv[])
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
 
-    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
+    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
     entity2->translate(-5, -5, 5);
     // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
@@ -67,10 +67,10 @@ int main(int argc, char* argv[])
     entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
     std::cout << "Texture is loaded" << std::endl;
-//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
+//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
 //    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 //
-//    entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
+    entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 //
 //    entity2 -> scale(0.5, 0.5, 0.5);
 //    entity2 -> translate(-10, -10, 0);
@@ -87,8 +87,8 @@ int main(int argc, char* argv[])
     node2 ->setParent(engine.engineWorld);
     engine.engineWorld ->addKeyframe(0);
 
-    entity1 -> translate(10, 10, 10);
-    entity2 ->translate(5, 5, 0);
+    entity1 -> scale(0.1, 0.1, 0.1);
+    entity1 -> rotate(1, 2, 3, 4);
 
     engine.engineWorld ->addKeyframe(2000);
 
