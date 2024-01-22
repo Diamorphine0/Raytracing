@@ -133,7 +133,10 @@ Entity::Entity(std::string path){
     std::vector< glm::vec3 > normals;
 
     // we might as well just pass the vertices without uvs.
-    loadOBJ(path, vertices, uvs, normals);
+    bool a = loadOBJ(path, vertices, uvs, normals);
+    if(!a)
+        throw std::runtime_error("Unable to open file");
+
 
     this -> vertices = vertices;
 
@@ -167,8 +170,17 @@ bool Entity::loadOBJ(std::string path,
 
     FILE* file = fopen(path.c_str(), "r");
     std::cout << file << std::endl;
+
     if( file == NULL ){
-        printf("Impossible to open the file !\n");
+        const char* filePath = "example.txt";
+        std::ofstream outFile(filePath);
+
+        if (outFile.is_open()) {
+            outFile << "nie da sie" << std::endl;
+
+            // Close the file
+            outFile.close();
+        }
         return false;
     }
 
@@ -272,7 +284,9 @@ bool Entity::loadOBJ(std::string path,
 
 void Entity::interpolate(int currentFrame){
 
-    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime)
+    if(timeStamp > keyFrameFinalTime or timeStamp < keyFrameInitialTime){
+        //std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
+        //std::cout << "Animation complete" << std::endl;
         return;
 
     auto idx = index(currentFrame, 0, keyFrames.size() - 1);

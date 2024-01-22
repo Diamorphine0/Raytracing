@@ -28,7 +28,7 @@ public:
         segments.push_back(right.y);
         segments.push_back(right.z);
         setup();
-        std::cout<< "a line was generated with coordinates" << left.x<< " "<<left.y<<" "<<left.z<<" "<<right.x << " " << right.y  << " " << right.z << std::endl;
+        //std::cout<< "a line was generated with coordinates" << left << " " << right << std::endl;
     }
 
     void setup(){

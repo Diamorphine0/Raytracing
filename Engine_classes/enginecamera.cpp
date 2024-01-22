@@ -49,6 +49,14 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     lastTime = glfwGetTime();
 
+    float realspeed = speed;
+    //zoom mode - may be useful for zooming in on objects.
+    /*
+    float speedcutoff = glm::length(position);
+    if(speedcutoff < 10)
+        realspeed = realspeed * log2(speedcutoff/10 + 1);
+    */
+
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);
 
@@ -67,8 +75,6 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
 
-    // z jakiegoś powodu sie tego nie da zroboc
-
     direction = glm::vec3(
         cos(verticalAngle) * sin(horizontalAngle),
         sin(verticalAngle),
@@ -77,19 +83,19 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     // Move forward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        position -= direction * deltaTime * speed;
+        position -= direction * deltaTime * realspeed;
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        position += direction * deltaTime * speed;
+        position += direction * deltaTime * realspeed;
     }
     glm::vec3 left = cross(glm::vec3(0.0f, 1.0f, 0.0f), direction);
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        position += left * deltaTime * speed;
+        position += left * deltaTime * realspeed;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        position -= left * deltaTime * speed;
+        position -= left * deltaTime * realspeed;
     }
 }
 

@@ -94,7 +94,7 @@ void Engine::update(Shader* shader){
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,600));
+    ImGui::SetNextWindowSize(ImVec2(300,300));
     ImGui::SetNextWindowPos(ImVec2 (1200,0));
     ImGui::Begin("Settings");
     RenderStats();
@@ -104,6 +104,12 @@ void Engine::update(Shader* shader){
     ImGui::SetNextWindowPos(ImVec2 (0,600));
     ImGui::Begin("Animation");
     RenderAnimation();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(300,300));
+    ImGui::SetNextWindowPos(ImVec2(1200,300));
+    ImGui::Begin("Add Object");
+    RenderAddObject();
     ImGui::End();
 
     // Rendering
@@ -160,8 +166,17 @@ void Engine::RenderProperties(){
     ImGui::SliderFloat("Scale", &scale, 0.1f, 3.0f);
 
     // Rotation slider
-    static float rotation = 0.0f;
-    ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
+    //static float rotation = 0.0f;
+    //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
+
+    if(ImGui::Button("Apply Transformations")){
+        this->engineWorld->entity->translate(translationX, translationY, translationZ);
+        this->engineWorld->entity->scale(scale, scale, scale);
+        translationX = 0.0f;
+        translationY = 0.0f;
+        translationZ = 0.0f;
+        scale = 1.0f;
+    }
 
     //Color selection
     ImVec4 color;
@@ -310,4 +325,45 @@ void Engine::RenderAnimation() {
     }
 
     ImGui::End();
+}
+
+void Engine::RenderAddObject(){
+    ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
+    ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
+    ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
+    ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
+
+    if (ImGui::Button("Initialise object")){
+        std::string nameString;
+        for (int i = 0; i < 256 && objectName.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectName.buffer[i]))) {
+                nameString += objectName.buffer[i];
+            }
+        }
+
+        std::string textureString;
+        for (int i = 0; i < 256 && objectTexture.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectTexture.buffer[i]))) {
+                textureString += objectTexture.buffer[i];
+            }
+        }
+
+        nameString = "../Raytracing/objects/" + nameString;
+        textureString = "../Raytracing/Textures/" + textureString;
+
+        //create the new entity!
+        try {
+            Entity* entity = new Entity(nameString.c_str());
+            entity -> texture = new Texture(textureString.c_str());
+            Node* node = new Node(entity);
+            node -> setParent(this -> engineWorld);
+        } catch (const std::runtime_error& e) {
+            std::cout << "Error: " << e.what() << std::endl;
+        }
+
+        for(int i=0; i < 256; i++){
+            objectName.buffer[i] = '\0';
+            objectTexture.buffer[i] = '\0';
+        }
+    }
 }
