@@ -1,6 +1,7 @@
 // Here we will implement the ECS class.
 #include "Engine.h"
 #include "Utilities.hpp"
+#include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
 Engine::Engine(float width, float height, engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
@@ -119,7 +120,8 @@ void Engine::update(Shader* shader){
 
     if(animate)
         camera.animateScene(engineWorld, *shader, currentFrame);
-
+    else
+        camera.Clear();
 
     big_grid.draw(*shaderLine, camera);
     axes.draw(*shaderAx, camera);
@@ -348,14 +350,17 @@ void Engine::RenderAddObject(){
             }
         }
 
-        nameString = "../Raytracing/objects/" + nameString;
-        textureString = "../Raytracing/Textures/" + textureString;
+        std::cout << SOURCE_DIR << std::endl;
+        nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString;
+        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString;
 
         //create the new entity!
         try {
-            Entity* entity = new Entity(nameString.c_str());
+            auto entity = std::make_shared<Entity>(nameString.c_str());
             entity -> texture = new Texture(textureString.c_str());
+
             Node* node = new Node(entity);
+
             node -> setParent(this -> engineWorld);
         } catch (const std::runtime_error& e) {
             std::cout << "Error: " << e.what() << std::endl;

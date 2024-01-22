@@ -284,7 +284,7 @@ bool Entity::loadOBJ(std::string path,
 
 void Entity::interpolate(int currentFrame){
 
-    if(timeStamp > keyFrameFinalTime or timeStamp < keyFrameInitialTime){
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime)
         //std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
         //std::cout << "Animation complete" << std::endl;
         return;

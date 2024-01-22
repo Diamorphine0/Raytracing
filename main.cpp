@@ -43,7 +43,6 @@ void test_raytracing(){
 int main(int argc, char* argv[])
 {
 
-
     test_raytracing();
 
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");

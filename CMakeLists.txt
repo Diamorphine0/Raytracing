@@ -40,8 +40,6 @@ set(PROJECT_SOURCES
         Entity.h
         Entity.cpp
 
-        engine.h
-
         texture.h
         texture.cpp
 
