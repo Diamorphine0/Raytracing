@@ -43,6 +43,25 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    ImGui::StyleColorsDark();                                 // Set theme to dark
+
+    // we set new standard font
+    io.Fonts->AddFontDefault();
+    standardfont = io.Fonts->AddFontFromFileTTF("../Raytracing/fonts/NotoSans.ttf", 20.0f);
+    IM_ASSERT(standardfont != NULL);
+
+    // we set the desired ImGui style properties
+    ImGuiStyle& style = ImGui::GetStyle();
+    auto& colors = style.Colors;
+
+    style.ScrollbarRounding = 0;
+    style.WindowRounding = 3.0f;
+
+    colors[ImGuiCol_Button] = ImColor(169,169,169,100);
+    colors[ImGuiCol_ButtonHovered] = ImColor(211,211,211,100);
+    colors[ImGuiCol_ButtonActive] = ImColor(128,128,128,100);
+    colors[ImGuiCol_SliderGrab] = ImColor(169,169,169,100);
+    colors[ImGuiCol_SliderGrabActive] = ImColor(211,211,211,100);
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
@@ -66,7 +85,22 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     axes.gen_axes(1000);
 }
 
+// obtain the current (rescaled) size of the GLFW parent window
+void GetWindowSize(GLFWwindow* window, int& width, int& height) {
+    if (window != nullptr) {
+        glfwGetWindowSize(window, &width, &height);
+    }
+    else {
+        width = 0;
+        height = 0;
+    }
+}
+
 void Engine::update(Shader* shader){
+
+    // we store the GLFW window size
+    int width, height;
+    GetWindowSize(window, width, height);
 
     glfwPollEvents();
 
@@ -76,42 +110,51 @@ void Engine::update(Shader* shader){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
+    // we push the standard font
+    ImGui::PushFont(standardfont);
+
+    // we set the rounding radius and padding for all buttons
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
+
+    // we rescale the ImGui windows and fix their positions
+    // we render the GUI functionalities onto each window with a dedicated function
+
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
-
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(800, 600));
-    ImGui::SetNextWindowPos(ImVec2 (400, 0));
+    ImGui::SetNextWindowSize(ImVec2(0.5*width, 0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.25*width, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(400,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,400));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2 (1200,0));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(1500,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,600));
+    ImGui::SetNextWindowSize(ImVec2(width,0.25*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.75*height));
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2(1200,300));
-    ImGui::Begin("Add Object");
-    RenderAddObject();
-    ImGui::End();
+    // we pop the standard font
+    ImGui::PopFont();
+
+    // we pop the custom button style
+    ImGui::PopStyleVar(2);
 
     // Rendering
     ImGui::Render();

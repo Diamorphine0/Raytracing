@@ -49,6 +49,7 @@ public:
     engineCamera camera;
     int width, height;
     frameBuffer* fb;
+    ImFont* standardfont;
     Shader* shader;
     Shader* shaderLine;
     Shader* shaderAx;
