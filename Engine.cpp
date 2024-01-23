@@ -59,7 +59,21 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     engineWorld = new Node(cameraentity);
 }
 
+// we use this function to obtain the size of the GLFW parent window
+void GetWindowSize(GLFWwindow* window, int& width, int& height) {
+    if (window != nullptr) {
+        glfwGetWindowSize(window, &width, &height);
+    }
+    else {
+        width = 0;
+        height = 0;
+    }
+}
+
 void Engine::update(){
+    // we get the GLFW window size
+    int width, height;
+    GetWindowSize(window, width, height);
 
     glfwPollEvents();
 
@@ -69,33 +83,33 @@ void Engine::update(){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
+    // we rescale the ImGui windows and fix their positions
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.5*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
-
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(800, 600));
-    ImGui::SetNextWindowPos(ImVec2 (400, 0));
+    ImGui::SetNextWindowSize(ImVec2(0.5*width, 0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.25*width, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(400,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,400));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.25*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.5*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,600));
-    ImGui::SetNextWindowPos(ImVec2 (1200,0));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(1500,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,600));
+    ImGui::SetNextWindowSize(ImVec2(width,0.25*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.75*height));
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
