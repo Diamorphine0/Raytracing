@@ -47,6 +47,19 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     standardfont = io.Fonts->AddFontFromFileTTF("../Raytracing/NotoSans.ttf", 20.0f);
     IM_ASSERT(standardfont != NULL);
 
+    // we set the desired ImGui style properties
+    ImGuiStyle& style = ImGui::GetStyle();
+    auto& colors = style.Colors;
+
+    style.ScrollbarRounding = 0;
+    style.WindowRounding = 3.0f;
+
+    colors[ImGuiCol_Button] = ImColor(169,169,169,100);
+    colors[ImGuiCol_ButtonHovered] = ImColor(211,211,211,100);
+    colors[ImGuiCol_ButtonActive] = ImColor(128,128,128,100);
+    colors[ImGuiCol_SliderGrab] = ImColor(169,169,169,100);
+    colors[ImGuiCol_SliderGrabActive] = ImColor(211,211,211,100);
+
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
@@ -94,6 +107,10 @@ void Engine::update(){
     // we push the standard font
     ImGui::PushFont(standardfont);
 
+    // we set the rounding radius and padding for all buttons
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
+
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
@@ -129,6 +146,9 @@ void Engine::update(){
 
     // we pop the standard font
     ImGui::PopFont();
+
+    // we pop the custom button style
+    ImGui::PopStyleVar(2);
 
     // Rendering
     ImGui::Render();
@@ -198,7 +218,7 @@ void Engine::RenderStats(){
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
 
-    if(ImGui::Button("Raytrace")){
+    if(ImGui::Button("Raytrace", ImVec2(80, 30))){
         counter++;
         rayTracingCamera = new Camera(height, width, camera.getPosition());
         rayTracingCamera->render(world, "imageRender.ppm");
