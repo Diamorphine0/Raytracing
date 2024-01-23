@@ -45,6 +45,7 @@ public:
     Hittable *world;
     frameBuffer* fb;
     Shader* shader;
+    ImFont* standardfont;
 private:
     std::vector<int> markedPositions;
 };

@@ -40,6 +40,12 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+    ImGui::StyleColorsDark();                                 // Set theme to dark
+
+    // we set new standard font
+    io.Fonts->AddFontDefault();
+    standardfont = io.Fonts->AddFontFromFileTTF("../Raytracing/NotoSans.ttf", 20.0f);
+    IM_ASSERT(standardfont != NULL);
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
@@ -71,7 +77,9 @@ void GetWindowSize(GLFWwindow* window, int& width, int& height) {
 }
 
 void Engine::update(){
-    // we get the GLFW window size
+
+    // we store the GLFW window size
+
     int width, height;
     GetWindowSize(window, width, height);
 
@@ -83,8 +91,13 @@ void Engine::update(){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    // we push the standard font
+    ImGui::PushFont(standardfont);
+
     // we rescale the ImGui windows and fix their positions
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.5*height));
+    // we render the GUI functionalities onto each window with a dedicated function
+
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
     RenderHierarchy();
@@ -96,8 +109,8 @@ void Engine::update(){
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.25*height));
-    ImGui::SetNextWindowPos(ImVec2 (0,0.5*height));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
@@ -113,6 +126,9 @@ void Engine::update(){
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
+
+    // we pop the standard font
+    ImGui::PopFont();
 
     // Rendering
     ImGui::Render();
