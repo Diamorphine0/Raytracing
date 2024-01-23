@@ -339,9 +339,13 @@ void Engine::RenderAnimation() {
         animate = true;
     }
 
+    ImGui::SameLine();
+
     if(ImGui::Button("Pause")){
         animate = false;
     }
+
+    ImGui::SameLine();
 
     if (ImGui::Button("Mark Position")) {
         // Add the keyframe
@@ -349,6 +353,8 @@ void Engine::RenderAnimation() {
 
         markedPositions.push_back(currentFrame);
     }
+
+    ImGui::SameLine();
 
     if (ImGui::Button("Clear All Marks")) {
         markedPositions.clear();
