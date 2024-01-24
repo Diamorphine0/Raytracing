@@ -1,8 +1,8 @@
 // Here we will implement the ECS class.
 #include "engine.h"
 
-Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
 
+Engine::Engine(float width, float height, engineCamera camera): width(width), height(height), camera(camera){
     glewExperimental = true;
 
     if( !glfwInit() )
@@ -71,6 +71,7 @@ Engine::Engine(float width, float height, engineCamera camera): width(width), he
 
     shader = new Shader("../Raytracing/vertexshader.shader", "../Raytracing/fragmentshader.shader");
 
+
     // It suffices to load the framebuffer here.
     fb = new frameBuffer(width, height);
 
@@ -89,9 +90,43 @@ void GetWindowSize(GLFWwindow* window, int& width, int& height) {
     }
 }
 
-void Engine::update(){
+float lastCPUPercentage = 0.0f;
+std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
 
-    // we store the GLFW window size
+float GetCPUUsageMacOS() {
+#ifdef __APPLE__
+    host_cpu_load_info_data_t cpuinfo;
+    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
+    if (host_statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info64_t)&cpuinfo, &count) == KERN_SUCCESS) {
+        unsigned long long totalTicks = 0;
+        for (int i = 0; i < CPU_STATE_MAX; ++i) {
+            totalTicks += cpuinfo.cpu_ticks[i];
+        }
+        unsigned long long idleTicks = cpuinfo.cpu_ticks[CPU_STATE_IDLE];
+        float cpuUsage = 100.0f * (1.0f - static_cast<float>(idleTicks) / totalTicks);
+
+        return cpuUsage;
+    }
+
+    return -1.0f;
+#else
+    // Return default value for non-MacOS platforms
+    return -1.0f;  // Adjust as needed
+#endif
+}
+
+
+void Engine::update(){
+    float cpuUsage = GetCPUUsageMacOS();
+
+    if (cpuUsage >= 0.0f) {
+        lastCPUPercentage = cpuUsage;
+        lastUpdateTime = std::chrono::high_resolution_clock::now();
+    } else {
+        lastCPUPercentage = cpuUsage;
+
+
+    }
 
     int width, height;
     GetWindowSize(window, width, height);
@@ -209,20 +244,49 @@ void Engine::RenderProperties(){
     ImGui::ColorEdit4("Color", &color.x);
 };
 
-void Engine::RenderStats(){
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::Text("Framerate:");
-    ImGui::Text("Application average %.1f FPS", 1000.0f / io.Framerate, io.Framerate);
+float minFrameRate = FLT_MAX;
+float maxFrameRate = 0.0f;
+
+
+void Engine::RenderStats() {
 
     static int counter = 0;
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
 
-    if(ImGui::Button("Raytrace", ImVec2(80, 30))){
+    if (ImGui::Button("Raytrace", ImVec2(80, 30))) {
         counter++;
         rayTracingCamera = new Camera(height, width, camera.getPosition());
         rayTracingCamera->render(world, "imageRender.ppm");
     }
+
+    static bool showStats = true;
+    ImGui::Checkbox("Show Statistics", &showStats);
+
+    if (showStats) {
+        ImGui::Separator();
+        ImGui::Text("Real-time Statistics:");
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::Text("Average FPS: %.1f", 1000.0f / io.Framerate);
+
+        float currentFrameRate = 1000.0f / io.Framerate;
+        minFrameRate = std::min(minFrameRate, currentFrameRate);
+        maxFrameRate = std::max(maxFrameRate, currentFrameRate);
+
+        ImGui::Text("Min FPS: %.1f", minFrameRate);
+        ImGui::Text("Max FPS: %.1f", maxFrameRate);
+        //placeholder to be connected with actual number of entities
+        int NumEntities = rand() % 100;
+        ImGui::Text("Number of Entities: %d", NumEntities);
+        if (lastCPUPercentage >= 0.0f) {
+            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
+        } else {
+            ImGui::Text("CPU Usage: N/A (Not supported on this platform)");
+        }
+
+        ImGui::Separator();
+    }
+
 }
 struct EntityNode {
     int id;
@@ -312,7 +376,7 @@ void Engine::RenderAnimation() {
     for (int markedPosition : markedPositions) {
         float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
         ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
-        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
+        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.6)*7.1, markPos.y - 90), ImVec2((markPos.x-5.6) *7.1, markPos.y - 55), IM_COL32(255, 0, 0, 255), 2.0f);
     }
 
     ImGui::End();

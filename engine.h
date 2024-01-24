@@ -10,8 +10,21 @@
 #include <vector>
 #include <string>
 #include <iostream>
-#include "shader.h"
+#ifdef _WIN32
+    #include <windows.h>
+#elif __linux__
+    #include <fstream>
+    #include <sstream>
+#elif __APPLE__
+    #include <sys/sysctl.h>
+    #include <unistd.h>
+    #include <mach/mach.h>
+#else
+#endif
 
+#include "shader.h"
+#include <thread>
+#include <chrono>
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
