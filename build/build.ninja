@@ -156,6 +156,14 @@ build CMakeFiles/Ray-tracing.dir/primitives.cpp.o: CXX_COMPILER__Ray-tracing_ /U
   OBJECT_DIR = CMakeFiles/Ray-tracing.dir
   OBJECT_FILE_DIR = CMakeFiles/Ray-tracing.dir
 
+build CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o: CXX_COMPILER__Ray-tracing_ /Users/jowe/Documents/GitHub/Raytracing/framebuffer.cpp || cmake_object_order_depends_target_Ray-tracing
+  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
+  DEP_FILE = CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o.d
+  FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -fcolor-diagnostics -fPIC -std=gnu++17
+  INCLUDES = -I/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen/include -isystem /Users/jowe/anaconda3/include/qt -isystem /Users/jowe/anaconda3/include/qt/QtWidgets -isystem /Users/jowe/anaconda3/include/qt/QtGui -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/Headers -isystem /Users/jowe/anaconda3/include/qt/QtCore -isystem /Users/jowe/anaconda3/./mkspecs/macx-clang -isystem /opt/local/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks
+  OBJECT_DIR = CMakeFiles/Ray-tracing.dir
+  OBJECT_FILE_DIR = CMakeFiles/Ray-tracing.dir
+
 build CMakeFiles/Ray-tracing.dir/imgui/imgui.cpp.o: CXX_COMPILER__Ray-tracing_ /Users/jowe/Documents/GitHub/Raytracing/imgui/imgui.cpp || cmake_object_order_depends_target_Ray-tracing
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Ray-tracing.dir/imgui/imgui.cpp.o.d
@@ -212,14 +220,6 @@ build CMakeFiles/Ray-tracing.dir/imgui/backends/imgui_impl_opengl3.cpp.o: CXX_CO
   OBJECT_DIR = CMakeFiles/Ray-tracing.dir
   OBJECT_FILE_DIR = CMakeFiles/Ray-tracing.dir/imgui/backends
 
-build CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o: CXX_COMPILER__Ray-tracing_ /Users/jowe/Documents/GitHub/Raytracing/framebuffer.cpp || cmake_object_order_depends_target_Ray-tracing
-  DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
-  DEP_FILE = CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o.d
-  FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk -fcolor-diagnostics -fPIC -std=gnu++17
-  INCLUDES = -I/Users/jowe/Documents/GitHub/Raytracing/build/Ray-tracing_autogen/include -isystem /Users/jowe/anaconda3/include/qt -isystem /Users/jowe/anaconda3/include/qt/QtWidgets -isystem /Users/jowe/anaconda3/include/qt/QtGui -isystem /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/Headers -isystem /Users/jowe/anaconda3/include/qt/QtCore -isystem /Users/jowe/anaconda3/./mkspecs/macx-clang -isystem /opt/local/include -iframework /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks
-  OBJECT_DIR = CMakeFiles/Ray-tracing.dir
-  OBJECT_FILE_DIR = CMakeFiles/Ray-tracing.dir
-
 build CMakeFiles/Ray-tracing.dir/hirarchy.cpp.o: CXX_COMPILER__Ray-tracing_ /Users/jowe/Documents/GitHub/Raytracing/hirarchy.cpp || cmake_object_order_depends_target_Ray-tracing
   DEFINES = -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB
   DEP_FILE = CMakeFiles/Ray-tracing.dir/hirarchy.cpp.o.d
@@ -236,7 +236,7 @@ build CMakeFiles/Ray-tracing.dir/hirarchy.cpp.o: CXX_COMPILER__Ray-tracing_ /Use
 #############################################
 # Link the executable Ray-tracing.app/Contents/MacOS/Ray-tracing
 
-build Ray-tracing.app/Contents/MacOS/Ray-tracing: CXX_EXECUTABLE_LINKER__Ray-tracing_ CMakeFiles/Ray-tracing.dir/Ray-tracing_autogen/mocs_compilation.cpp.o CMakeFiles/Ray-tracing.dir/main.cpp.o CMakeFiles/Ray-tracing.dir/Utilities.cpp.o CMakeFiles/Ray-tracing.dir/Ray.cpp.o CMakeFiles/Ray-tracing.dir/Triangle.cpp.o CMakeFiles/Ray-tracing.dir/Camera.cpp.o CMakeFiles/Ray-tracing.dir/ImageRenderer.cpp.o CMakeFiles/Ray-tracing.dir/Engine.cpp.o CMakeFiles/Ray-tracing.dir/pointlightsource.cpp.o CMakeFiles/Ray-tracing.dir/Entity.cpp.o CMakeFiles/Ray-tracing.dir/scenegraph.cpp.o CMakeFiles/Ray-tracing.dir/shader.cpp.o CMakeFiles/Ray-tracing.dir/enginecamera.cpp.o CMakeFiles/Ray-tracing.dir/primitives.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_demo.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_draw.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_tables.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_widgets.cpp.o CMakeFiles/Ray-tracing.dir/imgui/backends/imgui_impl_glfw.cpp.o CMakeFiles/Ray-tracing.dir/imgui/backends/imgui_impl_opengl3.cpp.o CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o CMakeFiles/Ray-tracing.dir/hirarchy.cpp.o | /Users/jowe/anaconda3/lib/libQt5Widgets.5.15.2.dylib /opt/local/lib/libGLEW.dylib /opt/local/lib/libglfw.3.3.dylib /Users/jowe/anaconda3/lib/libQt5Gui.5.15.2.dylib /Users/jowe/anaconda3/lib/libQt5Core.5.15.2.dylib /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/OpenGL.tbd || Ray-tracing_autogen Ray-tracing_autogen_timestamp_deps
+build Ray-tracing.app/Contents/MacOS/Ray-tracing: CXX_EXECUTABLE_LINKER__Ray-tracing_ CMakeFiles/Ray-tracing.dir/Ray-tracing_autogen/mocs_compilation.cpp.o CMakeFiles/Ray-tracing.dir/main.cpp.o CMakeFiles/Ray-tracing.dir/Utilities.cpp.o CMakeFiles/Ray-tracing.dir/Ray.cpp.o CMakeFiles/Ray-tracing.dir/Triangle.cpp.o CMakeFiles/Ray-tracing.dir/Camera.cpp.o CMakeFiles/Ray-tracing.dir/ImageRenderer.cpp.o CMakeFiles/Ray-tracing.dir/Engine.cpp.o CMakeFiles/Ray-tracing.dir/pointlightsource.cpp.o CMakeFiles/Ray-tracing.dir/Entity.cpp.o CMakeFiles/Ray-tracing.dir/scenegraph.cpp.o CMakeFiles/Ray-tracing.dir/shader.cpp.o CMakeFiles/Ray-tracing.dir/enginecamera.cpp.o CMakeFiles/Ray-tracing.dir/primitives.cpp.o CMakeFiles/Ray-tracing.dir/framebuffer.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_demo.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_draw.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_tables.cpp.o CMakeFiles/Ray-tracing.dir/imgui/imgui_widgets.cpp.o CMakeFiles/Ray-tracing.dir/imgui/backends/imgui_impl_glfw.cpp.o CMakeFiles/Ray-tracing.dir/imgui/backends/imgui_impl_opengl3.cpp.o CMakeFiles/Ray-tracing.dir/hirarchy.cpp.o | /Users/jowe/anaconda3/lib/libQt5Widgets.5.15.2.dylib /opt/local/lib/libGLEW.dylib /opt/local/lib/libglfw.3.3.dylib /Users/jowe/anaconda3/lib/libQt5Gui.5.15.2.dylib /Users/jowe/anaconda3/lib/libQt5Core.5.15.2.dylib /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/OpenGL.tbd || Ray-tracing_autogen Ray-tracing_autogen_timestamp_deps
   FLAGS = -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk
   LINK_LIBRARIES = -Wl,-rpath,/Users/jowe/anaconda3/lib  /Users/jowe/anaconda3/lib/libQt5Widgets.5.15.2.dylib  /opt/local/lib/libGLEW.dylib  /opt/local/lib/libglfw.3.3.dylib  /Users/jowe/anaconda3/lib/libQt5Gui.5.15.2.dylib  /Users/jowe/anaconda3/lib/libQt5Core.5.15.2.dylib  /Library/Developer/CommandLineTools/SDKs/MacOSX14.0.sdk/System/Library/Frameworks/OpenGL.framework/OpenGL.tbd
   OBJECT_DIR = CMakeFiles/Ray-tracing.dir
@@ -337,7 +337,7 @@ build Ray-tracing_autogen/timestamp Ray-tracing_autogen/mocs_compilation.cpp | $
 #############################################
 # Phony custom command for CMakeFiles/Ray-tracing_autogen_timestamp_deps
 
-build CMakeFiles/Ray-tracing_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Ray-tracing_autogen_timestamp_deps: phony /Users/jowe/anaconda3/bin/uic /opt/local/lib/libGLEW.dylib /opt/local/lib/libglfw.3.3.dylib /Users/jowe/anaconda3/lib/libQt5Widgets.5.15.2.dylib /Users/jowe/anaconda3/bin/moc
+build CMakeFiles/Ray-tracing_autogen_timestamp_deps | ${cmake_ninja_workdir}CMakeFiles/Ray-tracing_autogen_timestamp_deps: phony /Users/jowe/anaconda3/lib/libQt5Widgets.5.15.2.dylib /Users/jowe/anaconda3/bin/moc /Users/jowe/anaconda3/bin/uic /opt/local/lib/libGLEW.dylib /opt/local/lib/libglfw.3.3.dylib
 
 
 #############################################

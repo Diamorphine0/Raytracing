@@ -246,6 +246,7 @@ void Engine::RenderProperties(){
 
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
+bool isDarkMode = false;
 
 
 void Engine::RenderStats() {
@@ -260,12 +261,12 @@ void Engine::RenderStats() {
         rayTracingCamera->render(world, "imageRender.ppm");
     }
 
+
     static bool showStats = true;
-    ImGui::Checkbox("Show Statistics", &showStats);
+    ImGui::Checkbox("Show Real-Time Statistics", &showStats);
 
     if (showStats) {
         ImGui::Separator();
-        ImGui::Text("Real-time Statistics:");
         ImGuiIO& io = ImGui::GetIO();
         ImGui::Text("Average FPS: %.1f", 1000.0f / io.Framerate);
 
@@ -285,6 +286,17 @@ void Engine::RenderStats() {
         }
 
         ImGui::Separator();
+    }
+
+    if (ImGui::Button("Set Dark/Light Mode", ImVec2(180, 30))) {
+        isDarkMode = !isDarkMode;
+
+        // Adjust ImGui style based on the mode
+        if (isDarkMode) {
+            ImGui::StyleColorsDark();
+        } else {
+            ImGui::StyleColorsLight();
+        }
     }
 
 }
