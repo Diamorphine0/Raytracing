@@ -252,6 +252,7 @@ void Engine::RenderProperties(){
 
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
+bool isDarkMode = false;
 
 void Engine::RenderStats(){
 
@@ -284,6 +285,19 @@ void Engine::RenderStats(){
 
         ImGui::Separator();
     }
+
+
+    if (ImGui::Button("Set Dark/Light Mode", ImVec2(180, 30))) {
+        isDarkMode = !isDarkMode;
+
+        // Adjust ImGui style based on the mode
+        if (isDarkMode) {
+            ImGui::StyleColorsDark();
+        } else {
+            ImGui::StyleColorsLight();
+        }
+    }
+
 
 
     static int counter = 0;
