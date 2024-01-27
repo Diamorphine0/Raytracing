@@ -20,21 +20,30 @@ void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath)
 
 void Camera::initialize() {
 
+    center = lookfrom;
+
     // Determine viewport dimensions.
-    auto focal_length = 1;
-    auto viewport_height = 2.0;
+    auto focal_length = (lookfrom - lookat).length();
+    auto theta = vfov * PI /180;
+    auto h = tan(theta/2);
+    auto viewport_height = 2 * h * focal_length;
     auto viewport_width = viewport_height * (static_cast<double>(imageRenderer.get_width())/imageRenderer.get_height());
 
+    // Calculate the u,v,w unit basis vectors for the camera coordinate frame.
+    w = normalize(lookfrom - lookat);
+    u = normalize(cross(vup, w));
+    v = cross(w, u);
+
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    auto viewport_u = vec3(viewport_width, 0, 0);
-    auto viewport_v = vec3(0, -viewport_height, 0);
+    auto viewport_u = viewport_width * u;    // Vector across viewport horizontal edge
+    auto viewport_v = viewport_height * -v;  // Vector down viewport vertical edge
 
     // Calculate the horizontal and vertical delta vectors from pixel to pixel.
     pixel_delta_u = viewport_u * (1.0f / imageRenderer.get_width());
     pixel_delta_v = viewport_v * (1.0f / imageRenderer.get_height());
 
     // Calculate the location of the upper left pixel.
-    auto viewport_upper_left = center - vec3(0, 0, focal_length) - viewport_u * 0.5f - viewport_v * 0.5f;
+    auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5f;
 }
 
