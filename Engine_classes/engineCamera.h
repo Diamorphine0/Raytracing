@@ -3,7 +3,6 @@
 
 #include "shader.h"
 #include "scenegraph.h"
-
 #include <GLFW/glfw3native.h>
 
 class engineCamera{
@@ -13,6 +12,7 @@ public:
     engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV);
 
     void renderScene(Node* SG, const Shader& shader);
+    void animationPrep(Node* engineWorld);
     void animateScene(Node* engineWorld, const Shader& shader, int& currentFrame);
 
     inline void Clear() const{ glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);};

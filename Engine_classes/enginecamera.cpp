@@ -28,14 +28,21 @@ void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     glm::vec3 pos = getPosition();
     engineWorld -> Draw(shader, pos);
 };
-
-void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
+void engineCamera::animationPrep(Node* engineWorld){
     Clear();
 
     auto mvp = construct_mvp();
 
     // this should technically also time dependent
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+}
+void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
+    //Clear();
+
+    //auto mvp = construct_mvp();
+
+    // this should technically also time dependent
+    //engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
     engineWorld -> Animate(shader, currentFrame, pos);

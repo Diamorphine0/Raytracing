@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 
     test_raytracing();
 
-    Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
+    Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
     auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
