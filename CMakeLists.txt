@@ -10,15 +10,24 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+if(WIN32)
+    list(APPEND CMAKE_PREFIX_PATH "./vendor/windows/glew-2.1.0")
+    list(APPEND CMAKE_PREFIX_PATH "./vendor/windows/glfw/lib/cmake/glfw3")
+endif()
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(GLEW 2.0 REQUIRED)
 find_package(glfw3 REQUIRED)
+find_package(OpenGL REQUIRED)
+
+add_definitions(-DGLM_ENABLE_EXPERIMENTAL)
 
 set (INCLUDE_DIR
         Objects_classes
         shaders
         imgui
+        glm
         Engine_classes)
 
 set(PROJECT_SOURCES
@@ -120,7 +129,7 @@ else()
 endif()
 
 target_include_directories(Ray-tracing PRIVATE ${INCLUDE_DIR} ${SOURCE_DIR})
-target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw)
+target_link_libraries(Ray-tracing PRIVATE Qt${QT_VERSION_MAJOR}::Widgets GLEW::GLEW glfw OpenGL::GL)
 target_compile_definitions(Ray-tracing PRIVATE SOURCE_DIR="${SOURCE_DIR}")
 
 
@@ -144,6 +153,13 @@ install(TARGETS Ray-tracing
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
+
+if(WIN32)
+    add_custom_command(TARGET Ray-tracing POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_SOURCE_DIR}/vendor/windows/glew-2.1.0/bin/Release/x64/glew32.dll"
+        "${CMAKE_BINARY_DIR}")
+endif()
 
 if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(Ray-tracing)
