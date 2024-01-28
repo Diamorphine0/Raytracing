@@ -14,41 +14,14 @@
 
 
 
-void test_raytracing(){
-    point3 p0 = {0, 0, 0};
-    point3 p1 = {1, 0, 0};
-    point3 p2 = {0, 1, 0};
-
-
-    auto Triangle1 = std::make_shared<Triangle>(p0, p1, p2, color3{0.5, 0.5, 0.5});
-
-    std::vector<std::shared_ptr<Object>> all_objects {Triangle1};
-
-    auto worldRaytracer = std::make_shared<BVH_Node>(all_objects, 0, all_objects.size());
-
-    /**
-     * Set up camera
-     */
-    auto rayTracingCamera = std::make_shared<Camera>(800, 1800, point3{0, 0, 10});
-  //  std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
-
-    std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
-
-    rayTracingCamera->render(worldRaytracer, "imageRender-test.ppm");
-
-}
-
-
 
 int main(int argc, char* argv[])
 {
 
-    test_raytracing();
-
     Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
 
     auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
     entity2->translate(-5, -5, 5);
@@ -64,13 +37,13 @@ int main(int argc, char* argv[])
 //    grid axes;
 //    axes.gen_axes(1000);
 
-    entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
+    entity1 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/earth.png");
 
     std::cout << "Texture is loaded" << std::endl;
 //    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
 //    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 //
-    entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
+    entity2 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/purple.png");
 //
 //    entity2 -> scale(0.5, 0.5, 0.5);
 //    entity2 -> translate(-10, -10, 0);
@@ -87,8 +60,8 @@ int main(int argc, char* argv[])
     node2 ->setParent(engine.engineWorld);
     engine.engineWorld ->addKeyframe(0);
 
-    entity1 -> scale(0.1, 0.1, 0.1);
-    entity1 -> rotate(1, 2, 3, 4);
+    //entity1 -> scale(0.1, 0.1, 0.1);
+    //entity1 -> rotate(1, 2, 3, 4);
 
     engine.engineWorld ->addKeyframe(2000);
 

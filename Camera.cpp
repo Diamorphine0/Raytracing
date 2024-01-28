@@ -43,7 +43,7 @@ void Camera::initialize() {
     pixel_delta_v = viewport_v * (1.0f / imageRenderer.get_height());
 
     // Calculate the location of the upper left pixel.
-    auto viewport_upper_left = center - (focal_length * w) - viewport_u/2 - viewport_v/2;
+    auto viewport_upper_left = center - (focal_length * w) - viewport_u*0.5 - viewport_v*0.5;
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5f;
 }
 

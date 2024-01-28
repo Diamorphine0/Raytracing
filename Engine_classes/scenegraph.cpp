@@ -1,5 +1,5 @@
 #include "scenegraph.h"
-#include "texture.h"
+#include "Texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
 Node::Node(const std::shared_ptr<Entity> &entity): entity(entity), parent(nullptr), children({}){}
@@ -152,25 +152,30 @@ Node::~Node() {
 /**
  * Adds only entities WHICH HAVE AT LEAST ONE VERTICE
  */
-void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities) {
+void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities, bool animate) {
+
     if(entity != nullptr) {
-
-        entity->interpolate(currentFrame);
-
-        if (parent != nullptr) {
-            if (parent->entity != nullptr) {
-                if ((parent->entity->worldMatrix) != glm::mat4())
-                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
-                else
-                    (entity->worldMatrix) = (entity->localMatrix);
-            } else {
-                (entity->worldMatrix) = (entity->localMatrix);
-            }
-        }
+//        if(animate)
+//            entity->interpolate(currentFrame);
+//
+//        if (parent != nullptr) {
+//            if (parent->entity != nullptr) {
+//                if ((parent->entity->worldMatrix) != glm::mat4())
+//                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
+//                else
+//                    (entity->worldMatrix) = (entity->localMatrix);
+//            } else {
+//                (entity->worldMatrix) = (entity->localMatrix);
+//            }
+//        }
         if(!entity->vertices.empty())
             entities.push_back(entity);
     }
     for(auto child: children){
-        child -> dfs_entitity_setup(currentFrame, entities);
+        child -> dfs_entitity_setup(currentFrame, entities, animate);
     }
+}
+
+const std::vector<Node *>& Node::getChildren() {
+    return children;
 }

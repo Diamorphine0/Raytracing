@@ -17,7 +17,7 @@ public:
 
     //Positioning camera
     point3 lookfrom;                          // Point camera is looking from
-    point3 lookat = point3(0,0,0);   // Point camera is looking at
+    point3 lookat = point3(0,0,-1);   // Point camera is looking at
     vec3   vup = vec3(0,1,0);        // "up" direction
 
 private:

@@ -1,4 +1,4 @@
-#include "texture.h"
+#include "Texture.h"
 #include "stb_image.h"
 
 Texture::Texture(const std::string& path):
@@ -29,10 +29,10 @@ Texture::Texture(const std::string& path):
     // we load the tex image to a local buffer
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, localBuffer);
     glGenerateMipmap(GL_TEXTURE_2D);
-    stbi_image_free(localBuffer);
 }
 
 Texture::~Texture(){
+    stbi_image_free(localBuffer);
     glDeleteTextures(1, &m_RendererID);
 }
 
@@ -44,4 +44,23 @@ void Texture::Bind() const{
 
 void Texture::Unbind(){
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+color3 Texture::get_color_coordinates(float u, float v) const {
+    u = u - std::floor(u);
+    v = v - std::floor(v);
+
+    int x = static_cast<int>(u * width);
+    int y = static_cast<int>(v * height);
+
+    x = glm::clamp(x, 0, width - 1);
+    y = glm::clamp(y, 0, height - 1);
+
+    int index = (y * width + x) * 3;
+
+    unsigned char r = localBuffer[index];
+    unsigned char g = localBuffer[index + 1];
+    unsigned char b = localBuffer[index + 2];
+
+    return glm::vec3((float)r/255.999f, (float)g/255.999f, (float)b/255.999f);
 }

@@ -169,8 +169,10 @@ void Engine::RenderProperties(){
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
     if(ImGui::Button("Apply Transformations")){
-        this->engineWorld->entity->translate(translationX, translationY, translationZ);
-        this->engineWorld->entity->scale(scale, scale, scale);
+        for(auto &c: this->engineWorld->getChildren()){
+            c->entity->translate(translationX, translationY, translationZ);
+            c->entity->scale(scale, scale, scale);
+        }
         translationX = 0.0f;
         translationY = 0.0f;
         translationZ = 0.0f;
@@ -196,7 +198,11 @@ void Engine::RenderStats(){
         //generate world at time t
         //i go through the scene graph and compute the right matrices for entities at time t
         std::vector<std::shared_ptr<Entity>> all_entities;
-        engineWorld->dfs_entitity_setup(currentFrame, all_entities);
+        //returns a list of all entities with positions (in canonical basis) at frame current frame
+        //.get_all_entitities_updated(curFrame);
+        auto mvp = camera.construct_mvp();
+        engineWorld -> entity -> worldMatrix = mvp * engineWorld-> entity ->localMatrix;
+        engineWorld->dfs_entitity_setup(currentFrame, all_entities, animate);
 
         std::vector<std::shared_ptr<Object>> all_objects;
         all_objects.reserve(all_entities.size());
@@ -210,8 +216,14 @@ void Engine::RenderStats(){
          * Set up camera
          */
         auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
-        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
+        //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        //rayTracingCamera->vup = vec3(0, -1, 0);
 
+        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
+        std::cerr<<"Camera direction is at : "<<glm::to_string(camera.direction)<<"\n";
+
+        std::cerr<<"The world is at coord x: "<<worldRaytracer->get_boundingBox().get_ax(0).min<< " " << worldRaytracer->get_boundingBox().get_ax(0).max<<" \n";
+        std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
 
         rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm");
@@ -293,7 +305,7 @@ void Engine::RenderAnimation() {
 
     // we want to have an animate condition
     if(ImGui::Button("Play")){
-        animate = true;
+        //animate = true;
     }
 
     if(ImGui::Button("Pause")){
@@ -353,7 +365,7 @@ void Engine::RenderAddObject(){
 
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
-            entity -> texture = new Texture(textureString.c_str());
+            entity -> texture = std::make_shared<Texture>(textureString.c_str());
 
             Node* node = new Node(entity);
 

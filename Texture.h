@@ -9,23 +9,25 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 #include <vector>
-
+#include "Utilities.hpp"
 #include <iostream>
 
-class Texture
-{
+class Texture {
 public:
     unsigned int m_RendererID;
     std::string filePath;
-    unsigned char* localBuffer;
+    unsigned char *localBuffer;
     int width, height, bitsPerPixel;
 
 public:
-    Texture(const std::string& path);
+    Texture(const std::string &path);
+
     ~Texture();
 
+    color3 get_color_coordinates(float u, float v) const;
     void Bind() const;
     void Unbind();
+
 };
 
 #endif // TEXTURE_H
