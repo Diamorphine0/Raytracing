@@ -139,7 +139,11 @@ Entity::Entity(std::string path){
 
 
     this -> vertices = vertices;
-
+    std::cout<<"Vertices at : \n";
+    for(auto x: this->vertices){
+       std::cout << glm::to_string(x.Coordinates)<<", ";
+    }
+    std::cout<<"\n";
     va = new VertexArray();
 
     va -> Bind();

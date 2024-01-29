@@ -49,8 +49,11 @@ void Camera::initialize() {
 
 color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object> &world) const {
     HitRecord rec;
-    if(world->hit(r, Interval(0, INF), rec)){
-        return rec.color;
+    if(world->hit(r, Interval(EPS, INF), rec)){
+        if(rec.frontFace)
+            return rec.color;
+        else
+            return {0.5 ,0.5, 0.5};
     }
     return {0, 0,0};
 }

@@ -46,9 +46,9 @@ void Texture::Unbind(){
     glBindTexture(GL_TEXTURE_2D, 0);
 }
 
-color3 Texture::get_color_coordinates(float u, float v) const {
-    u = u - std::floor(u);
-    v = v - std::floor(v);
+color3 Texture::get_color_coordinates(double u, double v) const {
+//    u = u - std::floor(u);
+//    v = v - std::floor(v);
 
     int x = static_cast<int>(u * width);
     int y = static_cast<int>(v * height);

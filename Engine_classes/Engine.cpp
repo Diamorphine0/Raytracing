@@ -200,9 +200,15 @@ void Engine::RenderStats(){
         std::vector<std::shared_ptr<Entity>> all_entities;
         //returns a list of all entities with positions (in canonical basis) at frame current frame
         //.get_all_entitities_updated(curFrame);
-        auto mvp = camera.construct_mvp();
-        engineWorld -> entity -> worldMatrix = mvp * engineWorld-> entity ->localMatrix;
+        engineWorld -> entity -> worldMatrix = engineWorld-> entity ->localMatrix;
+
+        std::cerr<<"World matrix \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
+
+        std::cerr<<"Local matrix \n" << glm::to_string(engineWorld -> entity -> localMatrix)<<std::endl;
+
         engineWorld->dfs_entitity_setup(currentFrame, all_entities, animate);
+
+        std::cerr<<"World matrix after entity setup \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
 
         std::vector<std::shared_ptr<Object>> all_objects;
         all_objects.reserve(all_entities.size());
@@ -215,7 +221,8 @@ void Engine::RenderStats(){
         /**
          * Set up camera
          */
-        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
+        auto rayTracingCamera = std::make_shared<Camera>(600, 800, camera.getPosition());
+        rayTracingCamera->lookat = camera.getPosition() + camera.direction;
         //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
         //rayTracingCamera->vup = vec3(0, -1, 0);
 
@@ -305,7 +312,7 @@ void Engine::RenderAnimation() {
 
     // we want to have an animate condition
     if(ImGui::Button("Play")){
-        //animate = true;
+        animate = true;
     }
 
     if(ImGui::Button("Pause")){

@@ -23,9 +23,9 @@ int main(int argc, char* argv[])
     // only a single face of the object loaded..,
     auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
 
-    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
-    entity2->translate(-5, -5, 5);
-    // to get the object identifier we can just count hte total number of objects stored in the scene grap
+//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
+//    entity2->translate(-5, -5, 5);
+//    // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
     Lightarray lights;
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 //    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
 //    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 //
-    entity2 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/purple.png");
+  //  entity2 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/purple.png");
 //
 //    entity2 -> scale(0.5, 0.5, 0.5);
 //    entity2 -> translate(-10, -10, 0);
@@ -52,12 +52,12 @@ int main(int argc, char* argv[])
 //    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
+  //  Node* node2 = new Node(entity2);
 //    Node* node2 = new Node(entity2);
 //    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 ->setParent(engine.engineWorld);
+ //   node2 ->setParent(engine.engineWorld);
     engine.engineWorld ->addKeyframe(0);
 
     //entity1 -> scale(0.1, 0.1, 0.1);

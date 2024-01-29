@@ -42,7 +42,7 @@ public:
         // Specify the layout of the vertex data
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-        std::cout<< "a line was successfully setup" << std::endl;
+        //std::cout<< "a line was successfully setup" << std::endl;
     }
 
     void draw(const Shader& shader,const engineCamera& camera){

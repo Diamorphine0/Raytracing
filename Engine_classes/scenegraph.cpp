@@ -157,17 +157,17 @@ void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Enti
     if(entity != nullptr) {
 //        if(animate)
 //            entity->interpolate(currentFrame);
-//
-//        if (parent != nullptr) {
-//            if (parent->entity != nullptr) {
-//                if ((parent->entity->worldMatrix) != glm::mat4())
-//                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
-//                else
-//                    (entity->worldMatrix) = (entity->localMatrix);
-//            } else {
-//                (entity->worldMatrix) = (entity->localMatrix);
-//            }
-//        }
+
+        if (parent != nullptr) {
+            if (parent->entity != nullptr) {
+                if ((parent->entity->worldMatrix) != glm::mat4())
+                    (entity->worldMatrix) = (parent->entity->worldMatrix) * (entity->localMatrix);
+                else
+                    (entity->worldMatrix) = (entity->localMatrix);
+            } else {
+                (entity->worldMatrix) = (entity->localMatrix);
+            }
+        }
         if(!entity->vertices.empty())
             entities.push_back(entity);
     }

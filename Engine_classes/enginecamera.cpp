@@ -21,9 +21,9 @@ engineCamera::engineCamera(glm::vec3 position, float horizontalAngle, float vert
 void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
     Clear();
 
-//    auto mvp = construct_mvp();
-//
-//    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+    auto mvp = construct_mvp();
+
+    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
     engineWorld -> Draw(shader, pos);

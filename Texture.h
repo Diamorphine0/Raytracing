@@ -24,7 +24,7 @@ public:
 
     ~Texture();
 
-    color3 get_color_coordinates(float u, float v) const;
+    color3 get_color_coordinates(double u, double v) const;
     void Bind() const;
     void Unbind();
 

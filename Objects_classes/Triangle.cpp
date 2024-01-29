@@ -107,7 +107,7 @@ bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
     rec.tHit = t;
     rec.setNormalFace(r, normal);
 
-    auto texture_coord = (1 - u - v) * p0UV + u * p1UV + v * p2UV;
+    auto texture_coord = (1 - u - v) * p0UV + (u) * p1UV + (v) * p2UV;
     if(texture != nullptr)
         rec.color = texture->get_color_coordinates(texture_coord.x, texture_coord.y);
     else
