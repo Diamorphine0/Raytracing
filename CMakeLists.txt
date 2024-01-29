@@ -93,6 +93,11 @@ set(PROJECT_SOURCES
         FrameBuffer.cpp
         Objects_classes/TriangleMesh.cpp
         Objects_classes/TriangleMesh.h
+        Materials/Material.h
+        Materials/Dielectric_Material.h
+        Materials/Diffuse_Material.h
+        Materials/Diffuse_specular_Material.h
+        Materials/Phong_metal_Material.h
 )
 
 

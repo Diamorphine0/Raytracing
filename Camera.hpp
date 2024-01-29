@@ -23,7 +23,7 @@ private:
 
     void initialize();
 
-    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world) const;
+    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world, int depth) const;
 };
 
 #endif // CAMERA_Hpp

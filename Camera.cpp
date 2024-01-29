@@ -10,7 +10,7 @@ void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath)
             auto ray_direction = pixel_center - center;
             Ray r(center, ray_direction);
 
-            color3 pixel_color = ray_color(r, world);
+            color3 pixel_color = ray_color(r, world, 100);
 
             imageRenderer.set_pixel(j, i, pixel_color);
         }
@@ -38,10 +38,38 @@ void Camera::initialize() {
     pixel00_loc = viewport_upper_left + (pixel_delta_u + pixel_delta_v) * 0.5f;
 }
 
-color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object> &world) const {
-    HitRecord rec;
-    if(world->hit(r, Interval(0, INF), rec)){
-        return rec.color;
+
+color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int depth) const {
+    // Maximum recursion depth
+    if (depth <= 0) {
+        return {0, 0, 0};
     }
-    return {0, 0,0};
+
+    HitRecord rec;
+    if (world->hit(r, Interval(0, INF), rec)) {
+        vec3 point = rec.pointHit;
+        vec3 normal = rec.normal;
+
+        color3 materialColor = rec.material->computeColor(r.get_direction(), normal, rec.material->getIOR());
+
+        float reflectance = rec.material->getReflectance();
+        float transparency = rec.material->getTransparency();
+
+        Ray reflectedRay(point, glm::reflect(r.get_direction(), normal));
+        color3 reflectedColor = ray_color(reflectedRay, world, depth - 1);
+
+        color3 finalColor = (1.0 - reflectance) * materialColor + reflectance * reflectedColor;
+
+        if (transparency > 0.0) {
+            vec3 refractedDirection = glm::refract(r.get_direction(), normal, rec.material->getIOR());
+            Ray refractedRay(point, refractedDirection);
+            color3 refractedColor = ray_color(refractedRay, world, depth - 1);
+
+            finalColor = (1.0 - transparency) * finalColor + transparency * refractedColor;
+        }
+
+        return finalColor;
+    }
+
+    return {0, 0, 0};
 }

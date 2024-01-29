@@ -6,6 +6,7 @@
 #define RAY_TRACING_HITRECORD_H
 #include "Utilities.hpp"
 #include "Ray.hpp"
+#include "Materials/Material.h"
 #include <memory>
 
 /**
@@ -18,6 +19,7 @@ struct HitRecord {
     vec3 normal;
     bool frontFace;
 
+    std::shared_ptr<Material> material;
 
     //temporary (should be material & texture)
     color3 color;
