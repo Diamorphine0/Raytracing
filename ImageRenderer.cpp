@@ -27,6 +27,59 @@ bool ImageRenderer::set_pixel(int pixel_row, int pixel_column, const color3 &col
     return true;
 }
 
+void ImageRenderer::Raytrace(){
+
+    glewExperimental = true;
+
+    if( !glfwInit() )
+    {
+        fprintf( stderr, "Failed to initialize GLFW\n" );
+    }
+
+    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Get the primary monitor
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+
+    // Get the video mode of the primary monitor
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    int monitorX, monitorY, monitorWidth, monitorHeight;
+    glfwGetMonitorWorkarea(monitor, &monitorX, &monitorY, &monitorWidth, &monitorHeight);
+
+    auto window = glfwCreateWindow( image_width, image_height, "Engine Project", NULL, NULL);
+    glfwMakeContextCurrent(window);
+    glewInit();
+
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+    // Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
+
+    // Ensure we can capture the escape key being pressed below
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    // Cull triangles which normal is not towards the camera
+    glEnable(GL_CULL_FACE);
+
+
+    auto fb = new frameBuffer(image_width, image_height);
+    fb -> BindData(&pixel_colors);
+
+    Shader* shader = new Shader(SOURCE_DIR + '/shaders/rayVertex.shader', SOURCE_DIR + '/shaders/rayFragment.shader');
+
+    do{
+        shader -> Bind();
+        fb -> Bind();
+        glfwSwapBuffers(window);
+    }
+    while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
+           glfwWindowShouldClose(window) == 0 );
+
+}
+
 bool ImageRenderer::set_all_pixels(const std::vector<std::vector<color3>> &colors) {
     if(colors.size() != image_height)
         return false;

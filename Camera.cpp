@@ -16,6 +16,9 @@ void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath)
         }
     }
     imageRenderer.render_image(imagePath);
+    std::cout << "Raytracing begins" << std::endl;
+
+//    imageRenderer.Raytrace();
 }
 
 void Camera::initialize() {

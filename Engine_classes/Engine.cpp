@@ -31,17 +31,8 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
     this->width = monitorWidth;
     this->height = monitorHeight;
     window = glfwCreateWindow( this->width, this->height, "Engine Project", NULL, NULL);
-
-    if( window == NULL ){
-        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
-        glfwTerminate();
-    }
-
     glfwMakeContextCurrent(window);
-    glewExperimental=true;
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-    }
+    glewInit();
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
