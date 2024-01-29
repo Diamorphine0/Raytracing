@@ -47,8 +47,8 @@ void Texture::Unbind(){
 }
 
 color3 Texture::get_color_coordinates(double u, double v) const {
-//    u = u - std::floor(u);
-//    v = v - std::floor(v);
+    u = u - std::floor(u);
+    v = v - std::floor(v);
 
     int x = static_cast<int>(u * width);
     int y = static_cast<int>(v * height);
