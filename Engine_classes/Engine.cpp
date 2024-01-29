@@ -95,6 +95,31 @@ void GetWindowSize(GLFWwindow* window, int& width, int& height) {
         height = 0;
     }
 }
+float lastCPUPercentage = 0.0f;
+std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
+
+float GetCPUUsageMacOS() {
+#ifdef __APPLE__
+    host_cpu_load_info_data_t cpuinfo;
+    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
+    if (host_statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info64_t)&cpuinfo, &count) == KERN_SUCCESS) {
+        unsigned long long totalTicks = 0;
+        for (int i = 0; i < CPU_STATE_MAX; ++i) {
+            totalTicks += cpuinfo.cpu_ticks[i];
+        }
+        unsigned long long idleTicks = cpuinfo.cpu_ticks[CPU_STATE_IDLE];
+        float cpuUsage = 100.0f * (1.0f - static_cast<float>(idleTicks) / totalTicks);
+
+        return cpuUsage;
+    }
+
+    return -1.0f;
+#else
+    // Return default value for non-MacOS platforms
+    return -1.0f;
+#endif
+}
+
 
 void Engine::update(Shader* shader){
 
@@ -225,10 +250,55 @@ void Engine::RenderProperties(){
     ImGui::ColorEdit4("Color", &color.x);
 };
 
+float minFrameRate = FLT_MAX;
+float maxFrameRate = 0.0f;
+bool isDarkMode = false;
+
 void Engine::RenderStats(){
+
     ImGuiIO& io = ImGui::GetIO();
-    ImGui::Text("Framerate:");
-    ImGui::Text("Application average %.1f FPS", io.Framerate);
+    ImGui::Text("Average FPS: %.1f", 1000.0f / io.Framerate);
+    float currentFrameRate = 1000.0f / io.Framerate;
+    minFrameRate = std::min(minFrameRate, currentFrameRate);
+    maxFrameRate = std::max(maxFrameRate, currentFrameRate);
+
+    static bool showStats = true;
+    ImGui::Checkbox("Additional Statistics", &showStats);
+
+    if (showStats) {
+        ImGui::Separator();
+        ImGui::Text("Fetching Additional Statistics:");
+
+
+        ImGui::Text("Min FPS: %.1f", minFrameRate);
+        ImGui::Text("Max FPS: %.1f", maxFrameRate);
+        //placeholder to be connected with actual number of entities
+        int NumEntities = 1;
+        float lastCPUPercentage = GetCPUUsageMacOS();
+        ImGui::Text("Number of Entities: %d", 1);
+        if (lastCPUPercentage >= 0.0f) {
+            lastUpdateTime = std::chrono::high_resolution_clock::now();
+            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
+        } else {
+            ImGui::Text("CPU Usage: N/A (Not supported on this platform)");
+        }
+
+        ImGui::Separator();
+    }
+
+
+    if (ImGui::Button("Set Dark/Light Mode", ImVec2(180, 30))) {
+        isDarkMode = !isDarkMode;
+
+        // Adjust ImGui style based on the mode
+        if (isDarkMode) {
+            ImGui::StyleColorsDark();
+        } else {
+            ImGui::StyleColorsLight();
+        }
+    }
+
+
 
     static int counter = 0;
     ImGui::NewLine();
