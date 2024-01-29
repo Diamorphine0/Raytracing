@@ -19,6 +19,7 @@ using namespace glm;
 class Node{
 public:
     std::shared_ptr<Entity> entity;
+    std::string name;
 public:
     Node();
     Node(const std::shared_ptr<Entity> &entity);
@@ -28,6 +29,7 @@ public:
 
     void setParent(Node* parent);
     void addKeyframe(float time);
+    void setName(std::string name){this->name = name;}
 
     void Animate(const Shader& shader, float time, glm::vec3 pos);
 
@@ -39,9 +41,10 @@ public:
     glm::mat4 getModelMatrix();
 
     bool hasChildren();
-    std::vector<Node*> getChildren();
+    std::vector<Node*> getChildren(){return children;}
     Node* getParent();
 
+    int DFS();
 
 private:
     Node* parent;

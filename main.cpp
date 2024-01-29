@@ -85,6 +85,12 @@ int main(int argc, char* argv[])
 
     node1 -> setParent(engine.engineWorld);
     node2 ->setParent(engine.engineWorld);
+    engine.engineWorld -> setName("root");
+
+    //setting the names so that they are displayed on the display on the left hand side
+    node1 -> setName("frogsterfrogginson");
+    node2 -> setName("aliensBuiltThePyramids");
+
     engine.engineWorld ->addKeyframe(0);
 
     entity1 -> scale(0.1, 0.1, 0.1);
