@@ -34,12 +34,12 @@ public:
     void updateWorldMatrix();
     void Draw(const Shader& shader, glm::vec3 pos); //camera position - somewhere we do need to pass it
 
-    void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities);
+    void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities, bool animate);
 
     glm::mat4 getModelMatrix();
 
     bool hasChildren();
-    std::vector<Node*> getChildren();
+    const std::vector<Node*>& getChildren();
     Node* getParent();
 
 

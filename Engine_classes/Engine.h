@@ -46,7 +46,7 @@ public:
 
     GLFWwindow* window;
     GLuint programID;
-    engineCamera camera;
+    engineCamera  camera;
     int width, height;
     frameBuffer* fb;
     Shader* shader;

@@ -15,5 +15,6 @@ extern std::mt19937 rand_gen;
 
 const float INF = std::numeric_limits<float>::infinity();
 const float EPS = 1e-7;
+const float PI = 3.1415926535897932385;
 
 #endif // UTILITIES_HPP

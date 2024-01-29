@@ -40,8 +40,8 @@ set(PROJECT_SOURCES
         Entity.h
         Entity.cpp
 
-        texture.h
-        texture.cpp
+        Texture.h
+        Texture.cpp
 
         HitRecord.cpp
         HitRecord.h
