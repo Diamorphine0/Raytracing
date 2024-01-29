@@ -4,8 +4,7 @@
 #include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
-
-Engine::Engine(float width, float height, engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
+Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
 
@@ -20,7 +19,17 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow( width, height, "Engine Project", NULL, NULL);
+    // Get the primary monitor
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+
+    // Get the video mode of the primary monitor
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    int monitorX, monitorY, monitorWidth, monitorHeight;
+    glfwGetMonitorWorkarea(monitor, &monitorX, &monitorY, &monitorWidth, &monitorHeight);
+
+    this->width = monitorWidth;
+    this->height = monitorHeight;
+    window = glfwCreateWindow( this->width, this->height, "Engine Project", NULL, NULL);
 
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
@@ -77,39 +86,39 @@ void Engine::update(Shader* shader){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2(400,400));
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
 
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(800, 600));
-    ImGui::SetNextWindowPos(ImVec2 (400, 0));
+    ImGui::SetNextWindowSize(ImVec2((this->width)/3 * 2, (this->height) *3/4));
+    ImGui::SetNextWindowPos(ImVec2 ((this->width) / 6, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(400,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,400));
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2 (0,(this->height)*3/8));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2 (1200,0));
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2 ((this->width) * 5 / 6,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(1500,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,600));
+    ImGui::SetNextWindowSize(ImVec2((this->width),(this->height) / 4));
+    ImGui::SetNextWindowPos(ImVec2 (0,(this->height) * 3 / 4));
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2(1200,300));
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2((this->width) * 5 / 6, (this->height) * 3 / 8));
     ImGui::Begin("Add Object");
     RenderAddObject();
     ImGui::End();
@@ -119,10 +128,20 @@ void Engine::update(Shader* shader){
 
     fb -> Bind();
 
-    camera.renderScene(engineWorld, *shader);
+    if(animate){
+        camera.animationPrep(engineWorld);
+        big_grid.draw(*shaderLine, camera);
+        axes.draw(*shaderAx, camera);
+        camera.animateScene(engineWorld, *shader, currentFrame);
+    }
+    else{
+        camera.Clear();
+        big_grid.draw(*shaderLine, camera);
+        axes.draw(*shaderAx, camera);
+    }
 
-    big_grid.draw(*shaderLine, camera);
-    axes.draw(*shaderAx, camera);
+    //big_grid.draw(*shaderLine, camera);
+    //axes.draw(*shaderAx, camera);
 
     fb -> Unbind();
 

@@ -27,7 +27,7 @@ public:
 class Engine{
 public:
 
-    Engine(float width, float height, engineCamera camera, const std::string &shader_path);
+    Engine(engineCamera camera, const std::string &shader_path);
 
     void update(Shader* shader);
 
