@@ -65,6 +65,9 @@ public:
     TextData objectName;
     TextData objectTexture;
     TextData objectTag;
+
+    //clicled object
+    //Node* clicked;
 private:
     std::vector<int> markedPositions;
 };

@@ -4,6 +4,7 @@
 #include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
+
 Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
@@ -74,6 +75,7 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);
+
 }
 
 void Engine::update(Shader* shader){
@@ -189,6 +191,10 @@ void Engine::RenderProperties(){
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
     if(ImGui::Button("Apply Transformations")){
+        //here we would want to used the engine.clicked as well!!!
+        //this->clicked->entity->translate(translationX, translationY, translationZ);
+        //this->clicked->entity->scale(scale, scale, scale);
+
         this->engineWorld->entity->translate(translationX, translationY, translationZ);
         this->engineWorld->entity->scale(scale, scale, scale);
         translationX = 0.0f;
@@ -247,10 +253,12 @@ struct EntityNode {
     std::vector<EntityNode> children;
 };
 
-void RenderEntityHierarchy(Node& node) {
-    if (ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
-
+void RenderEntityHierarchy(Node& node /* Engine engine*/) {
+    bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
+    if(isClicked){
+        //for now context menu is irrelevant
         // Context menu when right-clicking an entity
+        /*
         if (ImGui::BeginPopupContextItem()) {
             if (ImGui::MenuItem("Delete Entity")) {
                 // Implement logic to delete the entity
@@ -260,11 +268,15 @@ void RenderEntityHierarchy(Node& node) {
             }
             ImGui::EndPopup();
         }
+        */
+
+        //at this point this node is clicked so we can set the engine.clicked var, but htis variable doesnt work
+        //engine.clicked = &node;
 
         // Render child entities recursively
         std::vector<Node*> children = node.getChildren();
         for (auto child : children){
-            RenderEntityHierarchy(*child);
+            RenderEntityHierarchy(*child /*engine*/ );
         }
 
         // End the tree node
@@ -274,7 +286,8 @@ void RenderEntityHierarchy(Node& node) {
 void Engine::RenderHierarchy() {
     ImGui::Text("Entity Hierarchy View");
     // Render the hierarchy
-    RenderEntityHierarchy(*this->engineWorld);
+    //additional argument of engine used for the engine.clicked
+    RenderEntityHierarchy(*this->engineWorld /**this*/);
 }
 
 void Engine::RenderAnimation() {
