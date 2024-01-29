@@ -64,6 +64,7 @@ public:
     //this is data useful for the UI.
     TextData objectName;
     TextData objectTexture;
+    TextData objectTag;
 private:
     std::vector<int> markedPositions;
 };

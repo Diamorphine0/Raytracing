@@ -174,3 +174,11 @@ void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Enti
         child -> dfs_entitity_setup(currentFrame, entities);
     }
 }
+
+int Node::DFS(){
+    int res = 1;
+    for(Node* child : children){
+        res += child->DFS();
+    }
+    return res;
+}
