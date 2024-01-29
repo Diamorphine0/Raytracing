@@ -18,7 +18,12 @@ TriangleMesh::TriangleMesh(const std::shared_ptr<Entity> &e) {
         std::vector<vec2> UVpoints(3);
 
         for(auto j = 0; j < 3; j ++){
-            auto &vertex = e->vertices[j + i];
+            auto vertex = e->vertices[j + i];
+
+            //to see if this works
+            //vertex.Coordinates.y *= -1;
+            //vertex.Norm.y *= -1;
+
             auto modified = glm::vec3(e->worldMatrix * glm::vec4(vertex.Coordinates, 1));
             coords[j] = glm::vec3(modified);
             UVpoints[j] = vertex.UV;

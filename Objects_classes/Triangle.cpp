@@ -76,28 +76,31 @@ bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
 */
 
 bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) const{
-    vec3 v1 = p1 - p0, v2 = p2 - p0;
-    auto pvec = glm::cross(r.get_direction(), v2);
-    auto det = glm::dot(v1, pvec);
+    vec3 edge1 = p1 - p0;
+    vec3 edge2 = p2 - p0;
+    vec3 ray_cross_e2 = cross(r.get_direction(), edge2);
+    float det = dot(edge1, ray_cross_e2);
 
-    //checks if parallel to the plane
-    if (std::fabs(det) <= EPS)
+    if (std::fabs(det)  < EPS)
+        return false;    // This ray is parallel to this triangle.
+
+    float inv_det = 1.0 / det;
+    vec3 s = r.get_origin() - p0;
+    float u = inv_det * dot(s, ray_cross_e2);
+
+    if (u < 0 || u > 1)
         return false;
 
-    auto inv_det = 1.0/det;
+    vec3 s_cross_e1 = cross(s, edge1);
+    float v = inv_det * dot(r.get_direction(), s_cross_e1);
 
-    auto tvec = r.get_origin() - p0;
-    auto u = glm::dot(tvec, pvec) * inv_det;
-    if(u < 0 || u > 1)
+    if (v < 0 || u + v > 1)
         return false;
 
-    auto qvec = glm::cross(tvec, v1);
-    auto v = glm::dot(r.get_direction(), qvec) * inv_det;
-    if(v < 0 || v + u > 1)
-        return false;
+    // At this stage we can compute t to find out where the intersection point is on the line.
+    float t = inv_det * dot(edge2, s_cross_e1);
 
-    float t = glm::dot(r.get_direction(), qvec) * inv_det;
-    if(!restriction.surrounds(t))
+    if (!restriction.contains(t)) // ray intersection
         return false;
 
     auto pointHit = r.get_origin() + r.get_direction() * t;
