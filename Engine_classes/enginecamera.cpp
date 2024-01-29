@@ -42,31 +42,28 @@ void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& cu
 
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
 
-    lastTime = glfwGetTime();
+    currentTime = glfwGetTime();
 
     float realspeed = speed;
     //zoom mode - may be useful for zooming in on objects.
 
-    float speedcutoff = glm::length(position);
-    if(speedcutoff < 10)
-        realspeed = realspeed * log2(speedcutoff/10 + 1);
-
 
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);
+    lastTime = currentTime;
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        horizontalAngle += mousespeed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
         horizontalAngle -= mousespeed * deltaTime;
     }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+        horizontalAngle += mousespeed * deltaTime;
+    }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-        verticalAngle += mousespeed * deltaTime;
+        verticalAngle -= mousespeed * deltaTime;
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-        verticalAngle -= mousespeed * deltaTime;
+        verticalAngle += mousespeed * deltaTime;
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
 
@@ -78,19 +75,19 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     // Move forward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        position -= direction * deltaTime * realspeed;
+        position += direction * deltaTime * realspeed;
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        position += direction * deltaTime * realspeed;
+        position -= direction * deltaTime * realspeed;
     }
     glm::vec3 left = cross(glm::vec3(0.0f, 1.0f, 0.0f), direction);
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        position += left * deltaTime * realspeed;
+        position -= left * deltaTime * realspeed;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        position -= left * deltaTime * realspeed;
+        position += left * deltaTime * realspeed;
     }
 }
 

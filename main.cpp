@@ -43,9 +43,9 @@ int main(int argc, char* argv[])
     node2 -> setName("aliensBuiltThePyramids");
 
     float currentTime = glfwGetTime();
-    float lastTime;
+    float lastTime = currentTime;
 
-    float speed = 0.01f;
+    float speed = 5.0f;
 
     Shader* shader = new Shader(SOURCE_DIR + (std::string)"/shaders/vertexshader.shader", SOURCE_DIR + (std::string) "/shaders/fragmentshader.shader");
 

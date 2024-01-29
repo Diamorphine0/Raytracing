@@ -282,7 +282,7 @@ bool Entity::loadOBJ(std::string path,
 
 glm::mat4 Entity::getClosestKeyframe(int currentFrame){
     if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime){
-        std::cout << "NOT ENOUGH KEYFRAMES"<< std::endl;
+        //std::cout << "NOT ENOUGH KEYFRAMES"<< std::endl;
         return localMatrix;
     }
 
