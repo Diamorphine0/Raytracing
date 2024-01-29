@@ -11,8 +11,8 @@ public:
 
     engineCamera(glm::vec3 position, float horizontalAngle, float verticalAngle, float initialFoV);
 
-    void renderScene(Node* SG, const Shader& shader);
     void animationPrep(Node* engineWorld);
+    void renderScene(Node* SG, const Shader& shader, int& currentFrame);
     void animateScene(Node* engineWorld, const Shader& shader, int& currentFrame);
 
     inline void Clear() const{

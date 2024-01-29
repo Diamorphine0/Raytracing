@@ -28,13 +28,13 @@ public:
     ~Node();
 
     void setParent(Node* parent);
-    void addKeyframe(float time);
+    void addKeyframe(int time);
     void setName(std::string name){this->name = name;}
 
-    void Animate(const Shader& shader, float time, glm::vec3 pos);
+    void Animate(const Shader& shader, int time);
 
     void updateWorldMatrix();
-    void Draw(const Shader& shader, glm::vec3 pos); //camera position - somewhere we do need to pass it
+    void Draw(const Shader& shader, glm::vec3 pos, int& currentFrame);
 
     void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities);
 

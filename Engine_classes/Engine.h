@@ -38,6 +38,7 @@ public:
     void RenderStats();
     void RenderAnimation();
     void RenderAddObject();
+    void displayUpdate();
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 

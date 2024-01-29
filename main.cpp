@@ -7,48 +7,16 @@
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "lightsource.h"
-#include "gridline.h"
 #include <string>
-#include "FrameBuffer.h"
 #include "BVH_Node.h"
-
-
-
-void test_raytracing(){
-    point3 p0 = {0, 0, 0};
-    point3 p1 = {1, 0, 0};
-    point3 p2 = {0, 1, 0};
-
-
-    auto Triangle1 = std::make_shared<Triangle>(p0, p1, p2, color3{0.5, 0.5, 0.5});
-
-    std::vector<std::shared_ptr<Object>> all_objects {Triangle1};
-
-    auto worldRaytracer = std::make_shared<BVH_Node>(all_objects, 0, all_objects.size());
-
-    /**
-     * Set up camera
-     */
-    auto rayTracingCamera = std::make_shared<Camera>(800, 1800, point3{0, 0, 10});
-  //  std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
-
-    std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
-
-    rayTracingCamera->render(worldRaytracer, "imageRender-test.ppm");
-
-}
-
-
 
 int main(int argc, char* argv[])
 {
 
-    test_raytracing();
-
     Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
     auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
     entity2->translate(-5, -5, 5);
@@ -58,30 +26,13 @@ int main(int argc, char* argv[])
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
-//    grid big_grid;
-//    big_grid.gen_big_grid(1000, 501);
-//
-//    grid axes;
-//    axes.gen_axes(1000);
-
     entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
 
     std::cout << "Texture is loaded" << std::endl;
-//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
-//    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
-//
     entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
-//
-//    entity2 -> scale(0.5, 0.5, 0.5);
-//    entity2 -> translate(-10, -10, 0);
-//
-//    entity3 -> scale(0.4, 0.4, 0.4);
-//    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
     Node* node2 = new Node(entity2);
-//    Node* node2 = new Node(entity2);
-//    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
     node2 ->setParent(engine.engineWorld);
@@ -90,27 +41,6 @@ int main(int argc, char* argv[])
     //setting the names so that they are displayed on the display on the left hand side
     node1 -> setName("frogsterfrogginson");
     node2 -> setName("aliensBuiltThePyramids");
-
-    engine.engineWorld ->addKeyframe(0);
-
-    entity1 -> scale(0.1, 0.1, 0.1);
-    entity1 -> rotate(1, 2, 3, 4);
-
-    engine.engineWorld ->addKeyframe(2000);
-
-//    engine.engineWorld -> addKeyframe(300);
-//
-//    entity1 -> translate(5, 5, 1);
-//
-//    engine.engineWorld -> addKeyframe(600);
-//
-//    entity1 -> scale(10, 2, 1);
-//
-//    engine.engineWorld -> addKeyframe(600);
-
-
-//    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-//    engine.world = world;
 
     float currentTime = glfwGetTime();
     float lastTime;

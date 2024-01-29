@@ -18,34 +18,22 @@ engineCamera::engineCamera(glm::vec3 position, float horizontalAngle, float vert
     up = glm::cross(right, direction);
 }
 
-void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
-    Clear();
-
+void engineCamera::renderScene(Node* engineWorld, const Shader& shader, int& currentFrame){
     auto mvp = construct_mvp();
 
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
-    engineWorld -> Draw(shader, pos);
+    engineWorld -> Draw(shader, pos, currentFrame);
 };
-void engineCamera::animationPrep(Node* engineWorld){
-    Clear();
+
+void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
 
     auto mvp = construct_mvp();
 
-    // this should technically also time dependent
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
-}
-void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
-    //Clear();
 
-    //auto mvp = construct_mvp();
-
-    // this should technically also time dependent
-    //engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
-
-    glm::vec3 pos = getPosition();
-    engineWorld -> Animate(shader, currentFrame, pos);
+    engineWorld -> Animate(shader, currentFrame);
     currentFrame += 1;
 };
 
@@ -58,11 +46,11 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     float realspeed = speed;
     //zoom mode - may be useful for zooming in on objects.
-    /*
+
     float speedcutoff = glm::length(position);
     if(speedcutoff < 10)
         realspeed = realspeed * log2(speedcutoff/10 + 1);
-    */
+
 
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);

@@ -64,7 +64,6 @@ void ImageRenderer::Raytrace(){
     // Cull triangles which normal is not towards the camera
     glEnable(GL_CULL_FACE);
 
-
     auto fb = new frameBuffer(image_width, image_height);
     fb -> BindData(&pixel_colors);
 

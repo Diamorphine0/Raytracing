@@ -73,6 +73,51 @@ void Engine::update(Shader* shader){
 
     glfwPollEvents();
 
+    displayUpdate();
+
+    fb -> Bind();
+
+    camera.Clear();
+    if(animate){
+        big_grid.draw(*shaderLine, camera);
+        camera.animateScene(engineWorld, *shader, currentFrame);
+    }
+    else{
+        big_grid.draw(*shaderLine, camera);
+        axes.draw(*shaderAx, camera);
+        camera.renderScene(engineWorld, *shader, currentFrame);
+    }
+
+    fb -> Unbind();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glfwSwapBuffers(window);
+}
+
+void Engine::LoadEngine(){
+    // we access the ImGui window size
+    const float window_width = ImGui::GetContentRegionAvail().x;
+    const float window_height = ImGui::GetContentRegionAvail().y;
+
+    // we rescale the framebuffer to the actual window size here and reset the glViewport
+    fb -> Rescale(window_width, window_height);
+    glViewport(0, 0, window_width, window_height);
+
+    // we get the screen position of the window
+    ImVec2 pos = ImGui::GetCursorScreenPos();
+
+    // and here we can add our created texture as image to ImGui
+    // unfortunately we need to use the cast to void* or I didn't find another way tbh
+    ImGui::GetWindowDrawList()->AddImage(
+        (void *) fb -> texture_id,
+        ImVec2(pos.x, pos.y),
+        ImVec2(pos.x + window_width, pos.y + window_height),
+        ImVec2(0, 1),
+        ImVec2(1, 0)
+    );
+}
+
+void Engine::displayUpdate(){
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
@@ -118,51 +163,6 @@ void Engine::update(Shader* shader){
 
     // Rendering
     ImGui::Render();
-
-    fb -> Bind();
-
-    if(animate){
-        camera.animationPrep(engineWorld);
-        big_grid.draw(*shaderLine, camera);
-        axes.draw(*shaderAx, camera);
-        camera.animateScene(engineWorld, *shader, currentFrame);
-    }
-    else{
-        camera.Clear();
-        big_grid.draw(*shaderLine, camera);
-        axes.draw(*shaderAx, camera);
-    }
-
-    //big_grid.draw(*shaderLine, camera);
-    //axes.draw(*shaderAx, camera);
-
-    fb -> Unbind();
-
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    glfwSwapBuffers(window);
-}
-
-void Engine::LoadEngine(){
-    // we access the ImGui window size
-    const float window_width = ImGui::GetContentRegionAvail().x;
-    const float window_height = ImGui::GetContentRegionAvail().y;
-
-    // we rescale the framebuffer to the actual window size here and reset the glViewport
-    fb -> Rescale(window_width, window_height);
-    glViewport(0, 0, window_width, window_height);
-
-    // we get the screen position of the window
-    ImVec2 pos = ImGui::GetCursorScreenPos();
-
-    // and here we can add our created texture as image to ImGui
-    // unfortunately we need to use the cast to void* or I didn't find another way tbh
-    ImGui::GetWindowDrawList()->AddImage(
-        (void *) fb -> texture_id,
-        ImVec2(pos.x, pos.y),
-        ImVec2(pos.x + window_width, pos.y + window_height),
-        ImVec2(0, 1),
-        ImVec2(1, 0)
-    );
 }
 
 void Engine::RenderProperties(){
@@ -199,6 +199,37 @@ void Engine::RenderProperties(){
     ImGui::ColorEdit4("Color", &color.x);
 };
 
+void RenderEntityHierarchy(Node& node /* Engine engine*/) {
+    bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
+    if(isClicked){
+        //for now context menu is irrelevant
+        // Context menu when right-clicking an entity
+        /*
+        if (ImGui::BeginPopupContextItem()) {
+            if (ImGui::MenuItem("Delete Entity")) {
+                // Implement logic to delete the entity
+            }
+            if (ImGui::MenuItem("Create Child")) {
+                // Implement logic to create a child entity
+            }
+            ImGui::EndPopup();
+        }
+        */
+
+        //at this point this node is clicked so we can set the engine.clicked var, but htis variable doesnt work
+        //engine.clicked = &node;
+
+        // Render child entities recursively
+        std::vector<Node*> children = node.getChildren();
+        for (auto child : children){
+            RenderEntityHierarchy(*child /*engine*/ );
+        }
+
+        // End the tree node
+        ImGui::TreePop();
+    }
+}
+
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("Framerate:");
@@ -234,46 +265,10 @@ void Engine::RenderStats(){
         rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm");
 
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
-       // rayTracingCamera->render(world, "imageRender.ppm");
+        // rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
 
-struct EntityNode {
-    int id;
-    std::string name;
-    std::vector<EntityNode> children;
-};
-
-void RenderEntityHierarchy(Node& node /* Engine engine*/) {
-    bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
-    if(isClicked){
-        //for now context menu is irrelevant
-        // Context menu when right-clicking an entity
-        /*
-        if (ImGui::BeginPopupContextItem()) {
-            if (ImGui::MenuItem("Delete Entity")) {
-                // Implement logic to delete the entity
-            }
-            if (ImGui::MenuItem("Create Child")) {
-                // Implement logic to create a child entity
-            }
-            ImGui::EndPopup();
-        }
-        */
-
-        //at this point this node is clicked so we can set the engine.clicked var, but htis variable doesnt work
-        //engine.clicked = &node;
-
-        // Render child entities recursively
-        std::vector<Node*> children = node.getChildren();
-        for (auto child : children){
-            RenderEntityHierarchy(*child /*engine*/ );
-        }
-
-        // End the tree node
-        ImGui::TreePop();
-    }
-}
 void Engine::RenderHierarchy() {
     ImGui::Text("Entity Hierarchy View");
     // Render the hierarchy
@@ -284,9 +279,6 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    // we should have buttons to stop and play the animation
-
-    //static int coarseFrame = 0;
     ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 2000, "Frame %d");
 
     // we want to have an animate condition
@@ -298,11 +290,16 @@ void Engine::RenderAnimation() {
         animate = false;
     }
 
-    if (ImGui::Button("Mark Position")) {
-        // Add the keyframe
-        engineWorld ->addKeyframe(currentFrame);
+    if (ImGui::Button("Set Keyframe")) {
 
-        markedPositions.push_back(currentFrame);
+        if(!animate){
+            std::cout << "Keyframe added" << std::endl;
+            engineWorld -> addKeyframe(currentFrame);
+            markedPositions.push_back(currentFrame);
+        }else{
+            std::cout << "Cannot add frames during the animation" << std::endl;
+        }
+
     }
 
     if (ImGui::Button("Clear All Marks")) {
