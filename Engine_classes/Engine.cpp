@@ -314,6 +314,11 @@ void Engine::RenderProperties(){
     static const char* stylesTexture[] = { "Grey", "brick", "earth", "grid", "purple", "sun" };
     static int selectedStyleTexture = 0;
     ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture));
+    if (ImGui::Button("Apply new texture")){
+        std::string textureString;
+        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)stylesTexture[selectedStyleTexture] + (std::string)".png";
+        this -> selectedNode -> entity -> texture = std::make_shared<Texture>(textureString.c_str());
+    };
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
