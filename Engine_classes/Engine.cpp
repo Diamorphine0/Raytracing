@@ -112,19 +112,17 @@ bool findAndDeleteNode(Node* currentNode, const std::string& targetName) {
     }
 
     if (currentNode->name == targetName) {
-        //delete currentNode;
-        //currentNode = nullptr;
+        delete currentNode;
         return true;
     }
 
-    for (Node*& child : currentNode->children) {
-        if (findAndDeleteNode(child, targetName)) {
-            //child = nullptr;
-            return true;
-        }
-    }
+    // Recursively search and delete in children
+    auto it = std::remove_if(currentNode->children.begin(), currentNode->children.end(),
+                             [&](Node* child) { return findAndDeleteNode(child, targetName); });
 
-    return false;
+    currentNode->children.erase(it, currentNode->children.end());
+
+    return it != currentNode->children.end();
 }
 void traverseTree(Node* rootNode) {
     if (rootNode == nullptr) {
