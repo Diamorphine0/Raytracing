@@ -95,7 +95,7 @@ int ImageRenderer::Raytrace(GLFWwindow* engineWindow){
 
     // Open a window and create its OpenGL context
     GLFWwindow* window; // (In the accompanying source code, this variable is global for simplicity)
-    window = glfwCreateWindow( image_width, image_height, "Raytracing output", NULL, NULL);
+    window = glfwCreateWindow( image_width, image_height, "Raytracing output", NULL, engineWindow);
     if( window == NULL ){
         fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
         glfwTerminate();
@@ -119,17 +119,22 @@ int ImageRenderer::Raytrace(GLFWwindow* engineWindow){
     SetupPointBuffer(VAO, VBO);
 
     do{
+        glfwPollEvents();
+        glfwMakeContextCurrent(window);
+
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS || glfwWindowShouldClose(window)) {
+            break;
+        }
+
         glClear( GL_COLOR_BUFFER_BIT );
 
         shader -> Bind();
 
         RenderPoints(pixel_colors, VAO, VBO, shader);
 
-        // Swap buffers
         glfwSwapBuffers(window);
-        glfwPollEvents();
 
-    } // Check if the ESC key was pressed or the window was closed
+    }
     while( glfwGetKey(window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
            glfwWindowShouldClose(window) == 0 );
 

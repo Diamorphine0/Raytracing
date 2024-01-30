@@ -140,6 +140,8 @@ void Engine::update(Shader* shader){
 
     glfwPollEvents();
 
+    glfwMakeContextCurrent(window);
+
     displayUpdate();
 
     fb -> Bind();
