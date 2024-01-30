@@ -81,6 +81,7 @@ public:
     TextData objectTexture;
 private:
     std::vector<int> markedPositions;
+    ImVec2 initialWindowSize;
 };
 
 
