@@ -52,4 +52,13 @@ The contributors to the project are the following individuals (in no particular 
 - Anca Sfia [**Trello Leader**]
 - Jana Zlatic
 
-## Resources
+## Dependencies (Everything is run with the CMAKE file)
+- GLFW
+- OpenGL
+- GLM
+- ImGUI 
+- ffmpeg
+- stb_image
+- QT
+
+Example od how to build: /snap/clion/263/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/263/bin/ninja/linux/x64/ninja -DCMAKE_PREFIX_PATH=/home/tudor/Qt/6.6.1/gcc_64 -G Ninja -S /home/tudor/Desktop/Raytracing -B /home/tudor/Desktop/Raytracing/cmake-build-debug
