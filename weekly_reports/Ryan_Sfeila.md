@@ -10,3 +10,6 @@ My previous Reflection Branch was quasi-useless after the engine-Raytracer merge
 29/12/23
 Diffuse Reflection, Metallic (mirrorlike reflection), color attenuation, material classes, transparent/translucent materials and basis for refraction in closed objects. 
 Tudor helped fix a big issue I had with floating point rounding errors (a reflected ray kept hitting the reflecting surface because of rounding error on the intersection point. issue analogous to surface acne but much worse)
+
+29/1/24
+Wrote classes and edited ray_color in Camera.cpp to have lights accounted for when backtracing rays. Diffuse Lights and Collimated lights with the degree of collimation. Unfortunately, when merging, textures were the priority, and material classes as well as lights had to be removed. May not have time to reimplement them alongside textures.

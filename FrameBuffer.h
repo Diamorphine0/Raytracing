@@ -22,6 +22,7 @@ public:
 public:
     frameBuffer(float width, float height);
     void Bind();
+    void BindData(std::vector<std::vector<glm::vec<3, float>>>* data);
     void Unbind();
     void Rescale(float width, float height);
 };

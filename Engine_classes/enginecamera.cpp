@@ -18,27 +18,22 @@ engineCamera::engineCamera(glm::vec3 position, float horizontalAngle, float vert
     up = glm::cross(right, direction);
 }
 
-void engineCamera::renderScene(Node* engineWorld, const Shader& shader){
-    Clear();
-
+void engineCamera::renderScene(Node* engineWorld, const Shader& shader, int& currentFrame){
     auto mvp = construct_mvp();
 
     engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
 
     glm::vec3 pos = getPosition();
-    engineWorld -> Draw(shader, pos);
+    engineWorld -> Draw(shader, pos, currentFrame);
 };
 
 void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& currentFrame){
-    Clear();
 
-//    auto mvp = construct_mvp();
-//
-//    // this should technically also time dependent
-//    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+    auto mvp = construct_mvp();
 
-    glm::vec3 pos = getPosition();
-    engineWorld -> Animate(shader, currentFrame, pos);
+    engineWorld -> entity -> worldMatrix = mvp * engineWorld -> entity -> localMatrix;
+
+    engineWorld -> Animate(shader, currentFrame);
     currentFrame += 1;
 };
 
@@ -47,31 +42,28 @@ void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& cu
 
 void engineCamera::movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window){
 
-    lastTime = glfwGetTime();
+    currentTime = glfwGetTime();
 
     float realspeed = speed;
     //zoom mode - may be useful for zooming in on objects.
-    /*
-    float speedcutoff = glm::length(position);
-    if(speedcutoff < 10)
-        realspeed = realspeed * log2(speedcutoff/10 + 1);
-    */
+
 
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);
+    lastTime = currentTime;
 
     if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS){
-        horizontalAngle += mousespeed * deltaTime;
-    }
-    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
         horizontalAngle -= mousespeed * deltaTime;
     }
+    if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS){
+        horizontalAngle += mousespeed * deltaTime;
+    }
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS){
-        verticalAngle += mousespeed * deltaTime;
+        verticalAngle -= mousespeed * deltaTime;
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS){
-        verticalAngle -= mousespeed * deltaTime;
+        verticalAngle += mousespeed * deltaTime;
         verticalAngle = glm::clamp(verticalAngle, -verticalAngleLimit, verticalAngleLimit);
     }
 
@@ -83,25 +75,25 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
 
     // Move forward
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS){
-        position -= direction * deltaTime * realspeed;
+        position += direction * deltaTime * realspeed;
     }
     // Move backward
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS){
-        position += direction * deltaTime * realspeed;
+        position -= direction * deltaTime * realspeed;
     }
     glm::vec3 left = cross(glm::vec3(0.0f, 1.0f, 0.0f), direction);
     // Strafe right
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS){
-        position += left * deltaTime * realspeed;
+        position -= left * deltaTime * realspeed;
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS){
-        position -= left * deltaTime * realspeed;
+        position += left * deltaTime * realspeed;
     }
 }
 
 glm::mat4 engineCamera::construct_mvp() const{
 
-    glm::mat4 Projection = glm::perspective(glm::radians(initialFoV), 4.0f / 3.0f, 0.1f, 100.0f);
+    glm::mat4 Projection = glm::perspective(glm::radians(initialFoV), 4.0f / 3.0f, 0.1f, 10000000.0f);
 
     // Camera matrix
     glm::mat4 View = glm::lookAt(

@@ -4,7 +4,8 @@
 #include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
-Engine::Engine(float width, float height, engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
+
+Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
 
@@ -19,18 +20,19 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow( width, height, "Engine Project", NULL, NULL);
+    // Get the primary monitor
+    GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 
-    if( window == NULL ){
-        fprintf( stderr, "Failed to open GLFW window. If you have an Intel GPU, they are not 3.3 compatible. Try the 2.1 version of the tutorials.\n" );
-        glfwTerminate();
-    }
+    // Get the video mode of the primary monitor
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    int monitorX, monitorY, monitorWidth, monitorHeight;
+    glfwGetMonitorWorkarea(monitor, &monitorX, &monitorY, &monitorWidth, &monitorHeight);
 
+    this->width = monitorWidth;
+    this->height = monitorHeight;
+    window = glfwCreateWindow( this->width, this->height, "Engine Project", NULL, NULL);
     glfwMakeContextCurrent(window);
-    glewExperimental=true;
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to initialize GLEW\n");
-    }
+    glewInit();
 
     // Enable depth test
     glEnable(GL_DEPTH_TEST);
@@ -70,58 +72,20 @@ void Engine::update(Shader* shader){
 
     glfwPollEvents();
 
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    ImGui::SetNextWindowSize(ImVec2(400,400));
-    ImGui::SetNextWindowPos(ImVec2 (0,0));
-    ImGui::Begin("Hierarchy");
-
-    RenderHierarchy();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(800, 600));
-    ImGui::SetNextWindowPos(ImVec2 (400, 0));
-    ImGui::Begin("Engine Visualization");
-    LoadEngine();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(400,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,400));
-    ImGui::Begin("Properties");
-    RenderProperties();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2 (1200,0));
-    ImGui::Begin("Settings");
-    RenderStats();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(1500,200));
-    ImGui::SetNextWindowPos(ImVec2 (0,600));
-    ImGui::Begin("Animation");
-    RenderAnimation();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2(300,300));
-    ImGui::SetNextWindowPos(ImVec2(1200,300));
-    ImGui::Begin("Add Object");
-    RenderAddObject();
-    ImGui::End();
-
-    // Rendering
-    ImGui::Render();
+    displayUpdate();
 
     fb -> Bind();
 
-    camera.renderScene(engineWorld, *shader);
-
-    big_grid.draw(*shaderLine, camera);
-    axes.draw(*shaderAx, camera);
+    camera.Clear();
+    if(animate){
+        big_grid.draw(*shaderLine, camera);
+        camera.animateScene(engineWorld, *shader, currentFrame);
+    }
+    else{
+        big_grid.draw(*shaderLine, camera);
+        axes.draw(*shaderAx, camera);
+        camera.renderScene(engineWorld, *shader, currentFrame);
+    }
 
     fb -> Unbind();
 
@@ -152,6 +116,54 @@ void Engine::LoadEngine(){
     );
 }
 
+void Engine::displayUpdate(){
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
+
+    ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2 (0,0));
+    ImGui::Begin("Hierarchy");
+
+    RenderHierarchy();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2((this->width)/3 * 2, (this->height) *3/4));
+    ImGui::SetNextWindowPos(ImVec2 ((this->width) / 6, 0));
+    ImGui::Begin("Engine Visualization");
+    LoadEngine();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2 (0,(this->height)*3/8));
+    ImGui::Begin("Properties");
+    RenderProperties();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2 ((this->width) * 5 / 6,0));
+    ImGui::Begin("Settings");
+    RenderStats();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2((this->width),(this->height) / 4));
+    ImGui::SetNextWindowPos(ImVec2 (0,(this->height) * 3 / 4));
+    ImGui::Begin("Animation");
+    RenderAnimation();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    ImGui::SetNextWindowPos(ImVec2((this->width) * 5 / 6, (this->height) * 3 / 8));
+    ImGui::Begin("Add Object");
+    RenderAddObject();
+    ImGui::End();
+
+    // Rendering
+    ImGui::Render();
+}
+
 void Engine::RenderProperties(){
     // Translation sliders for X, Y, Z direction
     // we want to store the previous values
@@ -169,20 +181,34 @@ void Engine::RenderProperties(){
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
     if(ImGui::Button("Apply Transformations")){
-        for(auto &c: this->engineWorld->getChildren()){
-            c->entity->translate(translationX, translationY, translationZ);
-            c->entity->scale(scale, scale, scale);
-        }
+        this->selectedNode->entity->translate(translationX, translationY, translationZ);
+        this->selectedNode->entity->scale(scale, scale, scale);
         translationX = 0.0f;
         translationY = 0.0f;
         translationZ = 0.0f;
         scale = 1.0f;
+        // we want to set the color of the object as well - this may be a bit harder
     }
 
     //Color selection
     ImVec4 color;
     ImGui::ColorEdit4("Color", &color.x);
 };
+
+void Engine::RenderEntityHierarchy(Node& node) {
+    bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
+
+    if(isClicked){
+        selectedNode = &node;
+
+        std::vector<Node*> children = node.getChildren();
+        for (auto child : children){
+            RenderEntityHierarchy(*child);
+        }
+
+        ImGui::TreePop();
+    }
+}
 
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
@@ -240,74 +266,16 @@ void Engine::RenderStats(){
     }
 }
 
-struct EntityNode {
-    int id;
-    std::string name;
-    std::vector<EntityNode> children;
-};
-
-void RenderEntityHierarchy(EntityNode& entity) {
-    // Display each entity as a tree node
-    if (ImGui::TreeNodeEx(entity.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick)) {
-
-        // Add drag-and-drop source
-        if (ImGui::BeginDragDropSource()) {
-            // Set payload to the entity's id
-            ImGui::SetDragDropPayload("ENTITY_ID", &entity.id, sizeof(entity.id));
-            ImGui::Text("Dragging %s", entity.name.c_str());
-            ImGui::EndDragDropSource();
-        }
-
-        // Context menu when right-clicking an entity
-        if (ImGui::BeginPopupContextItem()) {
-            if (ImGui::MenuItem("Delete Entity")) {
-            }
-            if (ImGui::MenuItem("Create Child")) {
-            }
-            ImGui::EndPopup();
-        }
-        if (ImGui::BeginDragDropTarget()) {
-            // Accept the payload
-            const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ENTITY_ID");
-            if (payload) {
-                // Process the payload (in this example, rearrange the hierarchy)
-                int draggedEntityId = *static_cast<const int*>(payload->Data);
-                std::cout << "Dropped entity with ID " << draggedEntityId << " onto " << entity.name << std::endl;
-                // Implement logic to rearrange the hierarchy based on the dropped entity ID
-            }
-
-            // End the drag-and-drop target
-            ImGui::EndDragDropTarget();
-        }
-
-        // Render child entities recursively
-        for (auto& child : entity.children) {
-            RenderEntityHierarchy(child);
-        }
-
-        // End the tree node
-        ImGui::TreePop();
-
-
-    }
-}
-
 void Engine::RenderHierarchy() {
     ImGui::Text("Entity Hierarchy View");
-
-    // Sample hierarchy with parent-child relationships
-    static EntityNode rootNode = {1, "Root", {{2, "Child1"}, {3, "Child2", {{4, "Grandchild1"}, {5, "Grandchild2"}}}}};
-
     // Render the hierarchy
-    RenderEntityHierarchy(rootNode);
+    //additional argument of engine used for the engine.clicked
+    RenderEntityHierarchy(*this->engineWorld /**this*/);
 }
 
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    // we should have buttons to stop and play the animation
-
-    //static int coarseFrame = 0;
     ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 2000, "Frame %d");
 
     // we want to have an animate condition
@@ -319,11 +287,16 @@ void Engine::RenderAnimation() {
         animate = false;
     }
 
-    if (ImGui::Button("Mark Position")) {
-        // Add the keyframe
-        engineWorld ->addKeyframe(currentFrame);
+    if (ImGui::Button("Set Keyframe")) {
 
-        markedPositions.push_back(currentFrame);
+        if(!animate){
+            std::cout << "Keyframe added" << std::endl;
+            engineWorld -> addKeyframe(currentFrame);
+            markedPositions.push_back(currentFrame);
+        }else{
+            std::cout << "Cannot add frames during the animation" << std::endl;
+        }
+
     }
 
     if (ImGui::Button("Clear All Marks")) {
@@ -350,6 +323,9 @@ void Engine::RenderAddObject(){
     ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
     ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
     ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
+    ImGui::Text("Here, you may add a custom tag to the object");
+    ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
+
 
     if (ImGui::Button("Initialise object")){
         std::string nameString;
@@ -366,6 +342,24 @@ void Engine::RenderAddObject(){
             }
         }
 
+        //verify whether a texture was assigned, if not assign the grey texture
+        if(textureString[0] == '\0')
+            textureString = "Grey.png";
+
+
+        std::string tagString;
+        for (int i = 0; i < 256 && objectTag.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectTag.buffer[i]))) {
+                tagString += objectTag.buffer[i];
+            }
+        }
+
+        //verify whether a custom tag was assigned, if not assign a generic tag
+        int numOfObjects = this -> engineWorld -> DFS();
+        if(tagString[0] == '\0')
+            tagString = "object " + std::to_string(numOfObjects);
+
+
         std::cout << SOURCE_DIR << std::endl;
         nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString;
         textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString;
@@ -375,8 +369,8 @@ void Engine::RenderAddObject(){
             entity -> texture = std::make_shared<Texture>(textureString.c_str());
 
             Node* node = new Node(entity);
-
             node -> setParent(this -> engineWorld);
+            node->setName(tagString);
         } catch (const std::runtime_error& e) {
             std::cout << "Error: " << e.what() << std::endl;
         }
@@ -384,6 +378,7 @@ void Engine::RenderAddObject(){
         for(int i=0; i < 256; i++){
             objectName.buffer[i] = '\0';
             objectTexture.buffer[i] = '\0';
+            objectTag.buffer[i] = '\0';
         }
     }
 }

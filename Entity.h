@@ -125,7 +125,7 @@ public:
     Lightsource* lightsource;
 
     int keyFrameInitialTime = INT_MAX;
-    float keyFrameFinalTime = 0;
+    int keyFrameFinalTime = 0;
 
 public:
 
@@ -149,6 +149,8 @@ public:
     inline void setColor(glm::vec3 Color){ return ;};
 
     inline auto getVA(){ return va;};
+
+    glm::mat4 getClosestKeyframe(int currentFrame);
 
     bool loadOBJ(
         std::string path,

@@ -27,7 +27,7 @@ public:
 class Engine{
 public:
 
-    Engine(float width, float height, engineCamera camera, const std::string &shader_path);
+    Engine(engineCamera camera, const std::string &shader_path);
 
     void update(Shader* shader);
 
@@ -38,6 +38,8 @@ public:
     void RenderStats();
     void RenderAnimation();
     void RenderAddObject();
+    void displayUpdate();
+    void RenderEntityHierarchy(Node& node);
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 
@@ -55,6 +57,7 @@ public:
 
     int currentFrame = 0;
     int framesPerSecond = 30;
+    Node* selectedNode = engineWorld;
 
     bool animate = false;
 
@@ -64,6 +67,10 @@ public:
     //this is data useful for the UI.
     TextData objectName;
     TextData objectTexture;
+    TextData objectTag;
+
+    //clicled object
+    //Node* clicked;
 private:
     std::vector<int> markedPositions;
 };

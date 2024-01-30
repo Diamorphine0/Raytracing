@@ -9,6 +9,14 @@
 #include <vector>
 #include <fstream>
 
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
+#include "FrameBuffer.h"
+#include "shader.h"
+
 class ImageRenderer {
 public:
     ImageRenderer(int height, int width);
@@ -23,6 +31,8 @@ public:
     void reset_pixels();
 
     void render_image(const std::string &image_path);
+
+    void Raytrace();
 
 private:
     int image_height;   // Rendered image height

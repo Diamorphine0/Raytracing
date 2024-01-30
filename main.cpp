@@ -7,30 +7,26 @@
 #include "Camera.hpp"
 #include "Triangle.h"
 #include "lightsource.h"
-#include "gridline.h"
 #include <string>
-#include "FrameBuffer.h"
 #include "BVH_Node.h"
-
-
-
 
 int main(int argc, char* argv[])
 {
 
-    Engine engine = Engine(1800, 800, engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
+    Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
 
     // only a single face of the object loaded..,
-    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/sphere.obj");
+    auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
 
-//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
-//    entity2->translate(-5, -5, 5);
-//    // to get the object identifier we can just count hte total number of objects stored in the scene grap
+    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
+    entity2->translate(-5, -5, 5);
+    // to get the object identifier we can just count hte total number of objects stored in the scene grap
 
     Lightarray lights;
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
+    engine.engineWorld -> setName("Scene Graph Root (Engine Camera)");
 //    grid big_grid;
 //    big_grid.gen_big_grid(1000, 501);
 //
@@ -75,14 +71,14 @@ int main(int argc, char* argv[])
 //
 //    engine.engineWorld -> addKeyframe(600);
 
-
-//    auto world = new Triangle(v1.Coordinates, v2.Coordinates, v3.Coordinates);
-//    engine.world = world;
+    //setting the names so that they are displayed on the display on the left hand side
+    node1 -> setName("frogsterfrogginson");
+   // node2 -> setName("aliensBuiltThePyramids");
 
     float currentTime = glfwGetTime();
-    float lastTime;
+    float lastTime = currentTime;
 
-    float speed = 0.01f;
+    float speed = 5.0f;
 
     Shader* shader = new Shader(SOURCE_DIR + (std::string)"/shaders/vertexshader.shader", SOURCE_DIR + (std::string) "/shaders/fragmentshader.shader");
 
@@ -106,6 +102,7 @@ int main(int argc, char* argv[])
             glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
         }
 
+        std::cout << currentTime << std::endl;
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         engine.update(shader);

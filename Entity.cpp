@@ -284,15 +284,31 @@ bool Entity::loadOBJ(std::string path,
     return true;
 }
 
-// Make sure there is no projective component.
+glm::mat4 Entity::getClosestKeyframe(int currentFrame){
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime){
+//        std::cout << "NOT ENOUGH KEYFRAMES"<< std::endl;
+        return localMatrix;
+    }
+
+    auto idx = index(currentFrame, 0, keyFrames.size() - 1);
+
+    return keyFrames[idx].second;
+}
 
 void Entity::interpolate(int currentFrame){
 
-    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime)
-        //std::cout << timeStamp << " " << keyFrameInitialTime << " " << keyFrameFinalTime << std::endl;
-        //std::cout << "Animation complete" << std::endl;
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime){
+//        std::cout << "NOT ENOUGH KEYFRAMES" << std::endl;
+        currentFrame = keyFrameInitialTime;
         return;
+    }else{
 
+        std::cout << "curr"<< typeid(currentFrame).name() << currentFrame << std::endl;
+        std::cout << "init"<< typeid(keyFrameInitialTime).name() << keyFrameInitialTime << std::endl;
+        std::cout << typeid(keyFrameFinalTime).name() << keyFrameFinalTime << std::endl;
+    }
+
+    // this finds the nearest keyframe to us
     auto idx = index(currentFrame, 0, keyFrames.size() - 1);
 
     auto& startTime = keyFrames[idx].first;

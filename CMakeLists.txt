@@ -90,6 +90,7 @@ set(PROJECT_SOURCES
         Objects_classes/AxisAlignedBoundingBox.h
         Objects_classes/BVH_Node.cpp
         Objects_classes/BVH_Node.h
+        FrameBuffer.h
         FrameBuffer.cpp
         Objects_classes/TriangleMesh.cpp
         Objects_classes/TriangleMesh.h
@@ -105,6 +106,10 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(Ray-tracing
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        shaders/rayVertex.shader
+        shaders/rayFragment.shader
+        shaders/vertexshader.shader
+        shaders/fragmentshader.shader
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET Ray-tracing APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

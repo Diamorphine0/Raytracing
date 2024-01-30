@@ -31,14 +31,16 @@ void Node::updateWorldMatrix(){
 
 }
 
-void Node::Draw(const Shader& shader, glm::vec3 pos){
+void Node::Draw(const Shader& shader, glm::vec3 pos, int& currentFrame){
 
-    if(entity != nullptr){
+//    if(entity != nullptr){
         const VertexArray& va = *(entity -> getVA());
 
        //entity -> rotate(0.01f, 0.001f, 0.01f, 1);
 
         shader.Bind();
+
+        entity -> localMatrix = entity -> getClosestKeyframe(currentFrame);
 
         if(parent != nullptr){
             if(parent -> entity != nullptr){
@@ -70,21 +72,31 @@ void Node::Draw(const Shader& shader, glm::vec3 pos){
         // This can be fixed as soon as we store the verticies ...
         glDrawArrays(GL_TRIANGLES, 0, entity -> vertices.size());
         glClear(GL_DEPTH_BUFFER_BIT);
-    }
+//    }
 
     for(auto child: children){
-        child -> Draw(shader, pos);
+        child -> Draw(shader, pos, currentFrame);
     }
 }
 
-void Node::addKeyframe(float time){
-
-    if(entity != nullptr){
-        // In the UI don't forget to set the local matrix when adjusting thre
-        // We know what the localmatrix of the function looks like so we just set it.
+void Node::addKeyframe(int time){
+    // we assume that the process is fast enough that all the matricies will remain unchanged throughout
+//    if(entity != nullptr){
+        std::cout << entity -> keyFrameInitialTime << std::endl;
+        std::cout << time << std::endl;
+        if(time < (entity -> keyFrameInitialTime)){
+            std::cout << "Are we adding keyframes already" << std::endl;
+            entity -> keyFrameInitialTime = time;
+        }
+        if(time > entity -> keyFrameFinalTime){
+            std::cout << "Are we adding keyframes already" << std::endl;
+            entity -> keyFrameFinalTime = time;
+        }
         std::pair entityKeyframe(time, (entity -> localMatrix));
         entity -> keyFrames.push_back(entityKeyframe);
-    }
+//    }else{
+//        std::cout << "the entity is null" << std::endl;
+//    }
 
     for(auto child: children){
         child->addKeyframe(time);
@@ -92,7 +104,7 @@ void Node::addKeyframe(float time){
 
 }
 
-void Node::Animate(const Shader& shader, float currentFrame, glm::vec3 pos){
+void Node::Animate(const Shader& shader, int currentFrame){
 
     if(entity != nullptr){
 
@@ -130,7 +142,7 @@ void Node::Animate(const Shader& shader, float currentFrame, glm::vec3 pos){
     }
 
     for(auto child: children){
-        child -> Animate(shader, currentFrame, pos);
+        child -> Animate(shader, currentFrame);
     }
 }
 
@@ -176,6 +188,11 @@ void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Enti
     }
 }
 
-const std::vector<Node *>& Node::getChildren() {
-    return children;
+int Node::DFS(){
+    int res = 1;
+    for(Node* child : children){
+        res += child->DFS();
+    }
+    return res;
 }
+

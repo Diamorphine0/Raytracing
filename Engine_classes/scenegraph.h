@@ -19,6 +19,7 @@ using namespace glm;
 class Node{
 public:
     std::shared_ptr<Entity> entity;
+    std::string name;
 public:
     Node();
     Node(const std::shared_ptr<Entity> &entity);
@@ -27,21 +28,23 @@ public:
     ~Node();
 
     void setParent(Node* parent);
-    void addKeyframe(float time);
+    void addKeyframe(int time);
+    void setName(std::string name){this->name = name;}
 
-    void Animate(const Shader& shader, float time, glm::vec3 pos);
+    void Animate(const Shader& shader, int time);
 
     void updateWorldMatrix();
-    void Draw(const Shader& shader, glm::vec3 pos); //camera position - somewhere we do need to pass it
+    void Draw(const Shader& shader, glm::vec3 pos, int& currentFrame);
 
     void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities, bool animate);
 
     glm::mat4 getModelMatrix();
 
     bool hasChildren();
-    const std::vector<Node*>& getChildren();
+    std::vector<Node*> getChildren(){return children;}
     Node* getParent();
 
+    int DFS();
 
 private:
     Node* parent;

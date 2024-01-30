@@ -25,6 +25,14 @@ frameBuffer::frameBuffer(float width, float height): width(width), height(height
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
+// we only have to change one line
+void frameBuffer::BindData(std::vector<std::vector<glm::vec<3, float>>>* data){
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture_id, 0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+}
+
 // here we bind our framebuffer
 void frameBuffer::Bind()
 {
