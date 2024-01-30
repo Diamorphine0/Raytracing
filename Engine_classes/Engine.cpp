@@ -287,18 +287,69 @@ void Engine::RenderEntityHierarchy(Node& node) {
         ImGui::TreePop();
     }
 }
+float lastCPUPercentage = 0.0f;
+std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
+
+float GetCPUUsageMacOS() {
+#ifdef __APPLE__
+    host_cpu_load_info_data_t cpuinfo;
+    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
+    if (host_statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info64_t)&cpuinfo, &count) == KERN_SUCCESS) {
+        unsigned long long totalTicks = 0;
+        for (int i = 0; i < CPU_STATE_MAX; ++i) {
+            totalTicks += cpuinfo.cpu_ticks[i];
+        }
+        unsigned long long idleTicks = cpuinfo.cpu_ticks[CPU_STATE_IDLE];
+        float cpuUsage = 100.0f * (1.0f - static_cast<float>(idleTicks) / totalTicks);
+
+        return cpuUsage;
+    }
+
+    return -1.0f;
+#else
+    // if user does not run MacOS
+    return -1.0f;
+#endif
+}
+
+float minFrameRate = FLT_MAX;
+float maxFrameRate = 0.0f;
 
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("Framerate:");
     ImGui::Text("Application average %.1f FPS", io.Framerate);
+    float currentFrameRate = io.Framerate;
+    minFrameRate = std::min(minFrameRate, currentFrameRate);
+    maxFrameRate = std::max(maxFrameRate, currentFrameRate);
+
+    static bool showStats = false;
+    ImGui::Checkbox("Additional Statistics", &showStats);
+
+    if (showStats) {
+        ImGui::Separator();
+        ImGui::Text("Fetching Additional Statistics:");
+
+
+        ImGui::Text("Min FPS: %.1f", minFrameRate);
+        ImGui::Text("Max FPS: %.1f", maxFrameRate);
+
+        float lastCPUPercentage = GetCPUUsageMacOS();
+        if (lastCPUPercentage >= 0.0f) {
+            lastUpdateTime = std::chrono::high_resolution_clock::now();
+            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
+        } else {
+            ImGui::Text("CPU Usage: N/A (Not supported for this OS)");
+        }
+
+        ImGui::Separator();
+    }
 
 
 
     static int counter = 0;
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
-    ImGui::NewLine();
     ImGui::Text("Frame to Raytrace: %d ", currentFrame);
     if(ImGui::Button("Raytrace")){
         //generate world at time t
@@ -344,6 +395,7 @@ void Engine::RenderStats(){
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
     }
+    ImGui::NewLine();
 
     static const char* styles[] = { "Dark", "Light" };
     static int selectedStyle = 0;
