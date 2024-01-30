@@ -32,7 +32,7 @@ public:
 
     void render_image(const std::string &image_path);
 
-    void Raytrace();
+    int Raytrace();
 
 private:
     int image_height;   // Rendered image height

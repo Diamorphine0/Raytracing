@@ -53,7 +53,7 @@ void build_scene(Engine &engine, std::string path){
 int main(int argc, char* argv[])
 {
 
-    Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR + (std::string)"/shaders");
+    Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR );
 
     Lightarray lights;
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));

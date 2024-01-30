@@ -126,6 +126,9 @@ public:
     std::shared_ptr<Material> material = nullptr;
     Lightsource* lightsource;
 
+    //as our objects are textured, we don't really change their colours. We just change the colour of the ambient light around them??
+    glm::vec3 ambience;
+
     int keyFrameInitialTime = INT_MAX;
     int keyFrameFinalTime = 0;
 
@@ -140,6 +143,9 @@ public:
     void bindlightsource(Lightsource lightsource){this->lightsource = &lightsource;}
 
     void interpolate(int currentFrame);
+
+    //setting the ambience of an object
+    void setAmbience(float x, float y, float z){ambience = glm::vec3(x, y, z);}
 
     // the controls are currently broken.
     inline void rotate(float angle, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, angle, glm::vec3(x, y, z)); };

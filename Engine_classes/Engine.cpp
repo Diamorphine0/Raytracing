@@ -7,7 +7,7 @@
 #include "Dielectric_Material.h"
 #include "Diffuse_Material.h"
 
-Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
+Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
 
@@ -48,6 +48,34 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+    // we set new standard font
+    io.Fonts->AddFontDefault();
+    standardfont = io.Fonts->AddFontFromFileTTF((root_path + (std::string)"/fonts/NotoSans.ttf").c_str(), 20.0f);
+    IM_ASSERT(standardfont != NULL);
+
+    // we set the desired ImGui style properties
+    ImGuiStyle& style = ImGui::GetStyle();
+    auto& colors = style.Colors;
+
+    style.ScrollbarRounding = 0;
+    style.WindowRounding = 3.0f;
+
+    // change color of title bars
+    style.Colors[ImGuiCol_TitleBg] = ImColor(35,35,35,35);
+    style.Colors[ImGuiCol_TitleBgActive] = ImColor(35,35,35,35);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImColor(35,35,35,35);
+
+    // change color of buttons and sliders
+    colors[ImGuiCol_Button] = ImColor(169,169,169,100);
+    colors[ImGuiCol_ButtonHovered] = ImColor(211,211,211,100);
+    colors[ImGuiCol_ButtonActive] = ImColor(211,211,211,100);
+
+    colors[ImGuiCol_SliderGrab] = ImColor(169,169,169,100);
+    colors[ImGuiCol_SliderGrabActive] = ImColor(169,169,169,100);
+    style.Colors[ImGuiCol_FrameBg] = ImColor(120,120,120,100);
+    style.Colors[ImGuiCol_FrameBgHovered] = ImColor(120,120,120,100);
+    style.Colors[ImGuiCol_FrameBgActive] = ImColor(120,120,120,100);
+
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
@@ -63,11 +91,22 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
 
     engineWorld = new Node(std::make_shared<Entity>());
 
-    shaderLine = new Shader(shader_path + "/vertexshaderLine.shader", shader_path + "/fragmentshaderLine.shader");
-    shaderAx = new Shader(shader_path + "/vertexshaderAx.shader", shader_path + "/fragmentshaderAx.shader");
+    shaderLine = new Shader(root_path + (std::string)"/shaders" + "/vertexshaderLine.shader", root_path + (std::string)"/shaders" + "/fragmentshaderLine.shader");
+    shaderAx = new Shader(root_path + (std::string)"/shaders" + "/vertexshaderAx.shader", root_path + (std::string)"/shaders" + "/fragmentshaderAx.shader");
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);
+}
+
+// stores the current (rescaled) size of the GLFW parent window in two parameters passed by reference
+void GetWindowSize(GLFWwindow* window, int& width, int& height) {
+    if (window != nullptr) {
+        glfwGetWindowSize(window, &width, &height);
+    }
+    else {
+        width = 0;
+        height = 0;
+    }
 }
 
 void Engine::update(Shader* shader){
@@ -119,48 +158,68 @@ void Engine::LoadEngine(){
 }
 
 void Engine::displayUpdate(){
+
+    // we store the GLFW window size
+    int width, height;
+    GetWindowSize(window, width, height);
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    // we push the standard font
+    ImGui::PushFont(standardfont);
+
+    // we set the rounding radius and padding for all buttons
+    ImGui::PushStyleVar(ImGuiStyleVar_FrameRounding, 2.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(5, 5));
+
+    // we rescale the ImGui windows and fix their positions
+    // we render the GUI functionalities onto each window with a dedicated function
+
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
-
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/3 * 2, (this->height) *3/4));
-    ImGui::SetNextWindowPos(ImVec2 ((this->width) / 6, 0));
+    ImGui::SetNextWindowSize(ImVec2(0.6*width, 0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.2*width, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2 (0,(this->height)*3/8));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2 ((this->width) * 5 / 6,0));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width),(this->height) / 4));
-    ImGui::SetNextWindowPos(ImVec2 (0,(this->height) * 3 / 4));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.3*height));
+    ImGui::Begin("Add Object");
+    RenderAddObject();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(width,0.25*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.75*height));
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2((this->width) * 5 / 6, (this->height) * 3 / 8));
-    ImGui::Begin("Add Object");
-    RenderAddObject();
-    ImGui::End();
+    // we pop the standard font
+    ImGui::PopFont();
+
+    // we pop the custom button style
+    ImGui::PopStyleVar(2);
 
     // Rendering
     ImGui::Render();
@@ -187,7 +246,7 @@ void Engine::RenderProperties(){
     //static float rotation = 0.0f;
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
-    if(ImGui::Button("Apply Transformations")){
+    if(ImGui::Button("Apply transformations")){
         this->selectedNode->entity->translate(translationX, translationY, translationZ);
         this->selectedNode->entity->rotate(rotationX, 1, 0, 0);
         this->selectedNode->entity->rotate(rotationY, 0, 1, 0);
@@ -203,9 +262,16 @@ void Engine::RenderProperties(){
         // we want to set the color of the object as well - this may be a bit harder
     }
 
-    //Color selection
-    ImVec4 color;
-    ImGui::ColorEdit4("Color", &color.x);
+    //
+    static ImVec4 color;
+    ImGui::ColorEdit3("Color", &color.x);
+    if(ImGui::Button("Apply new ambient colour")){
+        this->selectedNode->entity->setAmbience(color.x, color.y, color.z);
+        color = {0,0,0,0};
+    }
+    if(ImGui::Button("Remove ambience")){
+        this->selectedNode->entity->setAmbience(1.0f, 1.0f, 1.0f);
+    }
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
@@ -289,16 +355,21 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 2000, "Frame %d");
+    ImGui::SliderInt("Animation Keyframe Panel", &currentFrame, 0, 2000, "Frame %d");
 
     // we want to have an animate condition
     if(ImGui::Button("Play")){
         animate = true;
     }
 
+    ImGui::SameLine();
+
+
     if(ImGui::Button("Pause")){
         animate = false;
     }
+
+    ImGui::SameLine();
 
     if (ImGui::Button("Set Keyframe")) {
 
@@ -311,20 +382,37 @@ void Engine::RenderAnimation() {
         }
     }
 
-    if (ImGui::Button("Clear All Marks")) {
-        markedPositions.clear();
+    ImGui::NewLine();
+
+    static int current_item = -1;
+
+    if (ImGui::BeginCombo("Keyframe Dropdown Menu", "Keyframes")) {
+        for (int i = 0; i < markedPositions.size(); i++) {
+
+            bool is_selected = (current_item == i);
+            if (ImGui::Selectable(std::to_string(markedPositions[i]).c_str(), is_selected)) {
+                current_item = i;
+                currentFrame = markedPositions[i];
+            }
+
+            if (is_selected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+
+        ImGui::EndCombo();
     }
 
-    ImGui::Text("Coarse Frame: %d", currentFrame);
+    if(ImGui::Button("Delete Selected Keyframe")){
+        if (current_item != -1) {
+            markedPositions.erase(markedPositions.begin() + current_item);
+        }
+    }
 
-    ImVec2 sliderMin = ImGui::GetItemRectMin();
-    ImVec2 sliderMax = ImGui::GetItemRectMax();
-    float sliderRange = sliderMax.x - sliderMin.x;
+    ImGui::SameLine();
 
-    for (int markedPosition : markedPositions) {
-        float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
-        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
-        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
+    if (ImGui::Button("Delete All Keyframes")) {
+        markedPositions.clear();
     }
 
     ImGui::End();
@@ -333,8 +421,10 @@ void Engine::RenderAnimation() {
 void Engine::RenderAddObject(){
     ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
     ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
+    ImGui::NewLine();
     ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
     ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
+    ImGui::NewLine();
     ImGui::Text("Here, you may add a custom tag to the object");
     ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
 
@@ -359,7 +449,7 @@ void Engine::RenderAddObject(){
 
         //verify whether a texture was assigned, if not assign the grey texture
         if(textureString[0] == '\0')
-            textureString = "Grey.png";
+            textureString = "Grey";
 
         std::string materialString(objectMaterial.buffer);
 
