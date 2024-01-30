@@ -50,6 +50,7 @@ public:
     void RenderProperties();
     void RenderHierarchy();
     void RenderStats();
+    void CameraSettings();
     void RenderAnimation();
     void RenderAddObject();
     void displayUpdate();

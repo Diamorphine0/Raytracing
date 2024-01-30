@@ -25,6 +25,12 @@ public:
     void movement(float& currentTime, float& lastTime, float& speed, GLFWwindow* window);
 
     inline glm::vec3 getPosition(){return position;};
+    inline float gethorizontalAngle(){return horizontalAngle;};
+    inline float getverticalAngle(){return verticalAngle;};
+    inline float getfov(){return initialFoV;};
+
+    inline void setHorizontalAngle(float h_angle){this->horizontalAngle = h_angle ;};
+
 
     glm::vec3 direction;
 

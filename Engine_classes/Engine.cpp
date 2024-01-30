@@ -227,6 +227,7 @@ void Engine::displayUpdate(){
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Settings");
+    CameraSettings();
     RenderStats();
     ImGui::End();
 
@@ -357,6 +358,34 @@ float GetCPUUsageMacOS() {
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
 
+
+void Engine::CameraSettings(){
+    ImGui::Separator();
+    ImGui::Text("Engine Camera statistics:");
+
+
+    /*   double xpos, ypos;
+        float mousespeed = 1.5f;
+        glm::vec3 position;
+        float horizontalAngle;
+        float verticalAngle;
+        float initialFoV;
+*/
+    float* insert_h_angle;
+    bool a;
+    ImGui::Text("X position: %.1f", camera.getPosition().x);
+    ImGui::Text("Y position: %.1f", camera.getPosition().y);
+    ImGui::Text("Z position: %.1f", camera.getPosition().z);
+    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
+    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
+
+    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
+    ImGui::Text("Field of View: %.1f", camera.getfov());
+
+    //camera.setPosition(20);
+    ImGui::Separator();
+}
+
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("Framerate:");
@@ -373,7 +402,7 @@ void Engine::RenderStats(){
         ImGui::Text("Fetching Additional Statistics:");
 
 
-        ImGui::Text("Min FPS: %.1f", minFrameRate);
+        ImGui::Text("Min FPS:%.1f", minFrameRate);
         ImGui::Text("Max FPS: %.1f", maxFrameRate);
 
         float lastCPUPercentage = GetCPUUsageMacOS();
