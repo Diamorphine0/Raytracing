@@ -24,6 +24,15 @@ public:
     }
 };
 
+struct RayTracingCameraParams {
+    int max_depth;
+    int samples_per_pixel;
+    float defocus_angle;
+    float focus_dist;
+    color3 background;
+};
+
+
 class Engine{
 public:
 
@@ -36,6 +45,7 @@ public:
     void RenderProperties();
     void RenderHierarchy();
     void RenderStats();
+    void RenderRaytracing();
     void RenderAnimation();
     void RenderAddObject();
     void displayUpdate();
@@ -76,6 +86,9 @@ public:
 
     //clicled object
     //Node* clicked;
+
+    RayTracingCameraParams rayTracingCameraParams;
+
 private:
     std::vector<int> markedPositions;
 };
