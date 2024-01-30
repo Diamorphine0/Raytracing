@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <map>
-#include "texture.h"
+#include "Texture.h"
 #include "lightsource.h"
 #include <limits.h>
 
@@ -16,6 +16,7 @@
 // for .obj model reading
 #include <fstream>
 #include <string>
+#include <memory>
 
 #ifndef ECS_H
 #define ECS_H
@@ -120,7 +121,7 @@ public:
 
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
-    Texture* texture = nullptr;
+    std::shared_ptr<Texture> texture = nullptr;
     Lightsource* lightsource;
 
     int keyFrameInitialTime = INT_MAX;
@@ -141,7 +142,7 @@ public:
     // the controls are currently broken.
     inline void rotate(float speed, float x, float y, float z){ localMatrix = glm::rotate(localMatrix, speed, glm::vec3(x, y, z)); };
 
-    inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(dx, dy, dz));};
+    inline void translate(float dx, float dy, float dz){localMatrix = glm::translate(localMatrix, glm::vec3(-dx, dy, dz));};
 
     inline void scale(float dx, float dy, float dz){localMatrix = glm::scale(localMatrix, glm::vec3(dx, dy, dz));};
 

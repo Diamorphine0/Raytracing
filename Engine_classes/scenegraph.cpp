@@ -1,5 +1,5 @@
 #include "scenegraph.h"
-#include "texture.h"
+#include "Texture.h"
 
 Node::Node(): entity(nullptr), parent(nullptr), children({}){}
 Node::Node(const std::shared_ptr<Entity> &entity): entity(entity), parent(nullptr), children({}){}
@@ -101,6 +101,7 @@ void Node::addKeyframe(int time){
     for(auto child: children){
         child->addKeyframe(time);
     }
+
 }
 
 void Node::Animate(const Shader& shader, int currentFrame){
@@ -163,10 +164,11 @@ Node::~Node() {
 /**
  * Adds only entities WHICH HAVE AT LEAST ONE VERTICE
  */
-void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities) {
-    if(entity != nullptr) {
+void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities, bool animate) {
 
-//        entity->interpolate(currentFrame);
+    if(entity != nullptr) {
+//        if(animate)
+//            entity->interpolate(currentFrame);
 
         if (parent != nullptr) {
             if (parent->entity != nullptr) {
@@ -182,7 +184,7 @@ void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Enti
             entities.push_back(entity);
     }
     for(auto child: children){
-        child -> dfs_entitity_setup(currentFrame, entities);
+        child -> dfs_entitity_setup(currentFrame, entities, animate);
     }
 }
 
@@ -193,3 +195,4 @@ int Node::DFS(){
     }
     return res;
 }
+

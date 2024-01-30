@@ -36,7 +36,7 @@ public:
     void updateWorldMatrix();
     void Draw(const Shader& shader, glm::vec3 pos, int& currentFrame);
 
-    void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities);
+    void dfs_entitity_setup(int frame, std::vector<std::shared_ptr<Entity>> &entities, bool animate);
 
     glm::mat4 getModelMatrix();
 

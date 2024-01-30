@@ -26,21 +26,53 @@ int main(int argc, char* argv[])
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
-    entity1 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
+//    grid big_grid;
+//    big_grid.gen_big_grid(1000, 501);
+//
+//    grid axes;
+//    axes.gen_axes(1000);
+
+    entity1 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/earth.png");
 
     std::cout << "Texture is loaded" << std::endl;
-    entity2 -> texture = new Texture(SOURCE_DIR + (std::string)"/Textures/Grey.png");
+//    auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/frog.obj");
+//    auto entity3 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
+//
+  //  entity2 -> texture = std::make_shared<Texture>(SOURCE_DIR + (std::string)"/Textures/purple.png");
+//
+//    entity2 -> scale(0.5, 0.5, 0.5);
+//    entity2 -> translate(-10, -10, 0);
+//
+//    entity3 -> scale(0.4, 0.4, 0.4);
+//    entity3->translate(-10, -10, 0);
 
     Node* node1 = new Node(entity1);
-    Node* node2 = new Node(entity2);
+  //  Node* node2 = new Node(entity2);
+//    Node* node2 = new Node(entity2);
+//    Node* node3 = new Node(entity3);
 
     node1 -> setParent(engine.engineWorld);
-    node2 ->setParent(engine.engineWorld);
-    engine.engineWorld -> setName("root");
+ //   node2 ->setParent(engine.engineWorld);
+    engine.engineWorld ->addKeyframe(0);
+
+    //entity1 -> scale(0.1, 0.1, 0.1);
+    //entity1 -> rotate(1, 2, 3, 4);
+
+    engine.engineWorld ->addKeyframe(2000);
+
+//    engine.engineWorld -> addKeyframe(300);
+//
+//    entity1 -> translate(5, 5, 1);
+//
+//    engine.engineWorld -> addKeyframe(600);
+//
+//    entity1 -> scale(10, 2, 1);
+//
+//    engine.engineWorld -> addKeyframe(600);
 
     //setting the names so that they are displayed on the display on the left hand side
     node1 -> setName("frogsterfrogginson");
-    node2 -> setName("aliensBuiltThePyramids");
+   // node2 -> setName("aliensBuiltThePyramids");
 
     float currentTime = glfwGetTime();
     float lastTime = currentTime;
