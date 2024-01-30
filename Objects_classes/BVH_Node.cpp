@@ -18,6 +18,8 @@ bool BVH_Node::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
 }
 
 BVH_Node::BVH_Node(std::vector<std::shared_ptr<Object>> &obj, int left, int right) {
+    if(right - left == 0)
+        return;
     if(right - left == 1){
         // To check which is faster
         leftSon =  obj[left];
