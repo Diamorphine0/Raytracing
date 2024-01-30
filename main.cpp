@@ -26,10 +26,12 @@ void build_scene(Engine &engine, std::string path){
     auto brick_text = std::make_shared<Texture>(path + "/Textures/brick.png");
     auto purple = std::make_shared<Texture>(path + "/Textures/purple.png");
 
+
     auto glass = std::make_shared<DielectricMaterial>(1.5);
     auto diffuse = std::make_shared<DiffuseMaterial>(purple);
     auto metal = std::make_shared<MetalMaterial>(purple, 0.1);
     auto light = std::make_shared<DiffuseLight>((color3){15, 15, 15});
+
 
     auto sphere = std::make_shared<Entity>(path + "/objects/sphere.obj");
     sphere->texture = brick_text;
