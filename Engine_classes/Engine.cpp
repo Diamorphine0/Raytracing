@@ -241,12 +241,6 @@ void Engine::displayUpdate(){
    // CameraSettings();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
-    ImGui::Begin("Raytracing Settings");
-    RenderRaytracing();
-    // CameraSettings();
-    ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.3*height));
@@ -371,8 +365,8 @@ float maxFrameRate = 0.0f;
 
 
 
-void Engine::RenderStats(){
-    ImGuiIO& io = ImGui::GetIO();
+void Engine::RenderStats() {
+    ImGuiIO &io = ImGui::GetIO();
     ImGui::Text("Framerate:");
     ImGui::Text("Application average %.1f FPS", io.Framerate);
     float currentFrameRate = io.Framerate;
@@ -382,25 +376,26 @@ void Engine::RenderStats(){
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
     ImGui::Text("Frame to Raytrace: %d ", currentFrame);
-    if(ImGui::Button("Raytrace")){
+    if (ImGui::Button("Raytrace")) {
         //generate world at time t
         //i go through the scene graph and compute the right matrices for entities at time t
         std::vector<std::shared_ptr<Entity>> all_entities;
         //returns a list of all entities with positions (in canonical basis) at frame current frame
         //.get_all_entitities_updated(curFrame);
-        engineWorld -> entity -> worldMatrix = engineWorld-> entity ->localMatrix;
+        engineWorld->entity->worldMatrix = engineWorld->entity->localMatrix;
 
-        std::cerr<<"World matrix \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
+        std::cerr << "World matrix \n" << glm::to_string(engineWorld->entity->worldMatrix) << std::endl;
 
-        std::cerr<<"Local matrix \n" << glm::to_string(engineWorld -> entity -> localMatrix)<<std::endl;
+        std::cerr << "Local matrix \n" << glm::to_string(engineWorld->entity->localMatrix) << std::endl;
 
         engineWorld->dfs_entitity_setup(currentFrame, all_entities, false);
 
-        std::cerr<<"World matrix after entity setup \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
+        std::cerr << "World matrix after entity setup \n" << glm::to_string(engineWorld->entity->worldMatrix)
+                  << std::endl;
 
         std::vector<std::shared_ptr<Object>> all_objects;
         all_objects.reserve(all_entities.size());
-        for(const auto &e:all_entities){
+        for (const auto &e: all_entities) {
             all_objects.emplace_back(std::make_shared<TriangleMesh>(e));
         }
 
@@ -419,37 +414,31 @@ void Engine::RenderStats(){
         //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
         //rayTracingCamera->vup = vec3(0, -1, 0);
 
-        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
-        std::cerr<<"Camera direction is at : "<<glm::to_string(camera.direction)<<"\n";
+        std::cerr << "Camera is at : " << glm::to_string(camera.getPosition()) << "\n";
+        std::cerr << "Camera direction is at : " << glm::to_string(camera.direction) << "\n";
 
-        std::cerr<<"The world is at coord x: "<<worldRaytracer->get_boundingBox().get_ax(0).min<< " " << worldRaytracer->get_boundingBox().get_ax(0).max<<" \n";
-        std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
-        std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
+        std::cerr << "The world is at coord x: " << worldRaytracer->get_boundingBox().get_ax(0).min << " "
+                  << worldRaytracer->get_boundingBox().get_ax(0).max << " \n";
+        std::cerr << "The world is at coord y: " << worldRaytracer->get_boundingBox().get_ax(1).min << " "
+                  << worldRaytracer->get_boundingBox().get_ax(1).max << " \n";
+        std::cerr << "The world is at coord z: " << worldRaytracer->get_boundingBox().get_ax(2).min << " "
+                  << worldRaytracer->get_boundingBox().get_ax(2).max << " \n";
 
         ImGui::Text("Ray Tracing Settings:");
-
 
 
         rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm", window);
 
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
-       // rayTracingCamera->render(world, "imageRender.ppm");
+        // rayTracingCamera->render(world, "imageRender.ppm");
     }
     ImGui::NewLine();
 
 
-    if(ImGui::Button("Raytrace video")){
+    if (ImGui::Button("Raytrace video")) {
         RenderVideo();
     }
 
-void Engine::RenderHierarchy() {
-    ImGui::Text("Entity Hierarchy View");
-    // Render the hierarchy
-    //additional argument of engine used for the engine.clicked
-    RenderEntityHierarchy(*this->engineWorld /**this*/);
-}
-
-void Engine::RenderRaytracing() {
     ImGui::Text("Ray Tracing Settings:");
 
     ImGui::SliderInt("Max Depth", &rayTracingCameraParams.max_depth, 10, 100);
@@ -459,6 +448,12 @@ void Engine::RenderRaytracing() {
     static float initialBackgroundColor[3] = {0.1f, 0.1f, 0.1f};
     ImGui::ColorEdit3("Background Color", initialBackgroundColor);
     rayTracingCameraParams.background = color3(initialBackgroundColor[0], initialBackgroundColor[1], initialBackgroundColor[2]);
+}
+void Engine::RenderHierarchy() {
+    ImGui::Text("Entity Hierarchy View");
+    // Render the hierarchy
+    //additional argument of engine used for the engine.clicked
+    RenderEntityHierarchy(*this->engineWorld /**this*/);
 }
 
 static void resetFolder(const std::string& folderPath) {
@@ -545,15 +540,10 @@ void Engine::RenderVideo(){
         rayTracingCamera->render(worldRaytracer, path + "/videoFrames/" + std::to_string(rayTraceFrame - initial) + ".ppm", window);
     }
 
-    makeVideo(path + "/videoFrames/", path + "/output_video.mp4");
+    makeVideo(path + "/videoFrames/", path + "/output_video" + std::to_string(time(0)) + ".mp4");
 }
 
-void Engine::RenderHierarchy() {
-    ImGui::Text("Entity Hierarchy View");
-    // Render the hierarchy
-    //additional argument of engine used for the engine.clicked
-    RenderEntityHierarchy(*this->engineWorld /**this*/);
-}
+
 
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
@@ -642,9 +632,6 @@ void Engine::RenderAddObject(){
     ImGui::Text("If you want to delete an object,\nwrite the name of the tag and press \nDELETE");
     ImGui::InputText("##objectDelete", objectDelete.buffer, sizeof(objectDelete.buffer));
 
-    //temp
-    ImGui::Text("Material: diel/dif ");
-    ImGui::InputText("##objectMaterial", objectMaterial.buffer, sizeof(objectMaterial.buffer));
 
 
     if (ImGui::Button("Initialize Object") || ImGui::IsItemDeactivatedAfterEdit() || ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Enter))) {
@@ -668,8 +655,6 @@ void Engine::RenderAddObject(){
         if(textureString[0] == '\0')
             textureString = "Grey";
 
-        std::string materialString(objectMaterial.buffer);
-
         std::string tagString;
         for (int i = 0; i < 256 && objectTag.buffer[i] != '\0'; ++i) {
             if (!std::isspace(static_cast<unsigned char>(objectTag.buffer[i]))) {
@@ -690,11 +675,7 @@ void Engine::RenderAddObject(){
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
             entity -> texture = std::make_shared<Texture>(textureString.c_str());
-
-            if(materialString == "diel")
-                entity->material = std::make_shared<DielectricMaterial>(2);
-            else
-                entity->material = std::make_shared<DiffuseMaterial>(entity->texture);
+            entity->material = std::make_shared<DiffuseMaterial>(entity->texture);
 
             Node* node = new Node(entity);
             node -> setParent(this -> engineWorld);

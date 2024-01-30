@@ -25,10 +25,10 @@ public:
 };
 
 struct RayTracingCameraParams {
-    int max_depth;
-    int samples_per_pixel;
-    float defocus_angle;
-    float focus_dist;
+    int max_depth = 1;
+    int samples_per_pixel = 1;
+    float defocus_angle = 0;
+    float focus_dist = 10;
     color3 background;
 };
 
@@ -45,7 +45,6 @@ public:
     void RenderProperties();
     void RenderHierarchy();
     void RenderStats();
-    void RenderRaytracing();
     void RenderAnimation();
     void RenderAddObject();
     void displayUpdate();
@@ -82,7 +81,6 @@ public:
     TextData objectTexture;
     TextData objectTag;
     TextData objectDelete;
-    TextData objectMaterial;
 
     //clicled object
     //Node* clicked;
