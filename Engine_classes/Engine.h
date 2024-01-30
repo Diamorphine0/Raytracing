@@ -39,6 +39,7 @@ public:
     void RenderAnimation();
     void RenderAddObject();
     void displayUpdate();
+    void RenderEntityHierarchy(Node& node);
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 
@@ -56,6 +57,7 @@ public:
 
     int currentFrame = 0;
     int framesPerSecond = 30;
+    Node* selectedNode = engineWorld;
 
     bool animate = false;
 

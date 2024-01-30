@@ -69,6 +69,7 @@ int main(int argc, char* argv[])
             glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
         }
 
+        std::cout << currentTime << std::endl;
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         engine.update(shader);

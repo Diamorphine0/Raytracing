@@ -182,16 +182,13 @@ void Engine::RenderProperties(){
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
     if(ImGui::Button("Apply Transformations")){
-        //here we would want to used the engine.clicked as well!!!
-        //this->clicked->entity->translate(translationX, translationY, translationZ);
-        //this->clicked->entity->scale(scale, scale, scale);
-
-        this->engineWorld->entity->translate(translationX, translationY, translationZ);
-        this->engineWorld->entity->scale(scale, scale, scale);
+        this->selectedNode->entity->translate(translationX, translationY, translationZ);
+        this->selectedNode->entity->scale(scale, scale, scale);
         translationX = 0.0f;
         translationY = 0.0f;
         translationZ = 0.0f;
         scale = 1.0f;
+        // we want to set the color of the object as well - this may be a bit harder
     }
 
     //Color selection
@@ -199,33 +196,17 @@ void Engine::RenderProperties(){
     ImGui::ColorEdit4("Color", &color.x);
 };
 
-void RenderEntityHierarchy(Node& node /* Engine engine*/) {
+void Engine::RenderEntityHierarchy(Node& node) {
     bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
+
     if(isClicked){
-        //for now context menu is irrelevant
-        // Context menu when right-clicking an entity
-        /*
-        if (ImGui::BeginPopupContextItem()) {
-            if (ImGui::MenuItem("Delete Entity")) {
-                // Implement logic to delete the entity
-            }
-            if (ImGui::MenuItem("Create Child")) {
-                // Implement logic to create a child entity
-            }
-            ImGui::EndPopup();
-        }
-        */
+        selectedNode = &node;
 
-        //at this point this node is clicked so we can set the engine.clicked var, but htis variable doesnt work
-        //engine.clicked = &node;
-
-        // Render child entities recursively
         std::vector<Node*> children = node.getChildren();
         for (auto child : children){
-            RenderEntityHierarchy(*child /*engine*/ );
+            RenderEntityHierarchy(*child);
         }
 
-        // End the tree node
         ImGui::TreePop();
     }
 }
