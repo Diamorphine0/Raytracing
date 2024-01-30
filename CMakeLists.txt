@@ -96,10 +96,14 @@ set(PROJECT_SOURCES
         Objects_classes/TriangleMesh.cpp
         Objects_classes/TriangleMesh.h
         Materials/Material.h
-        Materials/Dielectric_Material.h
-        Materials/Diffuse_Material.h
+        Materials/DielectricMaterial.h
+        Materials/DiffuseMaterial.h
         Materials/Diffuse_specular_Material.h
         Materials/Phong_metal_Material.h
+        Materials/DiffuseMaterial.cpp
+        Materials/MetalMaterial.cpp
+        Materials/MetalMaterial.h
+        Materials/DielectricMaterial.cpp
 )
 
 

@@ -6,9 +6,9 @@
 #define RAY_TRACING_HITRECORD_H
 #include "Utilities.hpp"
 #include "Ray.hpp"
-#include "Materials/Material.h"
+#include "Material.h"
 #include <memory>
-
+class Material;
 /**
  * This class contains all informations necessary at hit.
  */
@@ -21,8 +21,7 @@ struct HitRecord {
 
     std::shared_ptr<Material> material;
 
-    //temporary (should be material & texture)
-    color3 color;
+    vec2 text_uv;
 
     /**
      * Sets the normal to be opposite to ray (and frontFace correspondently).

@@ -12,13 +12,13 @@ void Triangle::computePlaneEquation() {
     planeEquationCoeff = - glm::dot(normal, p0);
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material){
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const vec3 &n0, const vec3 &n1, const vec3 &n2, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material), n0(n0), n1(n1), n2(n2){
     computeNormal();
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), normal(_normal), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material) {
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const vec3 &n0, const vec3 &n1, const vec3 &n2, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), normal(_normal), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material), n0(n0), n1(n1), n2(n2) {
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
@@ -106,16 +106,16 @@ bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
     auto pointHit = r.get_origin() + r.get_direction() * t;
 
     //If we have reached this point it means we hit
+    auto outSideNormal = (1-u-v) * n0 + u * n1 + v * n2;
     rec.pointHit = pointHit;
     rec.tHit = t;
-    rec.setNormalFace(r, normal);
+    rec.setNormalFace(r, outSideNormal);
     rec.material = material;
 
     auto texture_coord = (1 - u - v) * p0UV + (u) * p1UV + (v) * p2UV;
-    if(texture != nullptr)
-        rec.color = texture->get_color_coordinates(texture_coord.x, texture_coord.y);
-    else
-        rec.color = glm::vec3(texture_coord, 1);
+
+    rec.text_uv = texture_coord;
+
     return true;
 }
 

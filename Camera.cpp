@@ -58,29 +58,22 @@ color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int
     if (depth <= 0) {
         return {0, 0, 0};
     }
-
     HitRecord rec;
-    if (world->hit(r, Interval(EPS, INF), rec)) {
-        std::cerr<<"hit\n";
-        if(rec.frontFace) {
-            vec3 point = rec.pointHit;
-            vec3 normal = rec.normal;
-            //for now just have it as the ccolor
-            //color3 materialColor = rec.material->computeColor(r.get_direction(), normal, rec.material->getIOR());
-            color3 materialColor = rec.color;
-            std::cerr<<"Color is "<<glm::to_string(rec.color)<<"\n";
+    if(!world->hit(r, Interval(EPS, INF), rec))
+        return background;
 
-            Ray scattered_ray = rec.material->scatter(point + EPS * normal, normal, r.get_direction());
-            color3 scattered_color = ray_color(scattered_ray, world, depth - 1);
+    Ray secondary_ray(vec3{0, 0, 0}, vec3{0, 0, 0});
+    color3 change_in_col;
+    color3 light_contribution = rec.material->light_emitted(rec);
+//adjust to remove acne
+    rec.pointHit += EPS * rec.normal;
+    if(!rec.material->scatter(r, rec, change_in_col, secondary_ray))
+        return light_contribution;
 
-            color3 finalColor = (1.0 - rec.material->getReflectance()) * materialColor +
-                                rec.material->getReflectance() * scattered_color;
-            finalColor = glm::clamp(finalColor, 0.0f, 1.0f);
-            return finalColor;
-        }
-    }
-    //background color
-    return {0.8196f, 0.9294f, 0.949f};
+    color3 next_contrib = ray_color(secondary_ray, world, depth - 1);
+
+    color3 scattered_col = {change_in_col.x * next_contrib.x, change_in_col.y * next_contrib.y, change_in_col.z * next_contrib.z};
+    return scattered_col + light_contribution;
 }
 
 
@@ -88,7 +81,7 @@ Ray Camera::get_ray(int i, int j) const {
     // Get a randomly sampled camera ray for the pixel at location i,j.
 
     auto pixel_center = pixel00_loc + (pixel_delta_u * i) + (pixel_delta_v * j);
-    auto disks = glm::diskRand(0.5f);
+    auto disks = glm::diskRand(1.0f);
     auto pixel_sample = pixel_center + pixel_delta_u * disks.x + pixel_delta_v * disks.y;
 
     auto ray_origin = center;

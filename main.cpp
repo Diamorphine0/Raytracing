@@ -9,19 +9,28 @@
 #include "lightsource.h"
 #include <string>
 #include "BVH_Node.h"
-#include "Dielectric_Material.h"
-#include "Diffuse_Material.h"
+#include "DielectricMaterial.h"
+#include "DiffuseMaterial.h"
 
+
+void add_node(std::shared_ptr<Entity> &aux, Engine &engine, std::string name){
+    auto aux_node = new Node(aux);
+    aux_node ->setParent(engine.engineWorld);
+    aux_node->setName(name);
+    engine.selectedNode = aux_node;
+}
 void build_scene(Engine &engine, std::string path){
-    auto glass = std::make_shared<Dielectric>(0.999, 1500);
-    auto diffuse = std::make_shared<DiffuseMaterial>();
-
     auto brick_text = std::make_shared<Texture>(path + "/Textures/brick.png");
     auto purple_text = std::make_shared<Texture>(path + "/Textures/purple.png");
+
+    auto glass = std::make_shared<DielectricMaterial>(10);
+    auto diffuse = std::make_shared<DiffuseMaterial>(purple_text);
+
 
 
     auto sphere = std::make_shared<Entity>(path + "/objects/sphere.obj");
     sphere->texture = purple_text;
+    sphere->translate(0, 1, 0);
     sphere->material = glass;
 
     auto cube = std::make_shared<Entity>(path + "/objects/cube.obj");
@@ -31,29 +40,29 @@ void build_scene(Engine &engine, std::string path){
 
 
     auto plane = std::make_shared<Entity>(path + "/objects/cube.obj");
-    plane->scale(1000, 1000, 1000);
-    //plane->translate(0, 500, 0);
+   // plane->scale(1000, 1000, 1000);
+    plane->scale(10, 0.001, 10);
+    plane->translate(-2, 0, 0);
+
     plane->texture = brick_text;
     plane->material = diffuse;
 
 
+    auto aux_entity = std::make_shared<Entity> (path + "/objects/triangle.obj");
+    aux_entity->scale(0.001, 0.001, 0.001);
+    aux_entity->texture = purple_text;
+    aux_entity->material = diffuse;
 
-    auto sphere_node = new Node(sphere);
-    auto cube_node = new Node(cube);
-    auto plane_node = new Node(plane);
-
-    sphere_node ->setParent(engine.engineWorld);
-    cube_node ->setParent(engine.engineWorld);
-    plane_node ->setParent(engine.engineWorld);
-
-
+    add_node(plane, engine, "plane");
+    add_node(cube, engine, "cube");
+    add_node(sphere, engine, "sphere");
 
 }
 
 int main(int argc, char* argv[])
 {
 
-    Engine engine = Engine(engineCamera(glm::vec3( 0, 0, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR );
+    Engine engine = Engine(engineCamera(glm::vec3( 0, 0.5, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR );
 
     Lightarray lights;
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));

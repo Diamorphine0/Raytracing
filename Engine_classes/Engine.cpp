@@ -4,8 +4,8 @@
 #include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
-#include "Dielectric_Material.h"
-#include "Diffuse_Material.h"
+#include "DielectricMaterial.h"
+#include "DiffuseMaterial.h"
 
 Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
 
@@ -475,10 +475,9 @@ void Engine::RenderAddObject(){
             entity -> texture = std::make_shared<Texture>(textureString.c_str());
 
             if(materialString == "diel")
-                entity->material = std::make_shared<Dielectric>(0.999, 2);
+                entity->material = std::make_shared<DielectricMaterial>(2);
             else
-                entity->material = std::make_shared<DiffuseMaterial>();
-
+                entity->material = std::make_shared<DiffuseMaterial>(entity->texture);
 
             Node* node = new Node(entity);
             node -> setParent(this -> engineWorld);
