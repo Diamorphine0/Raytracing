@@ -31,7 +31,9 @@ struct Vertex{
 
     Vertex(glm::vec3 Coordinates, glm::vec3 Color): Coordinates(Coordinates), Color(Color){}
     Vertex(glm::vec3 Coordinates, glm::vec3 Color, glm::vec2 UV): Coordinates(Coordinates), Color(Color), UV(UV){}
+    Vertex(glm::vec3 Coordinates, glm::vec3 Color, glm::vec2 UV, glm::vec3 Norm): Coordinates(Coordinates), Color(Color), UV(UV), Norm(Norm){}
 };
+
 
 // Stores information about a single instance of the vertex struct
 struct VertexBufferElement{
@@ -166,6 +168,10 @@ public:
         std::vector < glm::vec2 >& out_uvs,
         std::vector < glm::vec3 >& out_normals
     );
+    bool loadOBJ_new(const std::string& path,
+                std::vector<Vertex>& out_vertices,
+                std::vector<glm::vec2>& out_uvs,
+                     std::vector<glm::vec3>& out_normals);
 
     int index(int searchTime, int startIndex, int endIndex){
 

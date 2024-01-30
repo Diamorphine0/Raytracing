@@ -1,5 +1,7 @@
 #include "Entity.h"
 #include <cstring>
+#include <sstream>
+
 VertexBuffer::VertexBuffer(const void* data, unsigned long size){
     glGenBuffers(1, &m_RendererID);
     glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
@@ -136,7 +138,7 @@ Entity::Entity(std::string path){
     std::vector< glm::vec3 > normals;
 
     // we might as well just pass the vertices without uvs.
-    bool a = loadOBJ(path, vertices, uvs, normals);
+    bool a = loadOBJ_new(path, vertices, uvs, normals);
     if(!a)
         throw std::runtime_error("Unable to open file");
 
@@ -161,6 +163,73 @@ Entity::Entity(std::string path){
 
     va -> AddBuffer(vb, layout);
 };
+bool Entity::loadOBJ_new(const std::string& path,
+                         std::vector<Vertex>& out_vertices,
+                         std::vector<glm::vec2>& out_uvs,
+                         std::vector<glm::vec3>& out_normals) {
+    std::vector<glm::vec3> temp_vertices;
+    std::vector<glm::vec2> temp_uvs;
+    std::vector<glm::vec3> temp_normals;
+
+    FILE* file = fopen(path.c_str(), "r");
+    if (file == nullptr) {
+       std::cerr << "Unable to open file: " << path << std::endl;
+       return false;
+    }
+
+    while (true) {
+       char lineHeader[256];
+       int res = fscanf(file, "%s", lineHeader);
+       if (res == EOF)
+           break;
+
+       if (strcmp(lineHeader, "v") == 0) {
+           glm::vec3 vertex;
+           fscanf(file, "%f %f %f\n", &vertex.x, &vertex.y, &vertex.z);
+           temp_vertices.push_back(vertex);
+       } else if (strcmp(lineHeader, "vt") == 0) {
+           glm::vec2 uv;
+           fscanf(file, "%f %f\n", &uv.x, &uv.y);
+           temp_uvs.push_back(uv);
+       } else if (strcmp(lineHeader, "vn") == 0) {
+           glm::vec3 normal;
+           fscanf(file, "%f %f %f\n", &normal.x, &normal.y, &normal.z);
+           temp_normals.push_back(normal);
+       } else if (strcmp(lineHeader, "f") == 0) {
+           std::string faceData[3];
+           for (int i = 0; i < 3; i++) {
+               char facePart[128];
+               fscanf(file, "%s", facePart);
+               faceData[i] = std::string(facePart);
+           }
+
+           for (const std::string& facePart : faceData) {
+               std::istringstream iss(facePart);
+               std::string vertexStr, uvStr, normalStr;
+               getline(iss, vertexStr, '/');
+               getline(iss, uvStr, '/');
+               getline(iss, normalStr, '/');
+
+               int vertexIndex = std::stoi(vertexStr);
+               int uvIndex = (uvStr.empty()) ? 0 : std::stoi(uvStr);
+               int normalIndex = (normalStr.empty()) ? 0 : std::stoi(normalStr);
+
+               if (vertexIndex > 0 && vertexIndex <= temp_vertices.size() &&
+                   uvIndex > 0 && uvIndex <= temp_uvs.size() &&
+                   normalIndex > 0 && normalIndex <= temp_normals.size()) {
+
+                   out_vertices.push_back(Vertex(temp_vertices[vertexIndex - 1],
+                                                 glm::vec3(1.0f, 1.0f, 1.0f),
+                                                 temp_uvs[uvIndex - 1],
+                                                 temp_normals[normalIndex - 1]));
+               }
+           }
+       }
+    }
+
+    fclose(file);
+    return true;
+}
 
 bool Entity::loadOBJ(std::string path,
                      std::vector < Vertex > & out_vertices,
