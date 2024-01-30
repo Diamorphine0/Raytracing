@@ -52,9 +52,8 @@ void build_scene(Engine &engine, std::string path){
 
     auto cube2 = std::make_shared<Entity>(path + "/objects/cube.obj");
     cube2->translate(0, 0, 1);
-    cube2->material = glass;
+    cube2->material = metal;
     cube2->texture = brick_text;
-
 
     auto plane = std::make_shared<Entity>(path + "/objects/cube.obj");
    // plane->scale(1000, 1000, 1000);
@@ -81,9 +80,9 @@ int main(int argc, char* argv[])
 
     Engine engine = Engine(engineCamera(glm::vec3( 0, 0.5, 10), 3.14f, 0.0f, 90.0f), SOURCE_DIR );
 
-    Lightarray lights;
-    Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
-    lights.addSource(lamp);
+//    Lightarray lights;
+//    Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
+//    lights.addSource(lamp);
 
     engine.engineWorld -> setName("Scene Graph Root (Engine Camera)");
 
@@ -100,20 +99,20 @@ int main(int argc, char* argv[])
     do{
        shader -> Bind();
 
-        //this should handle light loading
-        for(int i = 0; i < 20; i++){
-
-            std::string istring = "lights[" + std::to_string(i) + "].lightPos";
-            const char* annoying = istring.c_str();
-            GLuint lightPosi = glGetUniformLocation(shader -> getID(), annoying);
-
-            istring = "lights[" + std::to_string(i) + "].lightColor";
-            annoying = istring.c_str();
-            GLuint lightColori = glGetUniformLocation(shader -> getID(), annoying);
-
-            glUniform3fv(lightPosi, 1, &lights.arr[i].lightPos[0]);
-            glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
-        }
+//        //this should handle light loading
+//        for(int i = 0; i < 20; i++){
+//
+//            std::string istring = "lights[" + std::to_string(i) + "].lightPos";
+//            const char* annoying = istring.c_str();
+//            GLuint lightPosi = glGetUniformLocation(shader -> getID(), annoying);
+//
+//            istring = "lights[" + std::to_string(i) + "].lightColor";
+//            annoying = istring.c_str();
+//            GLuint lightColori = glGetUniformLocation(shader -> getID(), annoying);
+//
+//            glUniform3fv(lightPosi, 1, &lights.arr[i].lightPos[0]);
+//            glUniform3fv(lightColori, 1, &lights.arr[i].lightColor[0]);
+//        }
 
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 

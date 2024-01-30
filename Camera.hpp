@@ -24,7 +24,7 @@ public:
     float defocus_angle = 0.1;  // Variation angle of rays through each pixel
     float focus_dist = 10;    // Distance from camera lookfrom point to plane of perfect focus
 
-    color3 background = {0.0, 0.0, 0.0};
+    color3 background = {0.1, 0.1f, 0.1};
 private:
     ImageRenderer imageRenderer;
 
