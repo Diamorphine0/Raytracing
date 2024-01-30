@@ -231,7 +231,7 @@ void Engine::displayUpdate(){
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.2*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Raytrace & Stats");
     RenderStats();
@@ -239,19 +239,19 @@ void Engine::displayUpdate(){
     ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.2*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Raytracing Settings");
     RenderRaytracing();
     // CameraSettings();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.5*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.5*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.3*height));
     ImGui::Begin("Add Object");
     RenderAddObject();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.8*width,0.8*height));
+    ImGui::SetNextWindowSize(ImVec2(width,0.25*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0.75*height));
     ImGui::Begin("Animation");
     RenderAnimation();
