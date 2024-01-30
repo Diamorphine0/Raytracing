@@ -2,7 +2,7 @@
 
 ## Introduction
 - CSE201 project on the topic of ray tracing, engine graphics, and animations. The goal was to
-  program a QT window application capable of handling animations and implementing a simple ray tracer
+  program a GLFW OpenGL application capable of handling animations and implementing a simple ray tracer
   that can view different objects imported inside of the engine.
 
 ## Index
@@ -14,7 +14,7 @@
 - [Resources](#resources)
 
 ## About
-- The Windows application in question serves as a tool to implement different object entities inside of a scene and view them.
+- The application in question serves as a tool to implement different object entities inside of a scene and view them.
   The scene is inside of an engine that is capable of animating these objects, as well as determining their position in 3D and 
   positioning the camera which views them. These objects can then further be manipulated inside of the engine, modifying their position, color,
   texture, size etc. Finally, the scene can then be captured through a ray tracer that performs complex algorithms and uses optics to make the 
