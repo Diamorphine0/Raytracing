@@ -46,6 +46,11 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
+    // we set new standard font
+    io.Fonts->AddFontDefault();
+    standardfont = io.Fonts->AddFontFromFileTTF("../Raytracing/fonts/NotoSans.ttf", 20.0f);
+    IM_ASSERT(standardfont != NULL);
+
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
     ImGui_ImplOpenGL3_Init();
@@ -139,6 +144,9 @@ void Engine::displayUpdate(){
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+    // we push the standard font
+    ImGui::PushFont(standardfont);
+
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
@@ -177,6 +185,9 @@ void Engine::displayUpdate(){
     ImGui::Begin("Animation");
     RenderAnimation();
     ImGui::End();
+
+    // we pop the standard font
+    ImGui::PopFont();
 
     // Rendering
     ImGui::Render();
