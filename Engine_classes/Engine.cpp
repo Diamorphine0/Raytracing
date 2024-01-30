@@ -83,6 +83,8 @@ Engine::Engine(float width, float height, engineCamera camera, const std::string
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);
+
+    initialWindowSize = ImVec2(width, height);
 }
 
 // obtain the current (rescaled) size of the GLFW parent window
@@ -436,12 +438,27 @@ void Engine::RenderAnimation() {
     ImVec2 sliderMax = ImGui::GetItemRectMax();
     float sliderRange = sliderMax.x - sliderMin.x;
 
-    for (int markedPosition : markedPositions) {
-        float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
-        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
-        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
-    }
+    // Get the size of the ImGui window
+    ImVec2 windowSize = ImGui::GetWindowSize();
 
+    float scaleFactor = windowSize.x / initialWindowSize.x;
+
+    for (int markedPosition : markedPositions) {
+        // Calculate the relative position based on the current window size
+        float relativePosition = static_cast<float>(markedPosition) / 720.0f;
+        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y - 10);
+
+        // Scale the position based on the window size
+        markPos.x *= scaleFactor;
+
+        //Draw the red line
+        ImGui::GetWindowDrawList()->AddLine(
+            ImVec2((markPos.x) * 3, markPos.y - 60),
+            ImVec2((markPos.x) * 3, markPos.y - 30),
+            IM_COL32(255, 0, 0, 255),
+            2.0f
+            );
+    }
     ImGui::End();
 }
 
