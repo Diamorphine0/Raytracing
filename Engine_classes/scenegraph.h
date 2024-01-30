@@ -20,6 +20,7 @@ class Node{
 public:
     std::shared_ptr<Entity> entity;
     std::string name;
+    std::vector<Node*> children;
 public:
     Node();
     Node(const std::shared_ptr<Entity> &entity);
@@ -48,7 +49,6 @@ public:
 
 private:
     Node* parent;
-    std::vector<Node*> children;
 };
 
 #endif // SCENEGRAPH_H

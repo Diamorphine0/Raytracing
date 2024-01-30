@@ -106,6 +106,37 @@ void GetWindowSize(GLFWwindow* window, int& width, int& height) {
         height = 0;
     }
 }
+bool findAndDeleteNode(Node* currentNode, const std::string& targetName) {
+    if (currentNode == nullptr) {
+        return false;
+    }
+
+    if (currentNode->name == targetName) {
+        //delete currentNode;
+        //currentNode = nullptr;
+        return true;
+    }
+
+    for (Node*& child : currentNode->children) {
+        if (findAndDeleteNode(child, targetName)) {
+            //child = nullptr;
+            return true;
+        }
+    }
+
+    return false;
+}
+void traverseTree(Node* rootNode) {
+    if (rootNode == nullptr) {
+        return;
+    }
+
+    std::cout << rootNode->name << " ";
+
+    for (Node* child : rootNode->children) {
+        traverseTree(child);
+    }
+}
 
 void Engine::update(Shader* shader){
 
@@ -534,6 +565,10 @@ void Engine::RenderAddObject(){
     ImGui::NewLine();
     ImGui::Text("Here, you may add a custom tag to the object");
     ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
+    ImGui::NewLine();
+    ImGui::Text("If you want to delete an object,\nwrite the name of the tag and press \nDELETE");
+    ImGui::InputText("##objectDelete", objectDelete.buffer, sizeof(objectDelete.buffer));
+
 
 
     if (ImGui::Button("Initialise Object")){
@@ -566,7 +601,7 @@ void Engine::RenderAddObject(){
         //verify whether a custom tag was assigned, if not assign a generic tag
         int numOfObjects = this -> engineWorld -> DFS();
         if(tagString[0] == '\0')
-            tagString = "object " + std::to_string(numOfObjects);
+            tagString = "object" + std::to_string(numOfObjects);
 
 
         std::cout << SOURCE_DIR << std::endl;
@@ -592,6 +627,25 @@ void Engine::RenderAddObject(){
             objectName.buffer[i] = '\0';
             objectTexture.buffer[i] = '\0';
             objectTag.buffer[i] = '\0';
+            objectDelete.buffer[i] = '\0';
+        }
+    }
+    if (ImGui::Button("Delete Object")){
+        std::string deleteString;
+        for (int i = 0; i < 256 && objectDelete.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(objectDelete.buffer[i]))) {
+                deleteString += objectDelete.buffer[i];
+            }
+        }
+        try{
+            traverseTree(engineWorld);
+            std::cout << deleteString << std::endl;
+            std::cout << findAndDeleteNode(engineWorld, deleteString) << std::endl;
+        } catch (const std::runtime_error& e) {
+            std::cout << "Error: " << e.what() << std::endl;
+        }
+        for(int i=0; i < 256; i++){
+            objectDelete.buffer[i] = '\0';
         }
     }
 }

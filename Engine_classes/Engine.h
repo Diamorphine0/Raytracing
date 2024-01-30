@@ -84,6 +84,7 @@ public:
     TextData objectName;
     TextData objectTexture;
     TextData objectTag;
+    TextData objectDelete;
 
     //clicled object
     //Node* clicked;

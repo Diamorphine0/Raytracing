@@ -18,6 +18,7 @@ void Node::setParent(Node* newParent){
     this -> parent = newParent;
 }
 
+
 void Node::updateWorldMatrix(){
 
     if((parent -> entity -> worldMatrix) != glm::mat4())
