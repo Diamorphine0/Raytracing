@@ -94,6 +94,10 @@ Engine::Engine(engineCamera camera, const std::string &root_path): width(width),
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);
+
+
+    // HUGE PRO
+    rtCamera = std::make_shared<Camera>(width, height, camera.getPosition());
 }
 
 // stores the current (rescaled) size of the GLFW parent window in two parameters passed by reference
@@ -108,6 +112,8 @@ void GetWindowSize(GLFWwindow* window, int& width, int& height) {
 }
 
 void Engine::update(Shader* shader){
+
+    glfwMakeContextCurrent(window);
 
     glfwPollEvents();
 
@@ -257,7 +263,6 @@ void Engine::RenderProperties(){
         rotationY = 0.0f;
         rotationZ = 0.0f;
         scale = 1.0f;
-        // we want to set the color of the object as well - this may be a bit harder
     }
 
     ImGui::NewLine();
@@ -322,13 +327,11 @@ void Engine::RenderStats(){
 
         auto worldRaytracer = std::make_shared<BVH_Node>(all_objects, 0, all_objects.size());
         counter++;
+
         /**
          * Set up camera
          */
-        auto rayTracingCamera = std::make_shared<Camera>(600, 800, camera.getPosition());
-        rayTracingCamera->lookat = camera.getPosition() + camera.direction;
-        //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
-        //rayTracingCamera->vup = vec3(0, -1, 0);
+        rtCamera->lookat = camera.getPosition() + camera.direction;
 
         std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
         std::cerr<<"Camera direction is at : "<<glm::to_string(camera.direction)<<"\n";
@@ -337,10 +340,7 @@ void Engine::RenderStats(){
         std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
 
-        rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm", window);
-
-        // rayTracingCamera = new Camera(height, width, camera.getPosition());
-       // rayTracingCamera->render(world, "imageRender.ppm");
+        rtCamera->render(worldRaytracer, "imageRender-frame.ppm", window);
     }
 }
 

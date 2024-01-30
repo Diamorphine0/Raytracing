@@ -2,23 +2,23 @@
 
 void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath, GLFWwindow* engineWindow) {
     initialize();
-    imageRenderer.reset_pixels();
+//    imageRenderer.reset_pixels();
 
-    for (int j = 0; j < imageRenderer.get_height(); ++j) {
-        for (int i = 0; i < imageRenderer.get_width(); ++i) {
-            color3 pixel_color = {0, 0, 0};
-            for(int k = 0; k < samples_per_pixel; k++){
-                Ray r = get_ray(i, j);
-                pixel_color += ray_color(r, world);
-            }
-            pixel_color *= (1.0f/samples_per_pixel);
-            imageRenderer.set_pixel(j, i, pixel_color);
-        }
-    }
-    imageRenderer.render_image(imagePath);
+//    for (int j = 0; j < imageRenderer.get_height(); ++j) {
+//        for (int i = 0; i < imageRenderer.get_width(); ++i) {
+//            color3 pixel_color = {0, 0, 0};
+//            for(int k = 0; k < samples_per_pixel; k++){
+//                Ray r = get_ray(i, j);
+//                pixel_color += ray_color(r, world);
+//            }
+//            pixel_color *= (1.0f/samples_per_pixel);
+//            imageRenderer.set_pixel(j, i, pixel_color);
+//        }
+//    }
+//    imageRenderer.render_image(imagePath);
     std::cout << "Raytracing begins" << std::endl;
 
-    imageRenderer.Raytrace(engineWindow);
+    imageRenderer.init_window(engineWindow);
 }
 
 void Camera::initialize() {

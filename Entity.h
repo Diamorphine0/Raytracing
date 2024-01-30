@@ -13,7 +13,6 @@
 
 //for debugging
 #include <iostream>
-// for .obj model reading
 #include <fstream>
 #include <string>
 #include <memory>

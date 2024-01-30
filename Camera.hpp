@@ -24,9 +24,9 @@ public:
     float defocus_angle = 0;  // Variation angle of rays through each pixel
     float focus_dist = 10;    // Distance from camera lookfrom point to plane of perfect focus
 
-private:
     ImageRenderer imageRenderer;
 
+private:
     point3 center;         // Camera center
     point3 pixel00_loc;    // Location of pixel 0, 0
 

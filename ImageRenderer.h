@@ -15,10 +15,20 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/transform.hpp>
 #include "FrameBuffer.h"
+
 #include "shader.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/transform.hpp>
+
 
 class ImageRenderer {
 public:
+
+    GLFWwindow* rtWindow = nullptr;
+
     ImageRenderer(int height, int width);
 
     int get_height() const { return image_height; }
@@ -32,11 +42,15 @@ public:
 
     void render_image(const std::string &image_path);
 
-    int Raytrace(GLFWwindow* engineWindow);
+    void init_window(GLFWwindow* engineWindow);
+    void Raytrace();
 
 private:
+    Shader* shader;
     int image_height;   // Rendered image height
     int image_width; // width
+    GLuint VAO;
+    GLuint VBO;
 
     std::vector< std::vector<color3>> pixel_colors;
 };

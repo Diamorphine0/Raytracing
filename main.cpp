@@ -51,6 +51,22 @@ int main(int argc, char* argv[])
         engine.camera.movement(currentTime, lastTime, speed, engine.window);
 
         engine.update(shader);
+
+        std::cout << "Pointer Check" << engine.rtCamera -> imageRenderer.rtWindow << std::endl;
+        if(engine.rtCamera -> imageRenderer.rtWindow != nullptr){
+
+            std::cout << "Recognized 1" << std::endl;
+
+            if(glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) == GLFW_PRESS ||
+                    glfwWindowShouldClose(engine.window) != 0){
+                std::cout << "We are here at least" << std::endl;
+            }
+            else{
+                engine.rtCamera -> imageRenderer.Raytrace();
+            }
+        }
+        // make a second current context
+
     }
     while( glfwGetKey(engine.window, GLFW_KEY_ESCAPE ) != GLFW_PRESS &&
            glfwWindowShouldClose(engine.window) == 0 );

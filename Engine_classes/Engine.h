@@ -6,7 +6,7 @@
 #include "engineCamera.h"
 #include "scenegraph.h"
 #include "Entity.h"
-
+#include "ImageRenderer.h"
 
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
@@ -43,19 +43,26 @@ public:
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 
+    void window_close_callback(GLFWwindow* window){
+        // Handle window close event
+        // You can add cleanup or other actions here
+        // For now, just set the window should close flag
+        glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+
     // Scene Graph Root Node - we can achieve camera movement by applying entity transformations to the object.
     Node* engineWorld = nullptr;
 
-    GLFWwindow* window;
-    GLFWwindow* rayTracingwindow = nullptr;
+    GLFWwindow* window = nullptr;
     GLuint programID;
-    engineCamera  camera;
+    engineCamera camera;
     int width, height;
-    frameBuffer* fb;
-    Shader* shader;
-    Shader* shaderLine;
-    Shader* shaderAx;
-    ImFont* standardfont;
+    frameBuffer* fb = nullptr;
+    Shader* shader = nullptr;
+    Shader* shaderLine = nullptr;
+    Shader* shaderAx = nullptr;
+    ImFont* standardfont = nullptr;
+    std::shared_ptr<Camera> rtCamera = nullptr;
 
     int currentFrame = 0;
     int framesPerSecond = 30;
