@@ -177,7 +177,7 @@ void Engine::displayUpdate(){
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.325*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
     RenderHierarchy();
@@ -189,8 +189,8 @@ void Engine::displayUpdate(){
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
-    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.425*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.325*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
@@ -244,7 +244,7 @@ void Engine::RenderProperties(){
     //static float rotation = 0.0f;
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
-    if(ImGui::Button("Apply transformations")){
+    if(ImGui::Button("Apply Transformations")){
         this->selectedNode->entity->translate(translationX, translationY, translationZ);
         this->selectedNode->entity->rotate(rotationX, 1, 0, 0);
         this->selectedNode->entity->rotate(rotationY, 0, 1, 0);
@@ -263,11 +263,11 @@ void Engine::RenderProperties(){
     //
     static ImVec4 color;
     ImGui::ColorEdit3("Color", &color.x);
-    if(ImGui::Button("Apply new ambient colour")){
+    if(ImGui::Button("Apply New Ambient Colour")){
         this->selectedNode->entity->setAmbience(color.x, color.y, color.z);
         color = {0,0,0,0};
     }
-    if(ImGui::Button("Remove ambience")){
+    if(ImGui::Button("Remove Ambient Colour")){
         this->selectedNode->entity->setAmbience(1.0f, 1.0f, 1.0f);
     }
 };
@@ -427,7 +427,7 @@ void Engine::RenderAddObject(){
     ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
 
 
-    if (ImGui::Button("Initialise object")){
+    if (ImGui::Button("Initialise Object")){
         std::string nameString;
         for (int i = 0; i < 256 && objectName.buffer[i] != '\0'; ++i) {
             if (!std::isspace(static_cast<unsigned char>(objectName.buffer[i]))) {
