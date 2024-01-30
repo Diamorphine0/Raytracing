@@ -6,7 +6,7 @@ in vec3 FragPos;
 in vec3 viewPos0;
 
 uniform sampler2D u_Texture;
-uniform vec3 ambientColor = vec3(1.0, 1.0, 1.0); //default light green
+uniform vec3 ambientColor;// = vec3(1.0f, 1.0f, 0.0f); //default light green
 
 struct Light {
     vec3 lightColor;
