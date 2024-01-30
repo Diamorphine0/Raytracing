@@ -9,7 +9,8 @@ void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath)
             color3 pixel_color = {0, 0, 0};
             for(int k = 0; k < samples_per_pixel; k++){
                 Ray r = get_ray(i, j);
-                pixel_color += ray_color(r, world, max_depth);
+
+                pixel_color += glm::clamp( ray_color(r, world, max_depth), 0.0f, 1.0f);
             }
             pixel_color *= (1.0f/samples_per_pixel);
             imageRenderer.set_pixel(j, i, pixel_color);
@@ -65,10 +66,13 @@ color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int
     Ray secondary_ray(vec3{0, 0, 0}, vec3{0, 0, 0});
     color3 change_in_col;
     color3 light_contribution = rec.material->light_emitted(rec);
-//adjust to remove acne
-    rec.pointHit += EPS * rec.normal;
     if(!rec.material->scatter(r, rec, change_in_col, secondary_ray))
         return light_contribution;
+//    std::cerr<<"BEgin\n";
+//    std::cerr<<"seconday ray: "<<glm::to_string(secondary_ray.get_direction())<<"\n";
+//    std::cerr<<"point hit "<<glm::to_string(rec.pointHit)<<"\n";
+//    std::cerr<<"normal "<<glm::to_string(rec.normal)<<"\n";
+//    std::cerr<<"front face "<<(rec.frontFace)<<"\n";
 
     color3 next_contrib = ray_color(secondary_ray, world, depth - 1);
 

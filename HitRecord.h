@@ -29,7 +29,7 @@ struct HitRecord {
      * @param outsideNormal normal at point of intersection toward the outside surface.
      */
     void setNormalFace(const Ray &r, const vec3 &outsideNormal){
-        if(glm::dot(r.get_direction(), outsideNormal) < 0) {
+        if(glm::dot(r.get_direction(), outsideNormal) <= 0) {
             //hit is from outside the object
             frontFace = true;
             normal = outsideNormal;

@@ -16,10 +16,10 @@ private:
     float ior;
 
     // Fresnel-Schlick approximation for reflection intensity
-    static float fresnelSchlick_reflectance(const vec3 &incident, const vec3 &normal, float cor_ior){
-        float r0 = pow((1.0 - cor_ior) / (1.0 + cor_ior), 2.0); // Reflectance at normal incidence
-        float cos_theta = std::min(1.0f, dot(-incident, normal));
-        return r0 + (1.0 - r0) * pow(1.0 - cos_theta, 5.0);
+    static double reflectance(double cosine, double ref_idx) {
+        auto r0 = (1.0-ref_idx) / (1.0+ref_idx);
+        r0 = r0*r0;
+        return r0 + (1.0-r0)*pow((1 - cosine),5);
     }
 };
 

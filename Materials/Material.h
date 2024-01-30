@@ -22,16 +22,11 @@ protected:
         return incident - 2 * glm::dot(incident, normal) * normal;
     }
     //by Snell's law
-    static vec3 refract(const vec3 &incident, const vec3 &normal, float ior, bool &can_refract) {
-        float cos_theta = std::min(1.0f, dot(-incident, normal));
-        float sin = ior * ior * (1.0 - cos_theta - cos_theta);
-        if (sin > 1.0)
-            can_refract = false; //can't refract, must reflect
-
-        can_refract = true;
-        vec3 r_perp = ior * (incident + cos_theta * normal);
-        vec3 r_paralel = -glm::sqrt(glm::abs(1.0f - glm::length2(r_perp))) * normal;
-        return r_perp + r_paralel;
+    inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
+        auto cos_theta = fmin(dot(-uv, n), 1.0);
+        vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
+        vec3 r_out_parallel = -sqrt(fabs(1.0 - glm::length2(r_out_perp))) * n;
+        return r_out_perp + r_out_parallel;
     }
 };
 

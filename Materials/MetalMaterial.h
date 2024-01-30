@@ -8,6 +8,7 @@
 #include "Texture.h"
 
 class MetalMaterial: public Material {
+public:
     //Setting disturbance to 0 means the metal is perfect
     MetalMaterial(std::shared_ptr<Texture> &texture, float disturbance = 0.0f) : texture(texture), disturbance(disturbance) { }
 

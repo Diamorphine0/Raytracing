@@ -19,9 +19,11 @@ public:
     unsigned char *localBuffer;
     int width, height, bitsPerPixel;
 
+    bool constant_color = true;
+    color3 color;
 public:
     Texture(const std::string &path);
-
+    Texture(const color3 &col);
     ~Texture();
 
     color3 get_color_coordinates(double u, double v) const;

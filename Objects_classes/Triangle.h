@@ -16,7 +16,6 @@ public:
      *
      */
     Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const vec3 &n0, const vec3 &n1, const vec3 &n2, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material);
-    Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const vec3 &n0, const vec3 &n1, const vec3 &n2, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material);
 
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const;
 
@@ -26,7 +25,7 @@ private:
     point3 p0{}, p1{}, p2{};
     vec2 p0UV{}, p1UV{}, p2UV{};
     vec3 n0{}, n1{}, n2{};
-    point3 normal{};
+    //point3 normal{};
     float planeEquationCoeff{};
 
     bool checkOnPlane(const point3 &p) const;

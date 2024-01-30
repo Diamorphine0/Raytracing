@@ -104,6 +104,7 @@ set(PROJECT_SOURCES
         Materials/MetalMaterial.cpp
         Materials/MetalMaterial.h
         Materials/DielectricMaterial.cpp
+        Materials/DiffuseLight.h
 )
 
 

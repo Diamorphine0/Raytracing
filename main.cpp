@@ -11,6 +11,8 @@
 #include "BVH_Node.h"
 #include "DielectricMaterial.h"
 #include "DiffuseMaterial.h"
+#include "MetalMaterial.h"
+#include "DiffuseLight.h"
 
 
 void add_node(std::shared_ptr<Entity> &aux, Engine &engine, std::string name){
@@ -20,23 +22,38 @@ void add_node(std::shared_ptr<Entity> &aux, Engine &engine, std::string name){
     engine.selectedNode = aux_node;
 }
 void build_scene(Engine &engine, std::string path){
+//    auto color_fixed = std::make_shared<Texture>(color3{0.7, 0.7, 0.9});
     auto brick_text = std::make_shared<Texture>(path + "/Textures/brick.png");
-    auto purple_text = std::make_shared<Texture>(path + "/Textures/purple.png");
+    auto purple = std::make_shared<Texture>(path + "/Textures/purple.png");
 
-    auto glass = std::make_shared<DielectricMaterial>(10);
-    auto diffuse = std::make_shared<DiffuseMaterial>(purple_text);
 
+    auto glass = std::make_shared<DielectricMaterial>(1.5);
+    auto diffuse = std::make_shared<DiffuseMaterial>(purple);
+    auto metal = std::make_shared<MetalMaterial>(purple, 0.1);
+    auto light = std::make_shared<DiffuseLight>((color3){15, 15, 15});
 
 
     auto sphere = std::make_shared<Entity>(path + "/objects/sphere.obj");
-    sphere->texture = purple_text;
+    sphere->texture = brick_text;
+    sphere->scale(0.5, 0.5, 0.5);
     sphere->translate(0, 1, 0);
-    sphere->material = glass;
+    sphere->material = light;
 
-    auto cube = std::make_shared<Entity>(path + "/objects/cube.obj");
-    cube->translate(0, 0, -10);
-    cube->material = diffuse;
-    cube ->texture = brick_text;
+    auto sphere2 = std::make_shared<Entity>(path + "/objects/sphere.obj");
+    sphere2->texture = brick_text;
+    sphere2->scale(0.5, 0.5, 0.5);
+    sphere2->translate(5, 1, 0);
+    sphere2->material = light;
+
+//    auto cube = std::make_shared<Entity>(path + "/objects/cube.obj");
+//    cube->translate(0, 0, -10);
+//    cube->material = diffuse;
+//    cube->texture = purple;
+
+    auto cube2 = std::make_shared<Entity>(path + "/objects/cube.obj");
+    cube2->translate(0, 0, 1);
+    cube2->material = glass;
+    cube2->texture = brick_text;
 
 
     auto plane = std::make_shared<Entity>(path + "/objects/cube.obj");
@@ -44,19 +61,19 @@ void build_scene(Engine &engine, std::string path){
     plane->scale(10, 0.001, 10);
     plane->translate(-2, 0, 0);
 
-    plane->texture = brick_text;
+    plane->texture = purple;
     plane->material = diffuse;
 
-
-    auto aux_entity = std::make_shared<Entity> (path + "/objects/triangle.obj");
-    aux_entity->scale(0.001, 0.001, 0.001);
-    aux_entity->texture = purple_text;
-    aux_entity->material = diffuse;
+//
+//    auto aux_entity = std::make_shared<Entity> (path + "/objects/triangle.obj");
+//    aux_entity->scale(0.001, 0.001, 0.001);
+//    aux_entity->texture = color_fixed;
+//    aux_entity->material = diffuse;
 
     add_node(plane, engine, "plane");
-    add_node(cube, engine, "cube");
     add_node(sphere, engine, "sphere");
-
+    add_node(sphere, engine, "sphere2");
+    add_node(cube2, engine, "cube2");
 }
 
 int main(int argc, char* argv[])
