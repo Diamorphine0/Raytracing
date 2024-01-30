@@ -12,13 +12,13 @@ void Triangle::computePlaneEquation() {
     planeEquationCoeff = - glm::dot(normal, p0);
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, color3 color = {0.7, 0.7, 0.7}) : p0(a), p1(b), p2(c), color(color) {
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture) : p0(a), p1(b), p2(c), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture){
     computeNormal();
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, color3 color) : p0(a), p1(b), p2(c), normal(_normal), color(color) {
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture) : p0(a), p1(b), p2(c), normal(_normal), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture) {
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
@@ -44,7 +44,7 @@ bool Triangle::checkOnPlane(const point3 &p) const{
         return true;
     return false;
 }
-
+/*
 bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) const{
     point3 r_origin = r.get_origin(), r_direction = r.get_direction();
 
@@ -73,7 +73,50 @@ bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
     rec.color = color;
     return true;
 }
+*/
 
+bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) const{
+    vec3 edge1 = p1 - p0;
+    vec3 edge2 = p2 - p0;
+    vec3 ray_cross_e2 = cross(r.get_direction(), edge2);
+    float det = dot(edge1, ray_cross_e2);
+
+    if (std::fabs(det)  < EPS)
+        return false;    // This ray is parallel to this triangle.
+
+    float inv_det = 1.0 / det;
+    vec3 s = r.get_origin() - p0;
+    float u = inv_det * dot(s, ray_cross_e2);
+
+    if (u < 0 || u > 1)
+        return false;
+
+    vec3 s_cross_e1 = cross(s, edge1);
+    float v = inv_det * dot(r.get_direction(), s_cross_e1);
+
+    if (v < 0 || u + v > 1)
+        return false;
+
+    // At this stage we can compute t to find out where the intersection point is on the line.
+    float t = inv_det * dot(edge2, s_cross_e1);
+
+    if (!restriction.contains(t)) // ray intersection
+        return false;
+
+    auto pointHit = r.get_origin() + r.get_direction() * t;
+
+    //If we have reached this point it means we hit
+    rec.pointHit = pointHit;
+    rec.tHit = t;
+    rec.setNormalFace(r, normal);
+
+    auto texture_coord = (1 - u - v) * p0UV + (u) * p1UV + (v) * p2UV;
+    if(texture != nullptr)
+        rec.color = texture->get_color_coordinates(texture_coord.x, texture_coord.y);
+    else
+        rec.color = glm::vec3(texture_coord, 1);
+    return true;
+}
 
 
 

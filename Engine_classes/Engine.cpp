@@ -66,7 +66,6 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);
-
 }
 
 void Engine::update(Shader* shader){
@@ -236,7 +235,17 @@ void Engine::RenderStats(){
         //generate world at time t
         //i go through the scene graph and compute the right matrices for entities at time t
         std::vector<std::shared_ptr<Entity>> all_entities;
-        engineWorld->dfs_entitity_setup(currentFrame, all_entities);
+        //returns a list of all entities with positions (in canonical basis) at frame current frame
+        //.get_all_entitities_updated(curFrame);
+        engineWorld -> entity -> worldMatrix = engineWorld-> entity ->localMatrix;
+
+        std::cerr<<"World matrix \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
+
+        std::cerr<<"Local matrix \n" << glm::to_string(engineWorld -> entity -> localMatrix)<<std::endl;
+
+        engineWorld->dfs_entitity_setup(currentFrame, all_entities, animate);
+
+        std::cerr<<"World matrix after entity setup \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
 
         std::vector<std::shared_ptr<Object>> all_objects;
         all_objects.reserve(all_entities.size());
@@ -249,15 +258,22 @@ void Engine::RenderStats(){
         /**
          * Set up camera
          */
-        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
-        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
+        auto rayTracingCamera = std::make_shared<Camera>(600, 800, camera.getPosition());
+        rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        //rayTracingCamera->vup = vec3(0, -1, 0);
 
+        std::cerr<<"Camera is at : "<<glm::to_string(camera.getPosition())<<"\n";
+        std::cerr<<"Camera direction is at : "<<glm::to_string(camera.direction)<<"\n";
+
+        std::cerr<<"The world is at coord x: "<<worldRaytracer->get_boundingBox().get_ax(0).min<< " " << worldRaytracer->get_boundingBox().get_ax(0).max<<" \n";
+        std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
 
         rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm");
 
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
-        // rayTracingCamera->render(world, "imageRender.ppm");
+       // rayTracingCamera->render(world, "imageRender.ppm");
     }
 }
 
@@ -360,7 +376,7 @@ void Engine::RenderAddObject(){
 
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
-            entity -> texture = new Texture(textureString.c_str());
+            entity -> texture = std::make_shared<Texture>(textureString.c_str());
 
             Node* node = new Node(entity);
             node -> setParent(this -> engineWorld);

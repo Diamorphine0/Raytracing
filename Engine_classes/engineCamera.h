@@ -26,6 +26,8 @@ public:
 
     inline glm::vec3 getPosition(){return position;};
 
+    glm::vec3 direction;
+
 private:
     GLFWwindow* window;
     double xpos, ypos;
@@ -34,7 +36,6 @@ private:
     float horizontalAngle;
     float verticalAngle;
     float initialFoV;
-    glm::vec3 direction;
     glm::vec3 right;
     glm::vec3 up;
 };
