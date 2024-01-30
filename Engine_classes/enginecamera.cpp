@@ -35,6 +35,7 @@ void engineCamera::animateScene(Node* engineWorld, const Shader& shader, int& cu
 
     engineWorld -> Animate(shader, currentFrame);
     currentFrame += 1;
+
 };
 
 // we should have an animation function here and set the delta time to basically know how often we should call the function

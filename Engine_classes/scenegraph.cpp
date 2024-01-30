@@ -82,8 +82,7 @@ void Node::Draw(const Shader& shader, glm::vec3 pos, int& currentFrame){
 void Node::addKeyframe(int time){
     // we assume that the process is fast enough that all the matricies will remain unchanged throughout
 //    if(entity != nullptr){
-        std::cout << entity -> keyFrameInitialTime << std::endl;
-        std::cout << time << std::endl;
+
         if(time < (entity -> keyFrameInitialTime)){
             std::cout << "Are we adding keyframes already" << std::endl;
             entity -> keyFrameInitialTime = time;
@@ -94,9 +93,6 @@ void Node::addKeyframe(int time){
         }
         std::pair entityKeyframe(time, (entity -> localMatrix));
         entity -> keyFrames.push_back(entityKeyframe);
-//    }else{
-//        std::cout << "the entity is null" << std::endl;
-//    }
 
     for(auto child: children){
         child->addKeyframe(time);

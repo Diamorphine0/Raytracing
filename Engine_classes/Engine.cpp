@@ -172,6 +172,11 @@ void Engine::RenderProperties(){
     ImGui::SliderFloat("Translation Y", &translationY, -10.0f, 10.0f);
     ImGui::SliderFloat("Translation Z", &translationZ, -10.0f, 10.0f);
 
+    static float rotationX = 0.0f, rotationY = 0.0f, rotationZ = 0.0f;
+    ImGui::SliderFloat("Rotation X", &rotationX, 0.f, 10.0f);
+    ImGui::SliderFloat("Rotation Y", &rotationY, 0.f, 10.0f);
+    ImGui::SliderFloat("Rotation Z", &rotationZ, 0.f, 10.0f);
+
     // Scaling slider
     static float scale = 1.0f;
     ImGui::SliderFloat("Scale", &scale, 0.1f, 3.0f);
@@ -182,10 +187,16 @@ void Engine::RenderProperties(){
 
     if(ImGui::Button("Apply Transformations")){
         this->selectedNode->entity->translate(translationX, translationY, translationZ);
+        this->selectedNode->entity->rotate(rotationX, 1, 0, 0);
+        this->selectedNode->entity->rotate(rotationY, 0, 1, 0);
+        this->selectedNode->entity->rotate(rotationZ, 0, 0, 1);
         this->selectedNode->entity->scale(scale, scale, scale);
         translationX = 0.0f;
         translationY = 0.0f;
         translationZ = 0.0f;
+        rotationX = 0.0f;
+        rotationY = 0.0f;
+        rotationZ = 0.0f;
         scale = 1.0f;
         // we want to set the color of the object as well - this may be a bit harder
     }
@@ -296,7 +307,6 @@ void Engine::RenderAnimation() {
         }else{
             std::cout << "Cannot add frames during the animation" << std::endl;
         }
-
     }
 
     if (ImGui::Button("Clear All Marks")) {
@@ -361,8 +371,8 @@ void Engine::RenderAddObject(){
 
 
         std::cout << SOURCE_DIR << std::endl;
-        nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString;
-        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString;
+        nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString + (std::string)".obj";
+        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString + (std::string)".png";
 
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
@@ -371,6 +381,10 @@ void Engine::RenderAddObject(){
             Node* node = new Node(entity);
             node -> setParent(this -> engineWorld);
             node->setName(tagString);
+
+            // Update the newest node added to be the selected one
+            selectedNode = node;
+
         } catch (const std::runtime_error& e) {
             std::cout << "Error: " << e.what() << std::endl;
         }
