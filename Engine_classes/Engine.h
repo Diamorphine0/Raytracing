@@ -47,6 +47,7 @@ public:
     Node* engineWorld = nullptr;
 
     GLFWwindow* window;
+    GLFWwindow* rayTracingwindow = nullptr;
     GLuint programID;
     engineCamera  camera;
     int width, height;
