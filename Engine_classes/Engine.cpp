@@ -5,7 +5,7 @@
 #include <memory>
 #include "TriangleMesh.h"
 
-Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
+Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
 
@@ -48,7 +48,7 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
 
     // we set new standard font
     io.Fonts->AddFontDefault();
-    standardfont = io.Fonts->AddFontFromFileTTF("../Raytracing/fonts/NotoSans.ttf", 20.0f);
+    standardfont = io.Fonts->AddFontFromFileTTF((root_path + (std::string)"/fonts/NotoSans.ttf").c_str(), 20.0f);
     IM_ASSERT(standardfont != NULL);
 
     // we set the desired ImGui style properties
@@ -89,8 +89,8 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
 
     engineWorld = new Node(std::make_shared<Entity>());
 
-    shaderLine = new Shader(shader_path + "/vertexshaderLine.shader", shader_path + "/fragmentshaderLine.shader");
-    shaderAx = new Shader(shader_path + "/vertexshaderAx.shader", shader_path + "/fragmentshaderAx.shader");
+    shaderLine = new Shader(root_path + (std::string)"/shaders" + "/vertexshaderLine.shader", root_path + (std::string)"/shaders" + "/fragmentshaderLine.shader");
+    shaderAx = new Shader(root_path + (std::string)"/shaders" + "/vertexshaderAx.shader", root_path + (std::string)"/shaders" + "/fragmentshaderAx.shader");
 
     big_grid.gen_big_grid(1000, 501);
     axes.gen_axes(1000);

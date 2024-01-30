@@ -67,7 +67,7 @@ void ImageRenderer::Raytrace(){
     auto fb = new frameBuffer(image_width, image_height);
     fb -> BindData(&pixel_colors);
 
-    Shader* shader = new Shader(SOURCE_DIR + '/shaders/rayVertex.shader', SOURCE_DIR + '/shaders/rayFragment.shader');
+    Shader* shader = new Shader(SOURCE_DIR + (std::string)"/shaders/rayVertex.shader", SOURCE_DIR + (std::string)"/shaders/rayFragment.shader");
 
     do{
         shader -> Bind();
