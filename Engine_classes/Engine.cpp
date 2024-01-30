@@ -177,7 +177,7 @@ void Engine::displayUpdate(){
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.325*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
     RenderHierarchy();
@@ -189,8 +189,8 @@ void Engine::displayUpdate(){
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.425*height));
-    ImGui::SetNextWindowPos(ImVec2 (0,0.325*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.3*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
@@ -260,6 +260,7 @@ void Engine::RenderProperties(){
         // we want to set the color of the object as well - this may be a bit harder
     }
 
+    ImGui::NewLine();
     //
     static ImVec4 color;
     ImGui::ColorEdit3("Color", &color.x);
