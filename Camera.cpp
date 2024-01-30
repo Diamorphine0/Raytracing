@@ -9,16 +9,13 @@ void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath)
             color3 pixel_color = {0, 0, 0};
             for(int k = 0; k < samples_per_pixel; k++){
                 Ray r = get_ray(i, j);
-                pixel_color += ray_color(r, world);
+                pixel_color += ray_color(r, world, max_depth);
             }
             pixel_color *= (1.0f/samples_per_pixel);
             imageRenderer.set_pixel(j, i, pixel_color);
         }
     }
     imageRenderer.render_image(imagePath);
-    std::cout << "Raytracing begins" << std::endl;
-
-//    imageRenderer.Raytrace();
 }
 
 void Camera::initialize() {
@@ -63,18 +60,24 @@ color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int
     }
 
     HitRecord rec;
-    if (world->hit(r, Interval(0, INF), rec)) {
-        vec3 point = rec.pointHit;
-        vec3 normal = rec.normal;
+    if (world->hit(r, Interval(EPS, INF), rec)) {
+        std::cerr<<"hit\n";
+        if(rec.frontFace) {
+            vec3 point = rec.pointHit;
+            vec3 normal = rec.normal;
+            //for now just have it as the ccolor
+            //color3 materialColor = rec.material->computeColor(r.get_direction(), normal, rec.material->getIOR());
+            color3 materialColor = rec.color;
+            std::cerr<<"Color is "<<glm::to_string(rec.color)<<"\n";
 
-        color3 materialColor = rec.material->computeColor(r.get_direction(), normal, rec.material->getIOR());
+            Ray scattered_ray = rec.material->scatter(point + EPS * normal, normal, r.get_direction());
+            color3 scattered_color = ray_color(scattered_ray, world, depth - 1);
 
-        Ray scattered_ray = rec.material->scatter(point, normal, r.get_direction());
-        color3 scattered_color = ray_color(scattered_ray, world, depth - 1);
+            color3 finalColor = (1.0 - rec.material->getReflectance()) * materialColor +
+                                rec.material->getReflectance() * scattered_color;
 
-        color3 finalColor = (1.0 - rec.material->getReflectance()) * materialColor + rec.material->getReflectance() * scattered_color;
-
-        return finalColor;
+            return finalColor;
+        }
     }
 
     return {0, 0, 0};

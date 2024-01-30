@@ -12,13 +12,13 @@ void Triangle::computePlaneEquation() {
     planeEquationCoeff = - glm::dot(normal, p0);
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture) : p0(a), p1(b), p2(c), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture){
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material){
     computeNormal();
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
 
-Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture) : p0(a), p1(b), p2(c), normal(_normal), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture) {
+Triangle::Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &_normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material) : p0(a), p1(b), p2(c), normal(_normal), p0UV(aUV), p1UV(bUV), p2UV(cUV), texture(texture), material(material) {
     computePlaneEquation();
     boundingBox = AxisAlignedBoundingBox(AxisAlignedBoundingBox(a, b), AxisAlignedBoundingBox(b, c));
 }
@@ -109,6 +109,7 @@ bool Triangle::hit(const Ray &r, const Interval &restriction, HitRecord &rec) co
     rec.pointHit = pointHit;
     rec.tHit = t;
     rec.setNormalFace(r, normal);
+    rec.material = material;
 
     auto texture_coord = (1 - u - v) * p0UV + (u) * p1UV + (v) * p2UV;
     if(texture != nullptr)

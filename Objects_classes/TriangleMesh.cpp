@@ -33,7 +33,7 @@ TriangleMesh::TriangleMesh(const std::shared_ptr<Entity> &e) {
 
         normal_mean *= 1.0/3;
 
-        auto new_triangle = std::make_shared<Triangle>(coords[0], coords[1], coords[2], normal_mean, UVpoints[0], UVpoints[1], UVpoints[2], e->texture);
+        auto new_triangle = std::make_shared<Triangle>(coords[0], coords[1], coords[2], normal_mean, UVpoints[0], UVpoints[1], UVpoints[2], e->texture, e->material);
         triang.push_back(new_triangle);
     }
     triangles = std::make_shared<BVH_Node>(triang, 0, triang.size());
