@@ -40,6 +40,7 @@ public:
     void RenderAddObject();
     void displayUpdate();
     void RenderEntityHierarchy(Node& node);
+    void CameraSettings();
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 
