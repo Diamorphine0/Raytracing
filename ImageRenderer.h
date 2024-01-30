@@ -33,7 +33,6 @@ public:
     void render_image(const std::string &image_path);
 
     int Raytrace(GLFWwindow* engineWindow);
-
 private:
     int image_height;   // Rendered image height
     int image_width; // width

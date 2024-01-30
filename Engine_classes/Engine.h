@@ -37,7 +37,7 @@ class Engine{
 public:
 
     Engine(engineCamera camera, const std::string &shader_path);
-
+    std::string path;
     void update(Shader* shader);
 
     // ImGUI rendering functions
@@ -50,6 +50,7 @@ public:
     void RenderAddObject();
     void displayUpdate();
     void RenderEntityHierarchy(Node& node);
+    void RenderVideo();
 
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 

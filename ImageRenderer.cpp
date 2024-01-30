@@ -170,3 +170,5 @@ void ImageRenderer::render_image(const std::string &file_image) {
     outFile.flush();
 }
 
+
+

@@ -99,7 +99,6 @@ set(PROJECT_SOURCES
         Materials/DielectricMaterial.h
         Materials/DiffuseMaterial.h
         Materials/Diffuse_specular_Material.h
-        Materials/Phong_metal_Material.h
         Materials/DiffuseMaterial.cpp
         Materials/MetalMaterial.cpp
         Materials/MetalMaterial.h
