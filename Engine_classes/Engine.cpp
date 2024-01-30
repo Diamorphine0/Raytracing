@@ -292,6 +292,8 @@ void Engine::RenderStats(){
     ImGui::Text("Framerate:");
     ImGui::Text("Application average %.1f FPS", io.Framerate);
 
+
+
     static int counter = 0;
     ImGui::NewLine();
     ImGui::Text("Raytracings done = %d", counter);
@@ -341,6 +343,56 @@ void Engine::RenderStats(){
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
     }
+
+    static const char* styles[] = { "Dark", "Light" };
+    static int selectedStyle = 0;
+
+    if (ImGui::Combo("Set Style", &selectedStyle, styles, IM_ARRAYSIZE(styles))) {
+        switch (selectedStyle) {
+        case 0: {
+            ImGui::StyleColorsDark();
+            ImGuiStyle& darkStyle = ImGui::GetStyle();
+            darkStyle.WindowRounding = 5.0f;
+            darkStyle.FrameRounding = 4.0f;
+            darkStyle.GrabRounding = 4.0f;
+            darkStyle.ScrollbarRounding = 4.0f;
+            darkStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
+            darkStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+            darkStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
+            darkStyle.Colors[ImGuiCol_Button] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+            darkStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.26f, 0.26f, 1.0f);
+            darkStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
+            darkStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+            darkStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+            darkStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+            darkStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+            darkStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+            break; }
+        case 1: {
+            ImGui::StyleColorsLight();
+            ImGuiStyle& lightStyle = ImGui::GetStyle();
+            lightStyle.WindowRounding = 3.0f;
+            lightStyle.FrameRounding = 2.0f;
+            lightStyle.GrabRounding = 2.0f;
+            lightStyle.ScrollbarRounding = 2.0f;
+            lightStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
+            lightStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.95f, 0.95f, 0.95f, 1.0f);
+            lightStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
+            lightStyle.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+            lightStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.85f, 0.85f, 0.85f, 1.0f);
+            lightStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+            lightStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+            lightStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+            lightStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+            lightStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+            lightStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+            break; }
+        default:
+            break;
+        }
+    }
+
+
 }
 
 void Engine::RenderHierarchy() {
