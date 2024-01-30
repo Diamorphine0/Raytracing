@@ -379,28 +379,6 @@ void Engine::RenderEntityHierarchy(Node& node) {
 //float lastCPUPercentage = 0.0f;
 //std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
 
-float GetCPUUsageMacOS() {
-#ifdef __APPLE__
-    host_cpu_load_info_data_t cpuinfo;
-    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
-    if (host_statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info64_t)&cpuinfo, &count) == KERN_SUCCESS) {
-        unsigned long long totalTicks = 0;
-        for (int i = 0; i < CPU_STATE_MAX; ++i) {
-            totalTicks += cpuinfo.cpu_ticks[i];
-        }
-        unsigned long long idleTicks = cpuinfo.cpu_ticks[CPU_STATE_IDLE];
-        float cpuUsage = 100.0f * (1.0f - static_cast<float>(idleTicks) / totalTicks);
-
-        return cpuUsage;
-    }
-
-    return -1.0f;
-#else
-    // if user does not run MacOS
-    return -1.0f;
-#endif
-}
-
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
 

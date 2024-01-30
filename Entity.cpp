@@ -368,45 +368,35 @@ glm::mat4 Entity::getClosestKeyframe(int currentFrame){
 
 void Entity::interpolate(int currentFrame){
 
-    if (currentFrame > keyFrameFinalTime || currentFrame < keyFrameInitialTime) {
+    if(currentFrame > keyFrameFinalTime or currentFrame < keyFrameInitialTime){
+        //        std::cout << "NOT ENOUGH KEYFRAMES" << std::endl;
         currentFrame = keyFrameInitialTime;
         return;
-    } else {
-        std::cout << "curr" << typeid(currentFrame).name() << currentFrame << std::endl;
-        std::cout << "init" << typeid(keyFrameInitialTime).name() << keyFrameInitialTime << std::endl;
+    }else{
+
+        std::cout << "curr"<< typeid(currentFrame).name() << currentFrame << std::endl;
+        std::cout << "init"<< typeid(keyFrameInitialTime).name() << keyFrameInitialTime << std::endl;
         std::cout << typeid(keyFrameFinalTime).name() << keyFrameFinalTime << std::endl;
     }
 
-    // Find the nearest keyframe
+    // this finds the nearest keyframe to us
     auto idx = index(currentFrame, 0, keyFrames.size() - 1);
 
     auto& startTime = keyFrames[idx].first;
     auto& startFrame = keyFrames[idx].second;
-    auto& finalTime = keyFrames[idx + 1].first;
-    auto& finalFrame = keyFrames[idx + 1].second;
+    auto& finalTime = keyFrames[idx+1].first;
+    auto& finalFrame = keyFrames[idx+1].second;
 
-    float t = (float)(currentFrame - startTime) / (finalTime - startTime);
+    float t = (float)(currentFrame - startTime)/(finalTime - startTime);
 
-    // Interpolate rotations
+    //quaternions
     glm::quat startRot = glm::quat_cast(startFrame);
     glm::quat finalRot = glm::quat_cast(finalFrame);
+
     glm::quat curRot = glm::slerp(startRot, finalRot, t);
 
-    // Interpolate translations
-    glm::vec3 startTrans = glm::vec3(startFrame[3]);
-    glm::vec3 finalTrans = glm::vec3(finalFrame[3]);
-    glm::vec3 curTrans = startTrans * (1 - t) + finalTrans * t;
-
-    // Interpolate scalings - This part was missing and was messing with the animation output
-    glm::vec3 startScale = glm::vec3(glm::length(startFrame[0]), glm::length(startFrame[1]), glm::length(startFrame[2]));
-    glm::vec3 finalScale = glm::vec3(glm::length(finalFrame[0]), glm::length(finalFrame[1]), glm::length(finalFrame[2]));
-    glm::vec3 curScale = startScale * (1 - t) + finalScale * t;
-
-    // Construct the interpolated matrix
     localMatrix = glm::mat4_cast(curRot);
-    localMatrix[3] = glm::vec4(curTrans, 1.0f);
-    localMatrix[0] *= glm::vec4(curScale.x, 0.0f, 0.0f, 0.0f);
-    localMatrix[1] *= glm::vec4(0.0f, curScale.y, 0.0f, 0.0f);
-    localMatrix[2] *= glm::vec4(0.0f, 0.0f, curScale.z, 0.0f);
-    localMatrix[3] *= glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+    // we can do a more precise interpolation ... (using Bezier curves instead).
+    localMatrix[3] = startFrame[3] * (1 - t) + finalFrame[3] * t;
 }
