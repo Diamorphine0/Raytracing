@@ -4,23 +4,29 @@
 #include "Material.h"
 
 //Transparent or translucent surfaces: ex. glass, water, plastic
-class DielectricMaterial : public Material {
+class Dielectric : public Material {
 public:
-    DielectricMaterial(const vec3& color, float ior)
-            : Material(color, 0.0f, 1.0f, ior) {}
+    Dielectric(const vec3& color, float reflectance, float ior)
+            : Material(color, reflectance, 0.0f, ior) {}
 
-    // Override the computeColor function to implement dielectric behavior
-    virtual vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const override {
-        vec3 reflected = reflect(incident, normal);
-        vec3 refracted = refract(incident, normal, ior);
+    vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const override {
+        return getColor();
+    }
 
-        float fresnelFactor = fresnelSchlick(incident, normal, ior);
+    Ray scatter(const vec3& hit_point, const vec3& normal, const vec3& incident) const override {
+        vec3 reflected_dir = reflect(incident, normal);
+        std::uniform_real_distribution<> dis(0, 1.0);
 
-        vec3 finalColor = (1.0f - fresnelFactor) * computeRefraction(refracted) +
-                          fresnelFactor * computeReflection(reflected);
+        float reflection_prob = fresnelSchlick(incident, normal, getIOR());
 
-        return finalColor;
+        if (dis(rand_gen) < reflection_prob) {
+            return Ray(hit_point, reflected_dir); // Reflect
+        } else {
+            vec3 refracted_dir = refract(incident, normal, getIOR());
+            return Ray(hit_point, refracted_dir); // Refract
+        }
     }
 };
+
 
 #endif // DIELECTRIC_H

@@ -36,6 +36,7 @@ private:
     void computePlaneEquation();
 
     std::shared_ptr<Texture> texture = nullptr;
+    std::shared_ptr<Material> material = nullptr;
 };
 
 #endif //RAY_TRACING_TRIANGLE_H

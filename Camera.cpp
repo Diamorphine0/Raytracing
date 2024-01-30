@@ -52,21 +52,10 @@ color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int
 
         color3 materialColor = rec.material->computeColor(r.get_direction(), normal, rec.material->getIOR());
 
-        float reflectance = rec.material->getReflectance();
-        float transparency = rec.material->getTransparency();
+        Ray scattered_ray = rec.material->scatter(point, normal, r.get_direction());
+        color3 scattered_color = ray_color(scattered_ray, world, depth - 1);
 
-        Ray reflectedRay(point, glm::reflect(r.get_direction(), normal));
-        color3 reflectedColor = ray_color(reflectedRay, world, depth - 1);
-
-        color3 finalColor = (1.0 - reflectance) * materialColor + reflectance * reflectedColor;
-
-        if (transparency > 0.0) {
-            vec3 refractedDirection = glm::refract(r.get_direction(), normal, rec.material->getIOR());
-            Ray refractedRay(point, refractedDirection);
-            color3 refractedColor = ray_color(refractedRay, world, depth - 1);
-
-            finalColor = (1.0 - transparency) * finalColor + transparency * refractedColor;
-        }
+        color3 finalColor = (1.0 - rec.material->getReflectance()) * materialColor + rec.material->getReflectance() * scattered_color;
 
         return finalColor;
     }
