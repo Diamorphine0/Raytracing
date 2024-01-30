@@ -54,17 +54,19 @@ void RenderPoints(const std::vector<std::vector<glm::vec3>>& colorData, GLuint& 
     glBindVertexArray(VAO);
 
     // Iterate through the data buffer and render a point for each pixel
-    for (size_t y = 0; y < colorData.size(); ++y)
+    for (int i = 0; i < colorData.size(); ++i)
     {
-        for (size_t x = 0; x < colorData[y].size(); ++x)
+        for (int j = 0; j < colorData[i].size(); ++j)
         {
-            GLfloat xPos = static_cast<GLfloat>(x) / static_cast<GLfloat>(colorData[y].size()) * 2.0 - 1.0;
-            GLfloat yPos = 1.0 - static_cast<GLfloat>(y) / static_cast<GLfloat>(colorData.size()) * 2.0;
+            GLfloat xPos = static_cast<GLfloat>(j) / static_cast<GLfloat>(colorData[i].size()) * 2.0 - 1.0;
+            GLfloat yPos = 1.0 - static_cast<GLfloat>(i) / static_cast<GLfloat>(colorData.size()) * 2.0;
 
-            glm::vec3 pixelColor = colorData[y][x];
+            glm::vec3 pixelColor = colorData[i][j];
             glUniform3f(glGetUniformLocation(shader ->getID(), "pointColor"), pixelColor.x, pixelColor.y, pixelColor.z);
+            glGetError();
 
             glUniform2f(glGetUniformLocation(shader ->getID(), "position"), xPos, yPos);
+            glGetError();
 
             glDrawArrays(GL_POINTS, 0, 1);
         }
@@ -75,7 +77,7 @@ void RenderPoints(const std::vector<std::vector<glm::vec3>>& colorData, GLuint& 
     glUseProgram(0);
 }
 
-int ImageRenderer::Raytrace(){
+int ImageRenderer::Raytrace(GLFWwindow* engineWindow){
 
     // Initialise GLFW
     glewExperimental = true; // Needed for core profile
@@ -108,7 +110,6 @@ int ImageRenderer::Raytrace(){
 
     // Ensure we can capture the escape key being pressed below
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
-
 
     Shader* shader = new Shader(SOURCE_DIR+(std::string)"/shaders/rayVertex.shader", SOURCE_DIR+(std::string)"/shaders/rayFragment.shader");
 
@@ -158,7 +159,6 @@ void ImageRenderer::render_image(const std::string &file_image) {
     for(int i = 0; i < image_height; i++){
         for(int j = 0; j < image_width; j++){
             outFile<<static_cast<int> (pixel_colors[i][j].x * 255.999)<<" "<<static_cast<int> (pixel_colors[i][j].y * 255.999)<<" "<<static_cast<int> (pixel_colors[i][j].z * 255.999)<<"\n";
-
         }
     }
     std::cerr<<"Done printing!\n"<<image_height<<" "<<image_width<<"\n";

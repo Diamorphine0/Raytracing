@@ -329,7 +329,7 @@ void Engine::RenderStats(){
         std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
 
-        rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm");
+        rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm", window);
 
         // rayTracingCamera = new Camera(height, width, camera.getPosition());
        // rayTracingCamera->render(world, "imageRender.ppm");
