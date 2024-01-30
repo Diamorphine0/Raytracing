@@ -85,9 +85,6 @@ private:
     float ior;
 
 
-
-
-
 };
 
 #endif // MATERIAL_H

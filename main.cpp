@@ -9,6 +9,46 @@
 #include "lightsource.h"
 #include <string>
 #include "BVH_Node.h"
+#include "Dielectric_Material.h"
+#include "Diffuse_Material.h"
+
+void build_scene(Engine &engine, std::string path){
+    auto glass = std::make_shared<Dielectric>(0.999, 1500);
+    auto diffuse = std::make_shared<DiffuseMaterial>();
+
+    auto brick_text = std::make_shared<Texture>(path + "/Textures/brick.png");
+    auto purple_text = std::make_shared<Texture>(path + "/Textures/purple.png");
+
+
+    auto sphere = std::make_shared<Entity>(path + "/objects/sphere.obj");
+    sphere->texture = purple_text;
+    sphere->material = glass;
+
+    auto cube = std::make_shared<Entity>(path + "/objects/cube.obj");
+    cube->translate(0, 0, -10);
+    cube->material = diffuse;
+    cube ->texture = brick_text;
+
+
+    auto plane = std::make_shared<Entity>(path + "/objects/cube.obj");
+    plane->scale(1000, 1000, 1000);
+    //plane->translate(0, 500, 0);
+    plane->texture = brick_text;
+    plane->material = diffuse;
+
+
+
+    auto sphere_node = new Node(sphere);
+    auto cube_node = new Node(cube);
+    auto plane_node = new Node(plane);
+
+    sphere_node ->setParent(engine.engineWorld);
+    cube_node ->setParent(engine.engineWorld);
+    plane_node ->setParent(engine.engineWorld);
+
+
+
+}
 
 int main(int argc, char* argv[])
 {
@@ -30,6 +70,7 @@ int main(int argc, char* argv[])
 
     float animationTime = 0;
 
+    build_scene(engine, SOURCE_DIR);
     do{
        shader -> Bind();
 

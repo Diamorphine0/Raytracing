@@ -75,12 +75,12 @@ color3 Camera::ray_color(const Ray& r, const std::shared_ptr<Object>& world, int
 
             color3 finalColor = (1.0 - rec.material->getReflectance()) * materialColor +
                                 rec.material->getReflectance() * scattered_color;
-
+            finalColor = glm::clamp(finalColor, 0.0f, 1.0f);
             return finalColor;
         }
     }
-
-    return {0, 0, 0};
+    //background color
+    return {0.8196f, 0.9294f, 0.949f};
 }
 
 

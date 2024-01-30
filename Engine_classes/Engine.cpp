@@ -4,6 +4,8 @@
 #include "scenegraph.h"
 #include <memory>
 #include "TriangleMesh.h"
+#include "Dielectric_Material.h"
+#include "Diffuse_Material.h"
 
 Engine::Engine(engineCamera camera, const std::string &shader_path): width(width), height(height), camera(camera){
 
@@ -336,6 +338,9 @@ void Engine::RenderAddObject(){
     ImGui::Text("Here, you may add a custom tag to the object");
     ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
 
+    //temp
+    ImGui::Text("Material: diel/dif ");
+    ImGui::InputText("##objectMaterial", objectMaterial.buffer, sizeof(objectMaterial.buffer));
 
     if (ImGui::Button("Initialise object")){
         std::string nameString;
@@ -356,6 +361,7 @@ void Engine::RenderAddObject(){
         if(textureString[0] == '\0')
             textureString = "Grey.png";
 
+        std::string materialString(objectMaterial.buffer);
 
         std::string tagString;
         for (int i = 0; i < 256 && objectTag.buffer[i] != '\0'; ++i) {
@@ -377,6 +383,12 @@ void Engine::RenderAddObject(){
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
             entity -> texture = std::make_shared<Texture>(textureString.c_str());
+
+            if(materialString == "diel")
+                entity->material = std::make_shared<Dielectric>(0.999, 2);
+            else
+                entity->material = std::make_shared<DiffuseMaterial>();
+
 
             Node* node = new Node(entity);
             node -> setParent(this -> engineWorld);
