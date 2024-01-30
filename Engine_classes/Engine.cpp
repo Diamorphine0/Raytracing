@@ -429,7 +429,10 @@ void Engine::RenderStats(){
     maxFrameRate = std::max(maxFrameRate, currentFrameRate);
 
     static bool showStats = false;
-    ImGui::Checkbox("Additional Statistics", &showStats);
+
+
+    // disabled to not exclude other OS
+    //ImGui::Checkbox("Additional Statistics", &showStats);
 
     if (showStats) {
         ImGui::Separator();
