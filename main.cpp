@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
     Lightsource lamp(glm::vec3(1.0f, 0.0f, -0.5f), glm::vec3(1.0f, 1.0f, 0.0f));
     lights.addSource(lamp);
 
+    engine.engineWorld -> setName("Scene Graph Root (Engine Camera)");
 //    grid big_grid;
 //    big_grid.gen_big_grid(1000, 501);
 //
