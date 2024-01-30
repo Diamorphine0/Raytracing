@@ -4,7 +4,7 @@
 Texture::Texture(const std::string& path):
     filePath(path), localBuffer(nullptr), width(0), height(0), bitsPerPixel(0)
 {
-
+    constant_color = false;
     stbi_set_flip_vertically_on_load(1);
     // we are loading to a local buffer
     localBuffer = stbi_load(path.c_str(), &width, &height, &bitsPerPixel, 3);
@@ -33,6 +33,11 @@ Texture::Texture(const std::string& path):
     glGenerateMipmap(GL_TEXTURE_2D);
 }
 
+Texture::Texture(const color3 &col) {
+    constant_color = true;
+    color = col;
+}
+
 Texture::~Texture(){
     stbi_image_free(localBuffer);
     glDeleteTextures(1, &m_RendererID);
@@ -49,6 +54,8 @@ void Texture::Unbind(){
 }
 
 color3 Texture::get_color_coordinates(double u, double v) const {
+    if(constant_color)
+        return color;
     u = u - std::floor(u);
     v = v - std::floor(v);
 

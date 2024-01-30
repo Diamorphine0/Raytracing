@@ -8,20 +8,6 @@
 #include "Entity.h"
 
 
-#ifdef __APPLE__
-#include <sys/sysctl.h>
-#include <unistd.h>
-#include <mach/mach.h>
-#else
-#endif
-
-#include "shader.h"
-#include <thread>
-#include <chrono>
-
-
-
-
 #include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
@@ -50,7 +36,6 @@ public:
     void RenderProperties();
     void RenderHierarchy();
     void RenderStats();
-    void CameraSettings();
     void RenderAnimation();
     void RenderAddObject();
     void displayUpdate();
@@ -86,6 +71,7 @@ public:
     TextData objectTexture;
     TextData objectTag;
     TextData objectDelete;
+    TextData objectMaterial;
 
     //clicled object
     //Node* clicked;

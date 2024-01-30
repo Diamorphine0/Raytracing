@@ -9,6 +9,7 @@
 #include <map>
 #include "Texture.h"
 #include "lightsource.h"
+#include "Materials/Material.h"
 #include <limits.h>
 
 //for debugging
@@ -122,6 +123,7 @@ public:
     std::vector<Vertex> vertices;
     // we should store a texture pointer this way we can just load the texture
     std::shared_ptr<Texture> texture = nullptr;
+    std::shared_ptr<Material> material = nullptr;
     Lightsource* lightsource;
 
     //as our objects are textured, we don't really change their colours. We just change the colour of the ambient light around them??

@@ -19,11 +19,12 @@ public:
     point3 lookfrom;                          // Point camera is looking from
     point3 lookat = point3(0,0,1);   // Point camera is looking at
     vec3   vup = vec3(0,1,0);        // "up" direction
-
-    int samples_per_pixel = 10; //Camera settings that can be modified
-    float defocus_angle = 0;  // Variation angle of rays through each pixel
+    int max_depth = 50;
+    int samples_per_pixel = 50; //Camera settings that can be modified
+    float defocus_angle = 0.1;  // Variation angle of rays through each pixel
     float focus_dist = 10;    // Distance from camera lookfrom point to plane of perfect focus
 
+    color3 background = {0.0, 0.0, 0.0};
 private:
     ImageRenderer imageRenderer;
 
@@ -42,7 +43,7 @@ private:
 
     void initialize();
 
-    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world) const;
+    color3 ray_color(const Ray& r, const std::shared_ptr<Object> &world, int depth) const;
     Ray get_ray(int i, int j) const;
 
     };

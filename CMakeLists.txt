@@ -19,7 +19,8 @@ set (INCLUDE_DIR
         Objects_classes
         shaders
         imgui
-        Engine_classes)
+        Engine_classes
+        Materials)
 
 set(PROJECT_SOURCES
         Objects_classes/Triangle.h
@@ -94,6 +95,16 @@ set(PROJECT_SOURCES
         FrameBuffer.cpp
         Objects_classes/TriangleMesh.cpp
         Objects_classes/TriangleMesh.h
+        Materials/Material.h
+        Materials/DielectricMaterial.h
+        Materials/DiffuseMaterial.h
+        Materials/Diffuse_specular_Material.h
+        Materials/Phong_metal_Material.h
+        Materials/DiffuseMaterial.cpp
+        Materials/MetalMaterial.cpp
+        Materials/MetalMaterial.h
+        Materials/DielectricMaterial.cpp
+        Materials/DiffuseLight.h
 )
 
 
