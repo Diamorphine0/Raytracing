@@ -58,11 +58,21 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
     style.ScrollbarRounding = 0;
     style.WindowRounding = 3.0f;
 
+    // change color of title bars
+    style.Colors[ImGuiCol_TitleBg] = ImColor(35,35,35,35);
+    style.Colors[ImGuiCol_TitleBgActive] = ImColor(35,35,35,35);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImColor(35,35,35,35);
+
+    // change color of buttons and sliders
     colors[ImGuiCol_Button] = ImColor(169,169,169,100);
     colors[ImGuiCol_ButtonHovered] = ImColor(211,211,211,100);
     colors[ImGuiCol_ButtonActive] = ImColor(211,211,211,100);
+
     colors[ImGuiCol_SliderGrab] = ImColor(169,169,169,100);
-    colors[ImGuiCol_SliderGrabActive] = ImColor(211,211,211,100);
+    colors[ImGuiCol_SliderGrabActive] = ImColor(169,169,169,100);
+    style.Colors[ImGuiCol_FrameBg] = ImColor(120,120,120,100);
+    style.Colors[ImGuiCol_FrameBgHovered] = ImColor(120,120,120,100);
+    style.Colors[ImGuiCol_FrameBgActive] = ImColor(120,120,120,100);
 
     // Setup Platform/Renderer backends
     ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
