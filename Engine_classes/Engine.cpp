@@ -425,9 +425,13 @@ void Engine::RenderAnimation() {
     if (ImGui::Button("Set Keyframe")) {
 
         if(!animate){
-            std::cout << "Keyframe added" << std::endl;
-            engineWorld -> addKeyframe(currentFrame);
-            markedPositions.push_back(currentFrame);
+            if (std::find(markedPositions.begin(), markedPositions.end(), currentFrame) == markedPositions.end()) {
+                std::cout << "Keyframe added" << std::endl;
+                engineWorld->addKeyframe(currentFrame);
+                markedPositions.push_back(currentFrame);
+            } else {
+                std::cout << "Keyframe already exists" << std::endl;
+            }
         }else{
             std::cout << "Cannot add frames during the animation" << std::endl;
         }
