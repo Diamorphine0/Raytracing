@@ -236,6 +236,13 @@ void Engine::displayUpdate(){
    // CameraSettings();
     ImGui::End();
 
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
+    ImGui::Begin("Raytracing Settings");
+    RenderRaytracing();
+    // CameraSettings();
+    ImGui::End();
+
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.3*height));
     ImGui::Begin("Add Object");
@@ -490,6 +497,11 @@ void Engine::RenderStats(){
          */
         auto rayTracingCamera = std::make_shared<Camera>(600, 800, camera.getPosition());
         rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        rayTracingCamera->max_depth = rayTracingCameraParams.max_depth;
+        rayTracingCamera->samples_per_pixel = rayTracingCameraParams.samples_per_pixel;
+        rayTracingCamera->defocus_angle = rayTracingCameraParams.defocus_angle;
+        rayTracingCamera->focus_dist = rayTracingCameraParams.focus_dist;
+        rayTracingCamera->background = rayTracingCameraParams.background;
         //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
         //rayTracingCamera->vup = vec3(0, -1, 0);
 
@@ -499,6 +511,10 @@ void Engine::RenderStats(){
         std::cerr<<"The world is at coord x: "<<worldRaytracer->get_boundingBox().get_ax(0).min<< " " << worldRaytracer->get_boundingBox().get_ax(0).max<<" \n";
         std::cerr<<"The world is at coord y: "<<worldRaytracer->get_boundingBox().get_ax(1).min<< " " << worldRaytracer->get_boundingBox().get_ax(1).max<<" \n";
         std::cerr<<"The world is at coord z: "<<worldRaytracer->get_boundingBox().get_ax(2).min<< " " << worldRaytracer->get_boundingBox().get_ax(2).max<<" \n";
+
+        ImGui::Text("Ray Tracing Settings:");
+
+
 
         rayTracingCamera->render(worldRaytracer, "imageRender-frame.ppm", window);
 
@@ -563,6 +579,17 @@ void Engine::RenderHierarchy() {
     // Render the hierarchy
     //additional argument of engine used for the engine.clicked
     RenderEntityHierarchy(*this->engineWorld /**this*/);
+}
+
+void Engine::RenderRaytracing() {
+    ImGui::Text("Ray Tracing Settings:");
+
+    ImGui::SliderInt("Max Depth", &rayTracingCameraParams.max_depth, 1, 100);
+    ImGui::SliderInt("Samples per Pixel", &rayTracingCameraParams.samples_per_pixel, 1, 100);
+    ImGui::SliderFloat("Defocus Angle", &rayTracingCameraParams.defocus_angle, 0.0f, 1.0f);
+    ImGui::SliderFloat("Focus Distance", &rayTracingCameraParams.focus_dist, 1.0f, 100.0f);
+    ImGui::ColorEdit3("Background Color", (float*)&rayTracingCameraParams.background);
+
 }
 
 void Engine::RenderAnimation() {
