@@ -31,6 +31,10 @@
 - Here all of the different properties of the object can be changed.
 ### Animation
 - This part of the application handles the animations as well as different keyframes.
+### Raytracing 
+- Image is generated inside the build folder
+### Raytracing animation
+- Video generated inside the root folder
 ### Settings 
   Here you can see basic data and stats related to the engine, camera, and the ray tracer like FPS and CPU usage. Additionally, this is where the button for ray tracing is located.
 
@@ -61,4 +65,12 @@ The contributors to the project are the following individuals (in no particular 
 - stb_image
 - QT
 
-Example od how to build: /snap/clion/263/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/263/bin/ninja/linux/x64/ninja -DCMAKE_PREFIX_PATH=/home/tudor/Qt/6.6.1/gcc_64 -G Ninja -S /home/tudor/Desktop/Raytracing -B /home/tudor/Desktop/Raytracing/cmake-build-debug
+## Example of how to build (on LINUX): 
+
+clone repo into folder
+...
+mkdir build
+cd cuild
+cmake .. -DCMAKE_PREFIX_PATH=/home/tudor/Qt/6.6.1/gcc_64
+make
+./Raytracing
