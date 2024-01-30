@@ -29,7 +29,7 @@ public:
 private:
     GLFWwindow* window;
     double xpos, ypos;
-    float mousespeed = 0.0025f;
+    float mousespeed = 1.5f;
     glm::vec3 position;
     float horizontalAngle;
     float verticalAngle;
