@@ -172,8 +172,8 @@ Node::~Node() {
 void Node::dfs_entitity_setup(int currentFrame, std::vector<std::shared_ptr<Entity>> &entities, bool animate) {
 
     if(entity != nullptr) {
-//        if(animate)
-//            entity->interpolate(currentFrame);
+        if(animate)
+            entity->interpolate(currentFrame);
 
         if (parent != nullptr) {
             if (parent->entity != nullptr) {

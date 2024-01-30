@@ -93,7 +93,7 @@ int main(int argc, char* argv[])
 
     float animationTime = 0;
 
-    build_scene(engine, SOURCE_DIR);
+   // build_scene(engine, SOURCE_DIR);
     do{
        shader -> Bind();
 

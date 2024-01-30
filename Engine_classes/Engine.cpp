@@ -7,13 +7,16 @@
 #include "TriangleMesh.h"
 #include "DielectricMaterial.h"
 #include "DiffuseMaterial.h"
+#include <filesystem>
+
+namespace fs = std::filesystem;
 #include "MetalMaterial.h"
 #include "DiffuseLight.h"
 
 Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
 
     glewExperimental = true;
-
+    path = root_path;
     if( !glfwInit() )
     {
         fprintf( stderr, "Failed to initialize GLFW\n" );
@@ -231,19 +234,13 @@ void Engine::displayUpdate(){
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.2*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
-    ImGui::Begin("Raytrace & Stats");
+    ImGui::Begin("Settings");
     RenderStats();
-    CameraSettings();
+   // CameraSettings();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.2*height));
-    ImGui::Begin("Raytracing Settings");
-    RenderRaytracing();
-    // CameraSettings();
-    ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.5*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.5*height));
@@ -327,18 +324,6 @@ void Engine::RenderProperties(){
     }
 
     ImGui::NewLine();
-
-    static const char* stylesTexture[] = { "Grey", "brick", "earth", "grid", "purple", "sun" };
-    static int selectedStyleTexture = 0;
-    ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture));
-    if (ImGui::Button("Apply new texture")){
-        std::string textureString;
-        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)stylesTexture[selectedStyleTexture] + (std::string)".png";
-        this -> selectedNode -> entity -> texture = std::make_shared<Texture>(textureString.c_str());
-    };
-
-    ImGui::NewLine();
-
     static const char* styles[] = { "Dielectric", "Diffuse", "Metal", "Light" };
 
     static int selectedStyle = 0;
@@ -377,64 +362,14 @@ void Engine::RenderEntityHierarchy(Node& node) {
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
 
-//
-void Engine::CameraSettings(){
-    ImGui::Separator();
-    ImGui::Text("Engine Camera statistics:");
 
 
-    /*   double xpos, ypos;
-        float mousespeed = 1.5f;
-        glm::vec3 position;
-        float horizontalAngle;
-        float verticalAngle;
-        float initialFoV;
-*/
-    float* insert_h_angle;
-    bool a;
-    ImGui::Text("X position: %.1f", camera.getPosition().x);
-    ImGui::Text("Y position: %.1f", camera.getPosition().y);
-    ImGui::Text("Z position: %.1f", camera.getPosition().z);
-    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
-    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
-
-    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
-    ImGui::Text("Field of View: %.1f", camera.getfov());
-
-    //camera.setPosition(20);
-    ImGui::Separator();
-}
 
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("Framerate:");
     ImGui::Text("Application average %.1f FPS", io.Framerate);
     float currentFrameRate = io.Framerate;
-//    minFrameRate = std::min(minFrameRate, currentFrameRate);
-//    maxFrameRate = std::max(maxFrameRate, currentFrameRate);
-//
-//    static bool showStats = false;
-//    ImGui::Checkbox("Additional Statistics", &showStats);
-//
-//    if (showStats) {
-//        ImGui::Separator();
-//        ImGui::Text("Fetching Additional Statistics:");
-//
-//
-//        ImGui::Text("Min FPS:%.1f", minFrameRate);
-//        ImGui::Text("Max FPS: %.1f", maxFrameRate);
-//
-//        float lastCPUPercentage = GetCPUUsageMacOS();
-//        if (lastCPUPercentage >= 0.0f) {
-//            lastUpdateTime = std::chrono::high_resolution_clock::now();
-//            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
-//        } else {
-//            ImGui::Text("CPU Usage: N/A (Not supported for this OS)");
-//        }
-//
-//        ImGui::Separator();
-//    }
-
 
 
     static int counter = 0;
@@ -453,7 +388,7 @@ void Engine::RenderStats(){
 
         std::cerr<<"Local matrix \n" << glm::to_string(engineWorld -> entity -> localMatrix)<<std::endl;
 
-        engineWorld->dfs_entitity_setup(currentFrame, all_entities, animate);
+        engineWorld->dfs_entitity_setup(currentFrame, all_entities, false);
 
         std::cerr<<"World matrix after entity setup \n" << glm::to_string(engineWorld -> entity -> worldMatrix)<<std::endl;
 
@@ -468,7 +403,7 @@ void Engine::RenderStats(){
         /**
          * Set up camera
          */
-        auto rayTracingCamera = std::make_shared<Camera>(600, 800, camera.getPosition());
+        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
         rayTracingCamera->lookat = camera.getPosition() + camera.direction;
         rayTracingCamera->max_depth = rayTracingCameraParams.max_depth;
         rayTracingCamera->samples_per_pixel = rayTracingCameraParams.samples_per_pixel;
@@ -496,65 +431,12 @@ void Engine::RenderStats(){
     }
     ImGui::NewLine();
 
-//    static const char* styles[] = { "Dark", "Light" };
-//    static int selectedStyle = 0;
-//
-//    if (ImGui::Combo("Set Style", &selectedStyle, styles, IM_ARRAYSIZE(styles))) {
-//        switch (selectedStyle) {
-//        case 0: {
-//            ImGui::StyleColorsDark();
-//            ImGuiStyle& darkStyle = ImGui::GetStyle();
-//            darkStyle.WindowRounding = 5.0f;
-//            darkStyle.FrameRounding = 4.0f;
-//            darkStyle.GrabRounding = 4.0f;
-//            darkStyle.ScrollbarRounding = 4.0f;
-//            darkStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_Button] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.26f, 0.26f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-//            darkStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-//            break; }
-//        case 1: {
-//            ImGui::StyleColorsLight();
-//            ImGuiStyle& lightStyle = ImGui::GetStyle();
-//            lightStyle.WindowRounding = 3.0f;
-//            lightStyle.FrameRounding = 2.0f;
-//            lightStyle.GrabRounding = 2.0f;
-//            lightStyle.ScrollbarRounding = 2.0f;
-//            lightStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.95f, 0.95f, 0.95f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.85f, 0.85f, 0.85f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-//            lightStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-//            break; }
-//        default:
-//            break;
-//        }
-//    }
+
+    if(ImGui::Button("Raytrace video")){
+        RenderVideo();
+    }
 
 
-}
-
-void Engine::RenderHierarchy() {
-    ImGui::Text("Entity Hierarchy View");
-    // Render the hierarchy
-    //additional argument of engine used for the engine.clicked
-    RenderEntityHierarchy(*this->engineWorld /**this*/);
-}
-
-void Engine::RenderRaytracing() {
     ImGui::Text("Ray Tracing Settings:");
 
     ImGui::SliderInt("Max Depth", &rayTracingCameraParams.max_depth, 10, 100);
@@ -564,6 +446,100 @@ void Engine::RenderRaytracing() {
     static float initialBackgroundColor[3] = {0.1f, 0.1f, 0.1f};
     ImGui::ColorEdit3("Background Color", initialBackgroundColor);
     rayTracingCameraParams.background = color3(initialBackgroundColor[0], initialBackgroundColor[1], initialBackgroundColor[2]);
+}
+
+static void resetFolder(const std::string& folderPath) {
+    try {
+        // Iterate over all entries in the folder
+        for (const auto& entry : fs::directory_iterator(folderPath)) {
+            if (fs::is_directory(entry)) {
+                // If it's a directory, recursively reset it
+                resetFolder(entry.path().string());
+            } else {
+                // If it's a file, remove it
+                fs::remove(entry.path());
+            }
+        }
+
+        std::cout << "Folder reset successfully: " << folderPath << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Error resetting folder: " << e.what() << std::endl;
+    }
+}
+
+
+void makeVideo(const std::string &inputDirectory, const std::string &outputVideoFile) {
+    // Construct the FFmpeg command
+    std::string ffmpegCommand = "ffmpeg -framerate 25 -i " + inputDirectory + "%d.ppm -c:v libx264 -pix_fmt yuv420p " + outputVideoFile;
+
+    // Execute the FFmpeg command
+    int result = std::system(ffmpegCommand.c_str());
+
+    // Check the result of the FFmpeg command
+    if (result == 0) {
+        std::cout << "Video created successfully: " << outputVideoFile << std::endl;
+    } else {
+        std::cerr << "Error creating video." << std::endl;
+    }
+}
+
+void Engine::RenderVideo(){
+    resetFolder(path + "/videoFrames");
+    if(selectedNode == engineWorld || selectedNode == nullptr){
+        std::cout << "Can't make an empty video" << std::endl;
+        return;
+    }
+
+    int initial = selectedNode -> entity -> keyFrameInitialTime;
+    int final = selectedNode -> entity -> keyFrameFinalTime;
+
+    if(initial >= final){
+        return;
+    }
+
+    for(int rayTraceFrame = initial; rayTraceFrame < final; rayTraceFrame ++) {
+
+        std::vector<std::shared_ptr<Entity>> all_entities;
+
+
+        engineWorld->entity->worldMatrix = engineWorld->entity->localMatrix;
+
+        engineWorld->dfs_entitity_setup(rayTraceFrame, all_entities, true);
+
+        std::cerr << "World matrix after entity setup \n" << glm::to_string(engineWorld->entity->worldMatrix)
+                  << std::endl;
+
+        std::vector<std::shared_ptr<Object>> all_objects;
+        all_objects.reserve(all_entities.size());
+        for (const auto &e: all_entities) {
+            all_objects.emplace_back(std::make_shared<TriangleMesh>(e));
+        }
+
+        auto worldRaytracer = std::make_shared<BVH_Node>(all_objects, 0, all_objects.size());
+        /**
+         * Set up camera
+         */
+        auto rayTracingCamera = std::make_shared<Camera>(height, width, camera.getPosition());
+        rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        rayTracingCamera->max_depth = rayTracingCameraParams.max_depth;
+        rayTracingCamera->samples_per_pixel = rayTracingCameraParams.samples_per_pixel;
+        rayTracingCamera->defocus_angle = rayTracingCameraParams.defocus_angle;
+        rayTracingCamera->focus_dist = rayTracingCameraParams.focus_dist;
+        rayTracingCamera->background = rayTracingCameraParams.background;
+        //rayTracingCamera->lookat = camera.getPosition() + camera.direction;
+        //rayTracingCamera->vup = vec3(0, -1, 0);
+
+        rayTracingCamera->render(worldRaytracer, path + "/videoFrames/" + std::to_string(rayTraceFrame - initial) + ".ppm", window);
+    }
+
+    makeVideo(path + "/videoFrames/", path + "/output_video.mp4");
+}
+
+void Engine::RenderHierarchy() {
+    ImGui::Text("Entity Hierarchy View");
+    // Render the hierarchy
+    //additional argument of engine used for the engine.clicked
+    RenderEntityHierarchy(*this->engineWorld /**this*/);
 }
 
 void Engine::RenderAnimation() {
