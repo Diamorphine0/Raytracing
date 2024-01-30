@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-void Camera::render(std::shared_ptr<Object> world, const std::string &imagePath) {
+void Camera::render(const std::shared_ptr<Object> &world, const std::string &imagePath, GLFWwindow* engineWindow) {
     initialize();
     imageRenderer.reset_pixels();
 

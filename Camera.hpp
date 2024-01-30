@@ -11,7 +11,7 @@ class Camera {
 public:
     Camera(int height, int width, const point3 &position) : imageRenderer(height, width), lookfrom(position) {  }
 
-    void render(std::shared_ptr<Object> world, const std::string &imagepath, GLFWwindow* engineWindow);
+    void render(const std::shared_ptr<Object> &world, const std::string &imagepath, GLFWwindow* engineWindow);
 
     double vfov = 90;  // Vertical field of view
 

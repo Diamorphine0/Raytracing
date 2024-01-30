@@ -3,6 +3,7 @@
 #include "Utilities.hpp"
 #include "scenegraph.h"
 #include <memory>
+#include <algorithm>
 #include "TriangleMesh.h"
 #include "DielectricMaterial.h"
 #include "DiffuseMaterial.h"
@@ -229,8 +230,8 @@ void Engine::displayUpdate(){
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Settings");
-    CameraSettings();
     RenderStats();
+   // CameraSettings();
     ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
@@ -366,8 +367,8 @@ void Engine::RenderEntityHierarchy(Node& node) {
         ImGui::TreePop();
     }
 }
-float lastCPUPercentage = 0.0f;
-std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
+//float lastCPUPercentage = 0.0f;
+//std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
 
 float GetCPUUsageMacOS() {
 #ifdef __APPLE__
@@ -394,63 +395,63 @@ float GetCPUUsageMacOS() {
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
 
-
-void Engine::CameraSettings(){
-    ImGui::Separator();
-    ImGui::Text("Engine Camera statistics:");
-
-
-    /*   double xpos, ypos;
-        float mousespeed = 1.5f;
-        glm::vec3 position;
-        float horizontalAngle;
-        float verticalAngle;
-        float initialFoV;
-*/
-    float* insert_h_angle;
-    bool a;
-    ImGui::Text("X position: %.1f", camera.getPosition().x);
-    ImGui::Text("Y position: %.1f", camera.getPosition().y);
-    ImGui::Text("Z position: %.1f", camera.getPosition().z);
-    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
-    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
-
-    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
-    ImGui::Text("Field of View: %.1f", camera.getfov());
-
-    //camera.setPosition(20);
-    ImGui::Separator();
-}
+//
+//void Engine::CameraSettings(){
+//    ImGui::Separator();
+//    ImGui::Text("Engine Camera statistics:");
+//
+//
+//    /*   double xpos, ypos;
+//        float mousespeed = 1.5f;
+//        glm::vec3 position;
+//        float horizontalAngle;
+//        float verticalAngle;
+//        float initialFoV;
+//*/
+//    float* insert_h_angle;
+//    bool a;
+//    ImGui::Text("X position: %.1f", camera.getPosition().x);
+//    ImGui::Text("Y position: %.1f", camera.getPosition().y);
+//    ImGui::Text("Z position: %.1f", camera.getPosition().z);
+//    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
+//    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
+//
+//    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
+//    ImGui::Text("Field of View: %.1f", camera.getfov());
+//
+//    //camera.setPosition(20);
+//    ImGui::Separator();
+//}
 
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
     ImGui::Text("Framerate:");
     ImGui::Text("Application average %.1f FPS", io.Framerate);
     float currentFrameRate = io.Framerate;
-    minFrameRate = std::min(minFrameRate, currentFrameRate);
-    maxFrameRate = std::max(maxFrameRate, currentFrameRate);
-
-    static bool showStats = false;
-    ImGui::Checkbox("Additional Statistics", &showStats);
-
-    if (showStats) {
-        ImGui::Separator();
-        ImGui::Text("Fetching Additional Statistics:");
-
-
-        ImGui::Text("Min FPS:%.1f", minFrameRate);
-        ImGui::Text("Max FPS: %.1f", maxFrameRate);
-
-        float lastCPUPercentage = GetCPUUsageMacOS();
-        if (lastCPUPercentage >= 0.0f) {
-            lastUpdateTime = std::chrono::high_resolution_clock::now();
-            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
-        } else {
-            ImGui::Text("CPU Usage: N/A (Not supported for this OS)");
-        }
-
-        ImGui::Separator();
-    }
+//    minFrameRate = std::min(minFrameRate, currentFrameRate);
+//    maxFrameRate = std::max(maxFrameRate, currentFrameRate);
+//
+//    static bool showStats = false;
+//    ImGui::Checkbox("Additional Statistics", &showStats);
+//
+//    if (showStats) {
+//        ImGui::Separator();
+//        ImGui::Text("Fetching Additional Statistics:");
+//
+//
+//        ImGui::Text("Min FPS:%.1f", minFrameRate);
+//        ImGui::Text("Max FPS: %.1f", maxFrameRate);
+//
+//        float lastCPUPercentage = GetCPUUsageMacOS();
+//        if (lastCPUPercentage >= 0.0f) {
+//            lastUpdateTime = std::chrono::high_resolution_clock::now();
+//            ImGui::Text("CPU Usage: %.3f%%", lastCPUPercentage);
+//        } else {
+//            ImGui::Text("CPU Usage: N/A (Not supported for this OS)");
+//        }
+//
+//        ImGui::Separator();
+//    }
 
 
 
@@ -504,53 +505,53 @@ void Engine::RenderStats(){
     }
     ImGui::NewLine();
 
-    static const char* styles[] = { "Dark", "Light" };
-    static int selectedStyle = 0;
-
-    if (ImGui::Combo("Set Style", &selectedStyle, styles, IM_ARRAYSIZE(styles))) {
-        switch (selectedStyle) {
-        case 0: {
-            ImGui::StyleColorsDark();
-            ImGuiStyle& darkStyle = ImGui::GetStyle();
-            darkStyle.WindowRounding = 5.0f;
-            darkStyle.FrameRounding = 4.0f;
-            darkStyle.GrabRounding = 4.0f;
-            darkStyle.ScrollbarRounding = 4.0f;
-            darkStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
-            darkStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
-            darkStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
-            darkStyle.Colors[ImGuiCol_Button] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-            darkStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.26f, 0.26f, 1.0f);
-            darkStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
-            darkStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-            darkStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
-            darkStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-            darkStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-            darkStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
-            break; }
-        case 1: {
-            ImGui::StyleColorsLight();
-            ImGuiStyle& lightStyle = ImGui::GetStyle();
-            lightStyle.WindowRounding = 3.0f;
-            lightStyle.FrameRounding = 2.0f;
-            lightStyle.GrabRounding = 2.0f;
-            lightStyle.ScrollbarRounding = 2.0f;
-            lightStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
-            lightStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.95f, 0.95f, 0.95f, 1.0f);
-            lightStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
-            lightStyle.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-            lightStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.85f, 0.85f, 0.85f, 1.0f);
-            lightStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
-            lightStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-            lightStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
-            lightStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-            lightStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-            lightStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
-            break; }
-        default:
-            break;
-        }
-    }
+//    static const char* styles[] = { "Dark", "Light" };
+//    static int selectedStyle = 0;
+//
+//    if (ImGui::Combo("Set Style", &selectedStyle, styles, IM_ARRAYSIZE(styles))) {
+//        switch (selectedStyle) {
+//        case 0: {
+//            ImGui::StyleColorsDark();
+//            ImGuiStyle& darkStyle = ImGui::GetStyle();
+//            darkStyle.WindowRounding = 5.0f;
+//            darkStyle.FrameRounding = 4.0f;
+//            darkStyle.GrabRounding = 4.0f;
+//            darkStyle.ScrollbarRounding = 4.0f;
+//            darkStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.2f, 0.2f, 0.2f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.16f, 0.16f, 0.16f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_Button] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.26f, 0.26f, 0.26f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.18f, 0.18f, 0.18f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.22f, 0.22f, 0.22f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+//            darkStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.28f, 0.28f, 0.28f, 1.0f);
+//            break; }
+//        case 1: {
+//            ImGui::StyleColorsLight();
+//            ImGuiStyle& lightStyle = ImGui::GetStyle();
+//            lightStyle.WindowRounding = 3.0f;
+//            lightStyle.FrameRounding = 2.0f;
+//            lightStyle.GrabRounding = 2.0f;
+//            lightStyle.ScrollbarRounding = 2.0f;
+//            lightStyle.Colors[ImGuiCol_TitleBg] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.95f, 0.95f, 0.95f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.82f, 0.82f, 0.82f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_Button] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.85f, 0.85f, 0.85f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_ButtonActive] = ImVec4(0.7f, 0.7f, 0.7f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_SliderGrab] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.75f, 0.75f, 0.75f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_FrameBg] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+//            lightStyle.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.94f, 0.94f, 0.94f, 1.0f);
+//            break; }
+//        default:
+//            break;
+//        }
+//    }
 
 
 }
