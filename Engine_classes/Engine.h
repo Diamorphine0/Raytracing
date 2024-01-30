@@ -86,6 +86,11 @@ public:
     TextData objectTexture;
     TextData objectTag;
     TextData objectDelete;
+    TextData depthOfRefraction;
+    TextData samplesPerPixel;
+    TextData variationAngle;
+    TextData focusDistance;
+    TextData backgroundColor;
 
     //clicled object
     //Node* clicked;

@@ -3,6 +3,7 @@
 #include "Utilities.hpp"
 #include "scenegraph.h"
 #include <memory>
+#include <algorithm>
 #include "TriangleMesh.h"
 
 Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
@@ -454,6 +455,77 @@ void Engine::RenderStats(){
 
     static int counter = 0;
     ImGui::NewLine();
+
+    ImGui::Text("Maximal depth of refraction");
+    ImGui::InputText("##depthOfRefraction", depthOfRefraction.buffer, sizeof(depthOfRefraction.buffer));
+    ImGui::NewLine();
+
+    ImGui::Text("Samples per pixel");
+    ImGui::InputText("##samplesPerPixel", samplesPerPixel.buffer, sizeof(samplesPerPixel.buffer));
+    ImGui::NewLine();
+
+    ImGui::Text("Variation angle of rays through each pixel");
+    ImGui::InputText("##variationAngle", variationAngle.buffer, sizeof(variationAngle.buffer));
+    ImGui::NewLine();
+
+    ImGui::Text("Distance from camera lookfrom point to plane of perfect focus");
+    ImGui::InputText("##focusDistance", focusDistance.buffer, sizeof(focusDistance.buffer));
+    ImGui::NewLine();
+
+    ImGui::Text("Background color");
+    ImGui::InputText("##backgroundColor", backgroundColor.buffer, sizeof(backgroundColor.buffer));
+    ImGui::NewLine();
+
+    if (ImGui::Button("Initialize parameters for raytracing camera") || ImGui::IsItemDeactivatedAfterEdit() || ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Enter))){
+        std::string refractionString;
+        for (int i = 0; i < 256 && depthOfRefraction.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(depthOfRefraction.buffer[i]))) {
+                refractionString += depthOfRefraction.buffer[i];
+            }
+        }
+        ImGui::SetScrollY(0.0f);
+
+        std::string samplesString;
+        for (int i = 0; i < 256 && samplesPerPixel.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(samplesPerPixel.buffer[i]))) {
+                samplesString += samplesPerPixel.buffer[i];
+            }
+        }
+        ImGui::SetScrollY(0.0f);
+
+        std::string variationString;
+        for (int i = 0; i < 256 && variationAngle.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(variationAngle.buffer[i]))) {
+                variationString += variationAngle.buffer[i];
+            }
+        }
+        ImGui::SetScrollY(0.0f);
+
+        std::string focusString;
+        for (int i = 0; i < 256 && focusDistance.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(focusDistance.buffer[i]))) {
+                focusString += focusDistance.buffer[i];
+            }
+        }
+        ImGui::SetScrollY(0.0f);
+
+        std::string backgroundString;
+        for (int i = 0; i < 256 && backgroundColor.buffer[i] != '\0'; ++i) {
+            if (!std::isspace(static_cast<unsigned char>(backgroundColor.buffer[i]))) {
+                backgroundString += backgroundColor.buffer[i];
+            }
+        }
+        ImGui::SetScrollY(0.0f);
+
+        for(int i=0; i < 256; i++){
+            depthOfRefraction.buffer[i] = '\0';
+            samplesPerPixel.buffer[i] = '\0';
+            variationAngle.buffer[i] = '\0';
+            focusDistance.buffer[i] = '\0';
+            backgroundColor.buffer[i] = '\0';
+        }
+    }
+
     ImGui::Text("Raytracings done = %d", counter);
     ImGui::Text("Frame to Raytrace: %d ", currentFrame);
     if(ImGui::Button("Raytrace")){
