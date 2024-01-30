@@ -346,7 +346,7 @@ void Engine::RenderHierarchy() {
 void Engine::RenderAnimation() {
     ImGui::Begin("Animation");
 
-    ImGui::SliderInt("Coarse Slider", &currentFrame, 0, 2000, "Frame %d");
+    ImGui::SliderInt("Animation Keyframe Panel", &currentFrame, 0, 2000, "Frame %d");
 
     // we want to have an animate condition
     if(ImGui::Button("Play")){
