@@ -16,6 +16,8 @@ Texture::Texture(const std::string& path):
         std::cout << "Cannot read texture" << std::endl;
         if(stbi_failure_reason())
             std::cout << "Error Reason:" << stbi_failure_reason() << std::endl;
+
+        localBuffer = stbi_load((SOURCE_DIR + std::string("textures/Grey.png")).c_str(), &width, &height, &bitsPerPixel, 3);
     }
 
     glGenTextures(1, &m_RendererID);

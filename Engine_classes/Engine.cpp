@@ -244,7 +244,7 @@ void Engine::RenderProperties(){
     //static float rotation = 0.0f;
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
-    if(ImGui::Button("Apply Transformations")){
+    if(ImGui::Button("Apply transformations")){
         this->selectedNode->entity->translate(translationX, translationY, translationZ);
         this->selectedNode->entity->rotate(rotationX, 1, 0, 0);
         this->selectedNode->entity->rotate(rotationY, 0, 1, 0);
@@ -260,9 +260,16 @@ void Engine::RenderProperties(){
         // we want to set the color of the object as well - this may be a bit harder
     }
 
-    //Color selection
-    ImVec4 color;
-    ImGui::ColorEdit4("Color", &color.x);
+    //
+    static ImVec4 color;
+    ImGui::ColorEdit3("Color", &color.x);
+    if(ImGui::Button("Apply new ambient colour")){
+        this->selectedNode->entity->setAmbience(color.x, color.y, color.z);
+        color = {0,0,0,0};
+    }
+    if(ImGui::Button("Remove ambience")){
+        this->selectedNode->entity->setAmbience(1.0f, 1.0f, 1.0f);
+    }
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
@@ -437,7 +444,7 @@ void Engine::RenderAddObject(){
 
         //verify whether a texture was assigned, if not assign the grey texture
         if(textureString[0] == '\0')
-            textureString = "Grey.png";
+            textureString = "Grey";
 
 
         std::string tagString;

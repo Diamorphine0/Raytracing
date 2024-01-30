@@ -23,15 +23,19 @@ unsigned int Shader::getUniformStringLocation(const std::string& name) const{
     return location;
 }
 
-void Shader::setUnifrom4f(const std::string& name, float v0, float v1, float v2, float v3){
+void Shader::setUniform4f(const std::string& name, float v0, float v1, float v2, float v3){
     glUniform4f(getUniformStringLocation(name), v0, v1, v2, v3);
+}
+
+void Shader::setUniform3f(const std::string& name, float v0, float v1, float v2){
+    glUniform3f(getUniformStringLocation(name), v0, v1, v2);
 }
 
 void Shader::setUniformMatrix4fv(const std::string& name, const GLfloat* data){
     glUniformMatrix4fv(getUniformStringLocation(name), 1, GL_FALSE, data);
 }
 
-void Shader::SetUniform1i(const std::string& name, int value) const{
+void Shader::setUniform1i(const std::string& name, int value) const{
     glUniform1i(this -> getUniformStringLocation(name), value);
 }
 
