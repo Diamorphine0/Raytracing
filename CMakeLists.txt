@@ -19,7 +19,8 @@ set (INCLUDE_DIR
         Objects_classes
         shaders
         imgui
-        Engine_classes)
+        Engine_classes
+        Materials)
 
 set(PROJECT_SOURCES
         Objects_classes/Triangle.h

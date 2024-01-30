@@ -9,6 +9,7 @@
 #include "lightsource.h"
 #include <string>
 #include "BVH_Node.h"
+#include "Dielectric_Material.h"
 
 int main(int argc, char* argv[])
 {
@@ -17,7 +18,7 @@ int main(int argc, char* argv[])
 
     // only a single face of the object loaded..,
     auto entity1 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cube.obj");
-
+    entity1->material = std::make_shared<Dielectric>(0.9, 1);
     auto entity2 = std::make_shared<Entity>(SOURCE_DIR + (std::string)"/objects/cone.obj");
     entity2->translate(-5, -5, 5);
     // to get the object identifier we can just count hte total number of objects stored in the scene grap

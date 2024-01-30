@@ -15,8 +15,8 @@ public:
      * For now all triangles are considered double sided.
      *
      */
-    Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture);
-    Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture);
+    Triangle(const point3 &a, const point3 &b, const point3 &c, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material);
+    Triangle(const point3 &a, const point3 &b, const point3 &c, const point3 &normal, const vec2 &aUV, const vec2 &bUV, const vec2 &cUV, const std::shared_ptr<Texture> &texture, const std::shared_ptr<Material> &material);
 
     virtual bool hit(const Ray &r, const Interval &restriction,  HitRecord &rec) const;
 

@@ -29,10 +29,9 @@ static vec3 diffuse_same_hemisphere(const vec3& normal){
 
 class Material {
 public:
-    Material(const vec3 &color, float reflectance, float transparency, float ior)
-            : color(color), reflectance(reflectance), transparency(transparency), ior(ior) {}
+    Material(float reflectance, float transparency, float ior)
+            :reflectance(reflectance), transparency(transparency), ior(ior) {}
 
-    vec3 getColor() const { return color; }
 
     //reflectance and transparency are currently redundant
 
@@ -45,7 +44,7 @@ public:
     //probably also redundant:
     bool isLight = false;
 
-    virtual vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const = 0;
+//    virtual vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const = 0;
     virtual Ray scatter(const vec3& hit_point, const vec3& normal, const vec3& incident) const = 0;
 
     vec3 reflect(const vec3 &incident, const vec3 &normal) const {
@@ -80,7 +79,7 @@ public:
 
 private:
 
-    vec3 color;          // Material color
+    //vec3 color;          // Material color
     float reflectance;   // From 0 to 1
     float transparency;  // From 0 to 1
     float ior;

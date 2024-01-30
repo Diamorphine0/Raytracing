@@ -6,12 +6,12 @@
 //Transparent or translucent surfaces: ex. glass, water, plastic
 class Dielectric : public Material {
 public:
-    Dielectric(const vec3& color, float reflectance, float ior)
-            : Material(color, reflectance, 0.0f, ior) {}
-
-    vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const override {
-        return getColor();
-    }
+    Dielectric(float reflectance, float ior)
+            : Material( reflectance, 0.0f, ior) {}
+//
+//    vec3 computeColor(const vec3& incident, const vec3& normal, float ior) const override {
+//        return getColor();
+//    }
 
     Ray scatter(const vec3& hit_point, const vec3& normal, const vec3& incident) const override {
         vec3 reflected_dir = reflect(incident, normal);
