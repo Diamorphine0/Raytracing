@@ -177,32 +177,32 @@ void Engine::displayUpdate(){
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.5*width, 0.75*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.25*width, 0));
+    ImGui::SetNextWindowSize(ImVec2(0.6*width, 0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.2*width, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.3*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.45*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0.3*height));
+    ImGui::SetNextWindowSize(ImVec2(0.2*width,0.45*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.8*width,0.3*height));
     ImGui::Begin("Add Object");
     RenderAddObject();
     ImGui::End();
@@ -377,7 +377,7 @@ void Engine::RenderAnimation() {
 
     static int current_item = -1;
 
-    if (ImGui::BeginCombo("Dropdown", "Keyframes")) {
+    if (ImGui::BeginCombo("Keyframe Dropdown Menu", "Keyframes")) {
         for (int i = 0; i < markedPositions.size(); i++) {
 
             bool is_selected = (current_item == i);
@@ -412,8 +412,10 @@ void Engine::RenderAnimation() {
 void Engine::RenderAddObject(){
     ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
     ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
+    ImGui::NewLine();
     ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
     ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
+    ImGui::NewLine();
     ImGui::Text("Here, you may add a custom tag to the object");
     ImGui::InputText("##objectTag", objectTag.buffer, sizeof(objectTag.buffer));
 
