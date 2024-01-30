@@ -371,8 +371,8 @@ void Engine::RenderAddObject(){
 
 
         std::cout << SOURCE_DIR << std::endl;
-        nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString;
-        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString;
+        nameString = SOURCE_DIR + (std::string)"/objects/" + (std::string)nameString + (std::string)".obj";
+        textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)textureString + (std::string)".png";
 
         try {
             auto entity = std::make_shared<Entity>(nameString.c_str());
