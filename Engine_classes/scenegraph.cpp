@@ -161,7 +161,9 @@ glm::mat4 Node::getModelMatrix(){
 /**
  * Remember to remove nodes
  */
-Node::~Node() {
+Node::~Node(){
+    Node* parent = getParent(); /*->removeChild(*this);*/
+    parent->removeChild(*this);
     for(auto &x:children)
         delete x;
 }

@@ -42,7 +42,16 @@ public:
 
     bool hasChildren();
     std::vector<Node*> getChildren(){return children;}
-    Node* getParent();
+    Node* getParent(){return parent;}
+
+    void removeChild(Node child){
+        for(int i = 0; i < children.size(); i++){
+            if(child.name == (*children[i]).name){
+                children.erase(children.begin() + i - 1);
+                break;
+            }
+        }
+    }
 
     int DFS();
 

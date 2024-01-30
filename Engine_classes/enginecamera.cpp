@@ -46,8 +46,6 @@ void engineCamera::movement(float& currentTime, float& lastTime, float& speed, G
     currentTime = glfwGetTime();
 
     float realspeed = speed;
-    //zoom mode - may be useful for zooming in on objects.
-
 
     float verticalAngleLimit = glm::radians(89.0f);
     float deltaTime = float(currentTime - lastTime);

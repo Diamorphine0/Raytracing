@@ -277,13 +277,23 @@ void Engine::RenderEntityHierarchy(Node& node) {
     bool isClicked = ImGui::TreeNodeEx(node.name.c_str(), ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick);
 
     if(isClicked){
+        bool deleted = false;
         selectedNode = &node;
 
-        std::vector<Node*> children = node.getChildren();
-        for (auto child : children){
-            RenderEntityHierarchy(*child);
+        if (ImGui::BeginPopupContextItem("options")) {
+            if (ImGui::MenuItem("Delete current object")) {
+                delete this->selectedNode;
+                deleted = true;
+            }
+            ImGui::EndPopup();
         }
 
+        if(!deleted){
+            std::vector<Node*> children = node.getChildren();
+            for (auto child : children){
+                RenderEntityHierarchy(*child);
+            }
+        }
         ImGui::TreePop();
     }
 }
