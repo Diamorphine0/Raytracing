@@ -195,14 +195,14 @@ void Engine::displayUpdate(){
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.3*height));
     ImGui::SetNextWindowPos(ImVec2 (0.75*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
-    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.45*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0.3*height));
     ImGui::Begin("Add Object");
     RenderAddObject();
     ImGui::End();
@@ -373,22 +373,37 @@ void Engine::RenderAnimation() {
         }
     }
 
-    ImGui::SameLine();
+    ImGui::NewLine();
 
-    if (ImGui::Button("Clear All Marks")) {
-        markedPositions.clear();
+    static int current_item = -1;
+
+    if (ImGui::BeginCombo("Dropdown", "Keyframes")) {
+        for (int i = 0; i < markedPositions.size(); i++) {
+
+            bool is_selected = (current_item == i);
+            if (ImGui::Selectable(std::to_string(markedPositions[i]).c_str(), is_selected)) {
+                current_item = i;
+                currentFrame = markedPositions[i];
+            }
+
+            if (is_selected) {
+                ImGui::SetItemDefaultFocus();
+            }
+        }
+
+        ImGui::EndCombo();
     }
 
-    ImGui::Text("Coarse Frame: %d", currentFrame);
+    if(ImGui::Button("Delete Selected Keyframe")){
+        if (current_item != -1) {
+            markedPositions.erase(markedPositions.begin() + current_item);
+        }
+    }
 
-    ImVec2 sliderMin = ImGui::GetItemRectMin();
-    ImVec2 sliderMax = ImGui::GetItemRectMax();
-    float sliderRange = sliderMax.x - sliderMin.x;
+    ImGui::SameLine();
 
-    for (int markedPosition : markedPositions) {
-        float relativePosition = static_cast<float>(markedPosition - 0) / 500.0f;
-        ImVec2 markPos = ImVec2(sliderMin.x + relativePosition * sliderRange, sliderMin.y -10);
-        ImGui::GetWindowDrawList()->AddLine(ImVec2((markPos.x-5.5)*8, markPos.y - 80), ImVec2((markPos.x-5.5) *8, markPos.y - 40), IM_COL32(255, 0, 0, 255), 2.0f);
+    if (ImGui::Button("Delete All Keyframes")) {
+        markedPositions.clear();
     }
 
     ImGui::End();
