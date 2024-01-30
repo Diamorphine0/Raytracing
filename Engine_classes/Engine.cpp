@@ -7,6 +7,8 @@
 #include "TriangleMesh.h"
 #include "DielectricMaterial.h"
 #include "DiffuseMaterial.h"
+#include "MetalMaterial.h"
+#include "DiffuseLight.h"
 
 Engine::Engine(engineCamera camera, const std::string &root_path): width(width), height(height), camera(camera){
 
@@ -231,9 +233,9 @@ void Engine::displayUpdate(){
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.2*height));
     ImGui::SetNextWindowPos(ImVec2 (0.8*width,0));
-    ImGui::Begin("Settings");
+    ImGui::Begin("Raytrace & Stats");
     RenderStats();
-   // CameraSettings();
+    CameraSettings();
     ImGui::End();
 
     ImGui::SetNextWindowSize(ImVec2(0.2*width,0.3*height));
@@ -326,13 +328,6 @@ void Engine::RenderProperties(){
 
     ImGui::NewLine();
 
-    static const char* styles[] = { "Dielectric", "Diffuse" };
-    static int selectedStyle = 0;
-
-    ImGui::Combo("Set Material", &selectedStyle, styles, IM_ARRAYSIZE(styles));
-
-    ImGui::NewLine();
-
     static const char* stylesTexture[] = { "Grey", "brick", "earth", "grid", "purple", "sun" };
     static int selectedStyleTexture = 0;
     ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture));
@@ -342,24 +337,26 @@ void Engine::RenderProperties(){
         this -> selectedNode -> entity -> texture = std::make_shared<Texture>(textureString.c_str());
     };
 
-    // Could be useful for materials
+    ImGui::NewLine();
 
-    // if (ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture))) {
-    //     // Update the texture of the selected object here
-    //     if (selectedNode) {
-    //         // Set texture based on user's selection
-    //         std::string texturePath;
-    //         switch (selectedStyleTexture) {
-    //         case 0: texturePath = "Textures/Grey.png"; break;
-    //         case 1: texturePath = "Textures/brick.png"; break;
-    //         case 2: texturePath = "Textures/earth.png"; break;
-    //         case 3: texturePath = "Textures/grid.png"; break;
-    //         case 4: texturePath = "Textures/purple.png"; break;
-    //         case 5: texturePath = "Textures/sun.png"; break;
-    //         default: break;
-    //         }
-    //     }
-    // }
+    static const char* styles[] = { "Dielectric", "Diffuse", "Metal", "Light" };
+
+    static int selectedStyle = 0;
+
+    ImGui::Combo("Set Material", &selectedStyle, styles, IM_ARRAYSIZE(styles));
+
+    if (ImGui::Button("Apply new material")){
+        // Update the texture of the selected object here
+        if (selectedNode) {
+            switch (selectedStyle) {
+                case 0: this -> selectedNode -> entity -> material = std::make_shared<DielectricMaterial>(1.5); break;
+                case 1: this -> selectedNode -> entity -> material = std::make_shared<DiffuseMaterial>(this -> selectedNode -> entity -> texture); break;
+                case 2: this -> selectedNode -> entity -> material = std::make_shared<MetalMaterial>(this -> selectedNode -> entity -> texture, 0.1); break;
+                case 3: this -> selectedNode -> entity -> material = std::make_shared<DiffuseLight>((color3){1500, 1500, 1500}); break;
+                default: break;
+            }
+        }
+    }
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
@@ -376,61 +373,37 @@ void Engine::RenderEntityHierarchy(Node& node) {
         ImGui::TreePop();
     }
 }
-//float lastCPUPercentage = 0.0f;
-//std::chrono::time_point<std::chrono::high_resolution_clock> lastUpdateTime;
-
-float GetCPUUsageMacOS() {
-#ifdef __APPLE__
-    host_cpu_load_info_data_t cpuinfo;
-    mach_msg_type_number_t count = HOST_CPU_LOAD_INFO_COUNT;
-    if (host_statistics64(mach_host_self(), HOST_CPU_LOAD_INFO, (host_info64_t)&cpuinfo, &count) == KERN_SUCCESS) {
-        unsigned long long totalTicks = 0;
-        for (int i = 0; i < CPU_STATE_MAX; ++i) {
-            totalTicks += cpuinfo.cpu_ticks[i];
-        }
-        unsigned long long idleTicks = cpuinfo.cpu_ticks[CPU_STATE_IDLE];
-        float cpuUsage = 100.0f * (1.0f - static_cast<float>(idleTicks) / totalTicks);
-
-        return cpuUsage;
-    }
-
-    return -1.0f;
-#else
-    // if user does not run MacOS
-    return -1.0f;
-#endif
-}
 
 float minFrameRate = FLT_MAX;
 float maxFrameRate = 0.0f;
 
 //
-//void Engine::CameraSettings(){
-//    ImGui::Separator();
-//    ImGui::Text("Engine Camera statistics:");
-//
-//
-//    /*   double xpos, ypos;
-//        float mousespeed = 1.5f;
-//        glm::vec3 position;
-//        float horizontalAngle;
-//        float verticalAngle;
-//        float initialFoV;
-//*/
-//    float* insert_h_angle;
-//    bool a;
-//    ImGui::Text("X position: %.1f", camera.getPosition().x);
-//    ImGui::Text("Y position: %.1f", camera.getPosition().y);
-//    ImGui::Text("Z position: %.1f", camera.getPosition().z);
-//    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
-//    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
-//
-//    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
-//    ImGui::Text("Field of View: %.1f", camera.getfov());
-//
-//    //camera.setPosition(20);
-//    ImGui::Separator();
-//}
+void Engine::CameraSettings(){
+    ImGui::Separator();
+    ImGui::Text("Engine Camera statistics:");
+
+
+    /*   double xpos, ypos;
+        float mousespeed = 1.5f;
+        glm::vec3 position;
+        float horizontalAngle;
+        float verticalAngle;
+        float initialFoV;
+*/
+    float* insert_h_angle;
+    bool a;
+    ImGui::Text("X position: %.1f", camera.getPosition().x);
+    ImGui::Text("Y position: %.1f", camera.getPosition().y);
+    ImGui::Text("Z position: %.1f", camera.getPosition().z);
+    ImGui::Text("Horizontal angle: %.1f", camera.gethorizontalAngle());
+    //(insert_h_angle, a) = ImGui::InputFloat("Insert Horizontal angle",&insert_h_angle,  0.5, 2, "%.2f", 0);
+
+    ImGui::Text("Vertical angle: %.1f", camera.getverticalAngle());
+    ImGui::Text("Field of View: %.1f", camera.getfov());
+
+    //camera.setPosition(20);
+    ImGui::Separator();
+}
 
 void Engine::RenderStats(){
     ImGuiIO& io = ImGui::GetIO();
