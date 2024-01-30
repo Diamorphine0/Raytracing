@@ -420,7 +420,7 @@ void Engine::RenderAddObject(){
 
         //verify whether a texture was assigned, if not assign the grey texture
         if(textureString[0] == '\0')
-            textureString = "Grey.png";
+            textureString = "Grey";
 
 
         std::string tagString;
