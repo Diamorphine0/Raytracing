@@ -584,12 +584,13 @@ void Engine::RenderHierarchy() {
 void Engine::RenderRaytracing() {
     ImGui::Text("Ray Tracing Settings:");
 
-    ImGui::SliderInt("Max Depth", &rayTracingCameraParams.max_depth, 1, 100);
+    ImGui::SliderInt("Max Depth", &rayTracingCameraParams.max_depth, 10, 100);
     ImGui::SliderInt("Samples per Pixel", &rayTracingCameraParams.samples_per_pixel, 1, 100);
     ImGui::SliderFloat("Defocus Angle", &rayTracingCameraParams.defocus_angle, 0.0f, 1.0f);
     ImGui::SliderFloat("Focus Distance", &rayTracingCameraParams.focus_dist, 1.0f, 100.0f);
-    ImGui::ColorEdit3("Background Color", (float*)&rayTracingCameraParams.background);
-
+    static float initialBackgroundColor[3] = {0.1f, 0.1f, 0.1f};
+    ImGui::ColorEdit3("Background Color", initialBackgroundColor);
+    rayTracingCameraParams.background = color3(initialBackgroundColor[0], initialBackgroundColor[1], initialBackgroundColor[2]);
 }
 
 void Engine::RenderAnimation() {
