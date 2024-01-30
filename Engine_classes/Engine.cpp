@@ -68,6 +68,17 @@ Engine::Engine(engineCamera camera, const std::string &shader_path): width(width
     axes.gen_axes(1000);
 }
 
+// stores the current (rescaled) size of the GLFW parent window in two parameters passed by reference
+void GetWindowSize(GLFWwindow* window, int& width, int& height) {
+    if (window != nullptr) {
+        glfwGetWindowSize(window, &width, &height);
+    }
+    else {
+        width = 0;
+        height = 0;
+    }
+}
+
 void Engine::update(Shader* shader){
 
     glfwPollEvents();
@@ -117,47 +128,54 @@ void Engine::LoadEngine(){
 }
 
 void Engine::displayUpdate(){
+
+    // we store the GLFW window size
+    int width, height;
+    GetWindowSize(window, width, height);
+
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
+    // we rescale the ImGui windows and fix their positions
+    // we render the GUI functionalities onto each window with a dedicated function
+
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
-
     RenderHierarchy();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/3 * 2, (this->height) *3/4));
-    ImGui::SetNextWindowPos(ImVec2 ((this->width) / 6, 0));
+    ImGui::SetNextWindowSize(ImVec2(0.5*width, 0.75*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.25*width, 0));
     ImGui::Begin("Engine Visualization");
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2 (0,(this->height)*3/8));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2 ((this->width) * 5 / 6,0));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0));
     ImGui::Begin("Settings");
     RenderStats();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2((this->width),(this->height) / 4));
-    ImGui::SetNextWindowPos(ImVec2 (0,(this->height) * 3 / 4));
-    ImGui::Begin("Animation");
-    RenderAnimation();
-    ImGui::End();
-
-    ImGui::SetNextWindowSize(ImVec2((this->width)/ 6 , (this->height)*3/8));
-    ImGui::SetNextWindowPos(ImVec2((this->width) * 5 / 6, (this->height) * 3 / 8));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowPos(ImVec2 (0.75*width,0.375*height));
     ImGui::Begin("Add Object");
     RenderAddObject();
+    ImGui::End();
+
+    ImGui::SetNextWindowSize(ImVec2(width,0.25*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.75*height));
+    ImGui::Begin("Animation");
+    RenderAnimation();
     ImGui::End();
 
     // Rendering
