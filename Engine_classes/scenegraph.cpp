@@ -57,16 +57,21 @@ void Node::Draw(const Shader& shader, glm::vec3 pos, int& currentFrame){
         GLuint MatrixModelID = glGetUniformLocation(shader.getID(), "ModelMatrix");
         GLuint MatrixID = glGetUniformLocation(shader.getID(), "Transform");
         GLuint viewPosID = glGetUniformLocation(shader.getID(), "viewPos");
+        GLuint AmbienceID = glGetUniformLocation(shader.getID(), "ambientColor");
 
         glUniform3fv(viewPosID, 1, &pos[0]);
         glUniformMatrix4fv(MatrixModelID, 1, GL_FALSE, &(glm::inverse(getModelMatrix()) * entity -> worldMatrix)[0][0]);
         glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &(entity -> worldMatrix)[0][0]);
+        glUniform3fv(AmbienceID, 1, &(entity->ambience.x));
+
 
         if(entity -> texture != nullptr){
             entity -> texture -> Bind();
         }
 
-        shader.SetUniform1i("u_Texture", 0);
+        shader.setUniform1i("u_Texture", 0);
+
+
 
         va.Bind();
         // This can be fixed as soon as we store the verticies ...
@@ -130,7 +135,10 @@ void Node::Animate(const Shader& shader, int currentFrame){
         if(entity -> texture != nullptr)
             entity -> texture -> Bind();
 
-        shader.SetUniform1i("u_Texture", 0);
+        shader.setUniform1i("u_Texture", 0);
+
+        GLuint AmbienceID = glGetUniformLocation(shader.getID(), "ambientColor");
+        glUniform3fv(AmbienceID, 1, &(entity->ambience.x));
 
         va.Bind();
         glDrawArrays(GL_TRIANGLES, 0, entity -> vertices.size());

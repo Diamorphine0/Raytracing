@@ -28,10 +28,12 @@ public:
     void Bind() const;
     void Unbind() const;
 
-    void setUnifrom4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void setUniform3f(const std::string& name, float v0, float v1, float v2);
+
 
     void setUniformMatrix4fv(const std::string& name, const GLfloat* data);
-    void SetUniform1i(const std::string& name, int value) const;
+    void setUniform1i(const std::string& name, int value) const;
 
     inline unsigned int getID() const{return m_RendererID;};
 };

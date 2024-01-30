@@ -105,10 +105,12 @@ void VertexArray::AddBuffer(const VertexBuffer* vb, const VertexBufferLayout& la
 
 Entity::Entity(){
     va = new VertexArray();
+    ambience = glm::vec3(1.0f, 1.0f, 1.0f);
 }
 
 Entity::Entity(std::vector<Vertex>& vertices){
 
+    ambience = glm::vec3(1.0f, 1.0f, 1.0f);
     this -> vertices = vertices;
 
     va = new VertexArray();
@@ -121,12 +123,14 @@ Entity::Entity(std::vector<Vertex>& vertices){
 
     layout.Push_Vertex(3);
 
-    va -> AddBuffer(vb, layout);
+    va -> AddBuffer(vb, layout);    
 
     // we furthermore want to allocate a unique id to it that we will use for coloring (we need to maintain a dictionary associating its pointer and id).
 }
 
 Entity::Entity(std::string path){
+
+    ambience = glm::vec3(1.0f, 1.0f, 1.0f);
 
     std::vector<Vertex> vertices = {};
     std::vector< glm::vec2 > uvs;

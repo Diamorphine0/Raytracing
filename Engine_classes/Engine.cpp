@@ -177,7 +177,7 @@ void Engine::displayUpdate(){
     // we rescale the ImGui windows and fix their positions
     // we render the GUI functionalities onto each window with a dedicated function
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.330*height));
     ImGui::SetNextWindowPos(ImVec2 (0,0));
     ImGui::Begin("Hierarchy");
     RenderHierarchy();
@@ -189,8 +189,8 @@ void Engine::displayUpdate(){
     LoadEngine();
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.375*height));
-    ImGui::SetNextWindowPos(ImVec2 (0,0.375*height));
+    ImGui::SetNextWindowSize(ImVec2(0.25*width,0.420*height));
+    ImGui::SetNextWindowPos(ImVec2 (0,0.330*height));
     ImGui::Begin("Properties");
     RenderProperties();
     ImGui::End();
@@ -244,7 +244,7 @@ void Engine::RenderProperties(){
     //static float rotation = 0.0f;
     //ImGui::SliderFloat("Rotate", &rotation, 0.0f, 360.0f);
 
-    if(ImGui::Button("Apply Transformations")){
+    if(ImGui::Button("Apply transformations")){
         this->selectedNode->entity->translate(translationX, translationY, translationZ);
         this->selectedNode->entity->rotate(rotationX, 1, 0, 0);
         this->selectedNode->entity->rotate(rotationY, 0, 1, 0);
@@ -260,9 +260,16 @@ void Engine::RenderProperties(){
         // we want to set the color of the object as well - this may be a bit harder
     }
 
-    //Color selection
-    ImVec4 color;
-    ImGui::ColorEdit4("Color", &color.x);
+    //
+    static ImVec4 color;
+    ImGui::ColorEdit3("Color", &color.x);
+    if(ImGui::Button("Apply new ambient colour")){
+        this->selectedNode->entity->setAmbience(color.x, color.y, color.z);
+        color = {0,0,0,0};
+    }
+    if(ImGui::Button("Remove ambience")){
+        this->selectedNode->entity->setAmbience(1.0f, 1.0f, 1.0f);
+    }
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
