@@ -300,6 +300,19 @@ void Engine::RenderProperties(){
     if(ImGui::Button("Remove Ambient Colour")){
         this->selectedNode->entity->setAmbience(1.0f, 1.0f, 1.0f);
     }
+
+    ImGui::NewLine();
+
+    static const char* styles[] = { "Dielectric", "Diffuse" };
+    static int selectedStyle = 0;
+
+    ImGui::Combo("Set Material", &selectedStyle, styles, IM_ARRAYSIZE(styles));
+
+    ImGui::NewLine();
+
+    static const char* stylesTexture[] = { "Grey", "brick", "earth", "grid", "purple", "sun" };
+    static int selectedStyleTexture = 0;
+    ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture));
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
