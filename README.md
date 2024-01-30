@@ -31,6 +31,7 @@
 - Here all of the different properties of the object can be changed.
 ### Animation
 - This part of the application handles the animations as well as different keyframes.
+- Have to specify at least 2 keyframes before animating
 ### Raytracing 
 - Image is generated inside the build folder
 ### Raytracing animation
