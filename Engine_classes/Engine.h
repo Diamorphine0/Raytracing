@@ -44,7 +44,7 @@ public:
     inline float convertFrameToTime(int frame){return frame/framesPerSecond;};
 
     // Scene Graph Root Node - we can achieve camera movement by applying entity transformations to the object.
-    Node* engineWorld;
+    Node* engineWorld = nullptr;
 
     GLFWwindow* window;
     GLuint programID;
