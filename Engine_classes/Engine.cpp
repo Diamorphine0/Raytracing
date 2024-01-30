@@ -292,6 +292,16 @@ void Engine::RenderProperties(){
 
     ImGui::NewLine();
     //
+
+    // Show which object is currently selected
+    if (selectedNode) {
+        ImGui::Text("Selected Object: %s", selectedNode->name.c_str());
+    } else {
+        ImGui::Text("No Object Selected");
+    }
+
+    ImGui::NewLine();
+
     static ImVec4 color;
     ImGui::ColorEdit3("Color", &color.x);
     if(ImGui::Button("Apply New Ambient Colour")){
@@ -319,6 +329,25 @@ void Engine::RenderProperties(){
         textureString = SOURCE_DIR + (std::string)"/Textures/" + (std::string)stylesTexture[selectedStyleTexture] + (std::string)".png";
         this -> selectedNode -> entity -> texture = std::make_shared<Texture>(textureString.c_str());
     };
+
+    // Could be useful for materials
+
+    // if (ImGui::Combo("Set Texture", &selectedStyleTexture, stylesTexture, IM_ARRAYSIZE(stylesTexture))) {
+    //     // Update the texture of the selected object here
+    //     if (selectedNode) {
+    //         // Set texture based on user's selection
+    //         std::string texturePath;
+    //         switch (selectedStyleTexture) {
+    //         case 0: texturePath = "Textures/Grey.png"; break;
+    //         case 1: texturePath = "Textures/brick.png"; break;
+    //         case 2: texturePath = "Textures/earth.png"; break;
+    //         case 3: texturePath = "Textures/grid.png"; break;
+    //         case 4: texturePath = "Textures/purple.png"; break;
+    //         case 5: texturePath = "Textures/sun.png"; break;
+    //         default: break;
+    //         }
+    //     }
+    // }
 };
 
 void Engine::RenderEntityHierarchy(Node& node) {
@@ -601,9 +630,13 @@ void Engine::RenderAnimation() {
     ImGui::End();
 }
 
+
 void Engine::RenderAddObject(){
+
+    ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue;
+
     ImGui::Text("Here, you can add an object. Make sure \nthat the corresponding .obj file exists \nin the objects folder and input its name \nbelow!");
-    ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer));
+    ImGui::InputText("##objectName", objectName.buffer, sizeof(objectName.buffer), flags);
     ImGui::NewLine();
     ImGui::Text("Here, add the texture you want to assign \nto the object! If no texture is provided, \nthe program will automatically assign \na default texture.");
     ImGui::InputText("##objectTexture", objectTexture.buffer, sizeof(objectTexture.buffer));
@@ -616,13 +649,15 @@ void Engine::RenderAddObject(){
 
 
 
-    if (ImGui::Button("Initialise Object")){
+    if (ImGui::Button("Initialize Object") || ImGui::IsItemDeactivatedAfterEdit() || ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_Enter))) {
+
         std::string nameString;
         for (int i = 0; i < 256 && objectName.buffer[i] != '\0'; ++i) {
             if (!std::isspace(static_cast<unsigned char>(objectName.buffer[i]))) {
                 nameString += objectName.buffer[i];
             }
         }
+        ImGui::SetScrollY(0.0f);
 
         std::string textureString;
         for (int i = 0; i < 256 && objectTexture.buffer[i] != '\0'; ++i) {
