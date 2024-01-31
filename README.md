@@ -33,11 +33,16 @@
 - This part of the application handles the animations as well as different keyframes.
 - Have to specify at least 2 keyframes before animating
 ### Raytracing 
-- Image is generated inside the build folder
+- Image is generated inside the build folder.
 ### Raytracing animation
-- Video generated inside the root folder
-### Settings 
-  Here you can see basic data and stats related to the engine, camera, and the ray tracer like FPS and CPU usage. Additionally, this is where the button for ray tracing is located.
+- Video generated inside the root folder. Make sure to create a videoFrames folder in which the frames will be stored.
+### Settings
+- Different parameters for viewing
+### Examples
+![Screenshot](knight_render.png)
+
+![Screenshot](dog.png)
+
 
 ## Development
 ...
